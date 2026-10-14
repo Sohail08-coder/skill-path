@@ -456,7 +456,7 @@ async function setupDashboardPage() {
   const dashNameEl = document.getElementById('dashStudentName');
   if (!dashNameEl) return;
 
-  const user = typeof AuthService !== 'undefined' ? AuthService.getUser() : null;
+  const user = typeof AuthService !== 'undefined' ? (AuthService.getCurrentUser() || (AuthService.getUser && AuthService.getUser())) : null;
   const token = typeof AuthService !== 'undefined' ? AuthService.getToken() : null;
 
   if (user) {
@@ -489,9 +489,12 @@ async function setupDashboardPage() {
 
   // Try fetching backend assessment history
   let history = [];
-  if (token) {
+  const isHttps = window.location.protocol === 'https:';
+  const targetApi = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://localhost:8080/api';
+  const isLocalHttp = targetApi.startsWith('http://localhost') || targetApi.startsWith('http://127.0.0.1');
+
+  if (token && (!isHttps || !isLocalHttp)) {
     try {
-      const targetApi = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://localhost:8080/api';
       const res = await fetch(`${targetApi}/students/my-history`, {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -506,7 +509,16 @@ async function setupDashboardPage() {
     }
   }
 
-  // Fallback to locally stored currentAnalysis if no backend history
+  // Fallback to locally stored roadmaps or currentAnalysis
+  if (!history || history.length === 0) {
+    try {
+      const savedList = JSON.parse(localStorage.getItem('skillpath_saved_roadmaps') || '[]');
+      if (Array.isArray(savedList) && savedList.length > 0) {
+        history = savedList;
+      }
+    } catch (e) {}
+  }
+
   if (!history || history.length === 0) {
     const local = sessionStorage.getItem('currentAnalysis') || localStorage.getItem('lastAnalysis');
     if (local) {
@@ -524,6 +536,20 @@ async function setupDashboardPage() {
         }];
       } catch (e) {}
     }
+  }
+
+  // If still empty and student is Demo Student, populate demo evaluation
+  if ((!history || history.length === 0) && user && (user.email === 'student@skillpath.ai' || user.name === 'Demo Student')) {
+    history = [{
+      id: 101,
+      careerGoal: 'Software Developer (Java / Cloud)',
+      createdAt: new Date().toISOString(),
+      readinessScore: 78,
+      acquiredSkills: 'Java, SQL, Spring Boot, Git & GitHub, REST APIs, Docker',
+      missingSkills: 'System Design, DSA Trees & Graphs, CI/CD Pipelines',
+      summary: 'Verified competency in enterprise Java backend, database design, and REST APIs.',
+      milestoneChecklist: 'Java fundamentals, Arrays & Strings, SQL syntax'
+    }];
   }
 
   if (history && history.length > 0) {

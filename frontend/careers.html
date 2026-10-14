@@ -99,7 +99,7 @@
       try {
         if (typeof SkillPathAPI !== 'undefined' && SkillPathAPI.getCareers) {
           careers = await SkillPathAPI.getCareers();
-        } else {
+        } else if (window.location.protocol !== 'https:') {
           const res = await fetch('http://localhost:8080/api/careers');
           if (res.ok) careers = await res.json();
         }

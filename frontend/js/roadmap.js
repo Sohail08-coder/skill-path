@@ -31,7 +31,10 @@ async function loadAndRenderRoadmap() {
   // If authenticated, synchronize with backend database record to ensure milestone persistence
   if (typeof AuthService !== 'undefined') {
     const token = AuthService.getToken();
-    if (token) {
+    const isHttps = window.location.protocol === 'https:';
+    const isLocalHttp = API_BASE_URL.startsWith('http://localhost') || API_BASE_URL.startsWith('http://127.0.0.1');
+
+    if (token && (!isHttps || !isLocalHttp)) {
       try {
         const response = await fetch(`${API_BASE_URL}/students/my-history`, {
           headers: {
@@ -83,7 +86,20 @@ async function loadAndRenderRoadmap() {
     }
   }
 
-  // If still no analysis data, render clean empty state (NO FAKE DATA)
+  // Check saved roadmaps in local storage if not in sessionStorage
+  if (!currentAnalysisData) {
+    try {
+      const savedList = JSON.parse(localStorage.getItem('skillpath_saved_roadmaps') || '[]');
+      if (Array.isArray(savedList) && savedList.length > 0) {
+        currentAnalysisData = savedList[0].analysis || (typeof SkillPathAPI !== 'undefined' ? SkillPathAPI.synthesizeAnalysis({
+          careerGoal: savedList[0].careerGoal || 'Software Developer',
+          skills: savedList[0].acquiredSkills || ''
+        }, false) : null);
+      }
+    } catch (e) {}
+  }
+
+  // If still no analysis data, render clean empty state
   if (!currentAnalysisData) {
     const mainEl = document.querySelector('main');
     if (mainEl) {

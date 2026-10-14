@@ -4,7 +4,14 @@
  * Provides high-fidelity offline simulation for 16+ tech tracks, stream transition algorithms, and ATS resume scoring
  */
 
-const API_BASE_URL = window.SKILLPATH_API_URL || localStorage.getItem('SKILLPATH_API_URL') || 'http://localhost:8080/api';
+function getApiBaseUrl() {
+  if (window.SKILLPATH_API_URL) return window.SKILLPATH_API_URL;
+  const stored = localStorage.getItem('SKILLPATH_API_URL');
+  if (stored) return stored;
+  return 'http://localhost:8080/api';
+}
+
+const API_BASE_URL = getApiBaseUrl();
 
 const CAREER_CATALOG = [
   {
@@ -399,6 +406,11 @@ const CAREER_CATALOG = [
 const SkillPathAPI = {
   // Check backend server availability
   async checkHealth() {
+    const isHttps = window.location.protocol === 'https:';
+    const isLocalHttp = API_BASE_URL.startsWith('http://localhost') || API_BASE_URL.startsWith('http://127.0.0.1');
+    if (isHttps && isLocalHttp) {
+      return null;
+    }
     try {
       const response = await fetch(`${API_BASE_URL}/health`, {
         method: 'GET',
@@ -415,17 +427,21 @@ const SkillPathAPI = {
 
   // Get full career catalog (API or fallback)
   async getCareers() {
-    try {
-      const response = await fetch(`${API_BASE_URL}/careers`, {
-        headers: { 'Accept': 'application/json' }
-      });
-      if (response.ok) {
-        const data = await response.json();
-        if (Array.isArray(data) && data.length > 0) {
-          return data;
+    const isHttps = window.location.protocol === 'https:';
+    const isLocalHttp = API_BASE_URL.startsWith('http://localhost') || API_BASE_URL.startsWith('http://127.0.0.1');
+    if (!isHttps || !isLocalHttp) {
+      try {
+        const response = await fetch(`${API_BASE_URL}/careers`, {
+          headers: { 'Accept': 'application/json' }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (Array.isArray(data) && data.length > 0) {
+            return data;
+          }
         }
-      }
-    } catch (e) {}
+      } catch (e) {}
+    }
     return CAREER_CATALOG;
   },
 
@@ -449,19 +465,45 @@ const SkillPathAPI = {
       'Authorization': `Bearer ${token}`
     };
 
-    const response = await fetch(`${API_BASE_URL}/students`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify(studentData)
-    });
-    
-    if (!response.ok) {
-      const errData = await response.json().catch(() => ({}));
-      throw new Error(errData.error || errData.message || `Server returned ${response.status}: Failed to synthesize roadmap`);
+    const isHttps = window.location.protocol === 'https:';
+    const isLocalHttp = API_BASE_URL.startsWith('http://localhost') || API_BASE_URL.startsWith('http://127.0.0.1');
+
+    if (!isHttps || !isLocalHttp) {
+      try {
+        const response = await fetch(`${API_BASE_URL}/students`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(studentData)
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          return result;
+        }
+      } catch (e) {
+        console.warn('Backend student registration failed, using client-side synthesis fallback:', e);
+      }
     }
 
-    const result = await response.json();
-    return result;
+    // Client-side synthesis fallback for full offline / Vercel functionality
+    const synthesis = this.synthesizeAnalysis(studentData, false);
+    sessionStorage.setItem('currentAnalysis', JSON.stringify(synthesis));
+
+    try {
+      const savedList = JSON.parse(localStorage.getItem('skillpath_saved_roadmaps') || '[]');
+      savedList.unshift({
+        id: Date.now(),
+        careerGoal: synthesis.careerGoal,
+        createdAt: new Date().toISOString(),
+        readinessScore: synthesis.readinessScore,
+        acquiredSkills: (synthesis.acquiredSkills || []).join(', '),
+        missingSkills: (synthesis.missingSkills || []).join(', '),
+        analysis: synthesis
+      });
+      localStorage.setItem('skillpath_saved_roadmaps', JSON.stringify(savedList));
+    } catch (e) {}
+
+    return synthesis;
   },
 
   // Real-time analysis preview without requiring database persistence
