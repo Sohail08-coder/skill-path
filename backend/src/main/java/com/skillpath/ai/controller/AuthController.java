@@ -3,177 +3,199 @@ package com.skillpath.ai.controller;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.skillpath.ai.model.User;
+import com.skillpath.ai.repository.AssessmentRecordRepository;
+import com.skillpath.ai.repository.StudentRepository;
 import com.skillpath.ai.repository.UserRepository;
+import com.skillpath.ai.security.JwtTokenProvider;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "*")
 public class AuthController {
 
-    private final UserRepository userRepository;
-    
-    // In-memory fallback map ensures authentication always works even if MySQL is offline
-    private final Map<String, User> fallbackUserStore = new ConcurrentHashMap<>();
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
 
-    public AuthController(UserRepository userRepository) {
+    private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
+    private final AssessmentRecordRepository assessmentRecordRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
+
+    public AuthController(UserRepository userRepository,
+                          StudentRepository studentRepository,
+                          AssessmentRecordRepository assessmentRecordRepository,
+                          PasswordEncoder passwordEncoder,
+                          JwtTokenProvider jwtTokenProvider) {
         this.userRepository = userRepository;
-        
-        // Seed a demo user for quick 1-click testing
-        User demoUser = new User("Syed Sohail", "student@skillpath.ai", "password123", "Tech University", "Computer Science", "3rd Year", "Student");
-        demoUser.setId(1L);
-        demoUser.setCreatedAt(LocalDateTime.now());
-        fallbackUserStore.put(demoUser.getEmail().toLowerCase(), demoUser);
+        this.studentRepository = studentRepository;
+        this.assessmentRecordRepository = assessmentRecordRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
+
+        seedDefaultDemoUser();
+    }
+
+    private void seedDefaultDemoUser() {
+        try {
+            // Delete all previous data to ensure only ONE clean demo student account exists
+            assessmentRecordRepository.deleteAll();
+            studentRepository.deleteAll();
+            userRepository.deleteAll();
+
+            User demoUser = new User();
+            demoUser.setName("Syed Sohail");
+            demoUser.setEmail("student@skillpath.ai");
+            demoUser.setPassword(passwordEncoder.encode("password123"));
+            demoUser.setUniversity("Tech University");
+            demoUser.setBranch("Computer Science & Engineering");
+            demoUser.setYear("3rd Year");
+            demoUser.setRole("STUDENT");
+            demoUser.setCreatedAt(LocalDateTime.now());
+            userRepository.save(demoUser);
+            logger.info("Database reset: All stale data deleted, exactly one verified demo student active (student@skillpath.ai)");
+        } catch (Exception e) {
+            logger.warn("Could not seed demo student account: {}", e.getMessage());
+        }
+    }
+
+    @PostMapping("/seed-demo")
+    @Transactional
+    public ResponseEntity<Map<String, Object>> resetToSingleDemoUser() {
+        seedDefaultDemoUser();
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "All data deleted. Exactly one verified demo user active.");
+        response.put("demoEmail", "student@skillpath.ai");
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/register")
+    @Transactional
     public ResponseEntity<Map<String, Object>> register(@RequestBody User user) {
         Map<String, Object> response = new HashMap<>();
 
-        if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
-            response.put("error", "Email is required");
+        if (user.getName() == null || user.getName().trim().isEmpty()) {
+            response.put("error", "Full name is required");
             return ResponseEntity.badRequest().body(response);
         }
+
+        if (user.getEmail() == null || !EMAIL_PATTERN.matcher(user.getEmail().trim()).matches()) {
+            response.put("error", "A valid email address is required");
+            return ResponseEntity.badRequest().body(response);
+        }
+
         if (user.getPassword() == null || user.getPassword().length() < 6) {
-            response.put("error", "Password must be at least 6 characters");
+            response.put("error", "Password must be at least 6 characters long");
             return ResponseEntity.badRequest().body(response);
         }
 
         String normalizedEmail = user.getEmail().trim().toLowerCase();
 
-        // Check if user already exists
-        if (fallbackUserStore.containsKey(normalizedEmail)) {
-            response.put("error", "An account with this email already exists");
+        if (userRepository.existsByEmail(normalizedEmail)) {
+            response.put("error", "An account with this email address already exists");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }
 
-        try {
-            if (userRepository.existsByEmail(normalizedEmail)) {
-                response.put("error", "An account with this email already exists");
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
-            }
-        } catch (Exception ignored) {
-            // Database might be in offline mode; safely proceed with memory store
-        }
+        // Hash password securely with BCrypt
+        user.setEmail(normalizedEmail);
+        user.setName(user.getName().trim());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(user.getRole() != null ? user.getRole().toUpperCase() : "STUDENT");
+        user.setCreatedAt(LocalDateTime.now());
 
-        User savedUser;
-        try {
-            user.setEmail(normalizedEmail);
-            savedUser = userRepository.save(user);
-        } catch (Exception e) {
-            // Save to memory store as reliable fallback
-            user.setId((long) (fallbackUserStore.size() + 100));
-            user.setCreatedAt(LocalDateTime.now());
-            savedUser = user;
-        }
+        User savedUser = userRepository.save(user);
 
-        fallbackUserStore.put(normalizedEmail, savedUser);
+        String token = jwtTokenProvider.generateToken(savedUser);
 
-        // Build sanitized response
-        Map<String, Object> userData = new HashMap<>();
-        userData.put("id", savedUser.getId());
-        userData.put("name", savedUser.getName());
-        userData.put("email", savedUser.getEmail());
-        userData.put("university", savedUser.getUniversity());
-        userData.put("branch", savedUser.getBranch());
-        userData.put("year", savedUser.getYear());
-        userData.put("role", savedUser.getRole());
+        Map<String, Object> userData = sanitizeUser(savedUser);
 
         response.put("message", "User registered successfully");
-        response.put("token", "jwt_token_" + savedUser.getId() + "_" + System.currentTimeMillis());
+        response.put("token", token);
         response.put("user", userData);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/login")
+    @Transactional(readOnly = true)
     public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> credentials) {
         Map<String, Object> response = new HashMap<>();
         String email = credentials.get("email");
         String password = credentials.get("password");
 
-        if (email == null || password == null) {
+        if (email == null || password == null || email.trim().isEmpty() || password.isEmpty()) {
             response.put("error", "Email and password are required");
             return ResponseEntity.badRequest().body(response);
         }
 
         String normalizedEmail = email.trim().toLowerCase();
-        User user = null;
 
-        try {
-            user = userRepository.findByEmail(normalizedEmail).orElse(null);
-        } catch (Exception ignored) {
-            // DB offline fallback
-        }
+        User user = userRepository.findByEmail(normalizedEmail).orElse(null);
 
-        if (user == null) {
-            user = fallbackUserStore.get(normalizedEmail);
-        }
-
-        if (user == null || !password.equals(user.getPassword())) {
+        if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
             response.put("error", "Invalid email or password");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
 
-        Map<String, Object> userData = new HashMap<>();
-        userData.put("id", user.getId());
-        userData.put("name", user.getName());
-        userData.put("email", user.getEmail());
-        userData.put("university", user.getUniversity());
-        userData.put("branch", user.getBranch());
-        userData.put("year", user.getYear());
-        userData.put("role", user.getRole());
+        String token = jwtTokenProvider.generateToken(user);
+        Map<String, Object> userData = sanitizeUser(user);
 
         response.put("message", "Login successful");
-        response.put("token", "jwt_token_" + user.getId() + "_" + System.currentTimeMillis());
+        response.put("token", token);
         response.put("user", userData);
 
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/me")
-    public ResponseEntity<Map<String, Object>> getProfile(@RequestParam(required = false) String email) {
+    @Transactional(readOnly = true)
+    public ResponseEntity<Map<String, Object>> getCurrentUser() {
         Map<String, Object> response = new HashMap<>();
-        if (email == null) {
-            response.put("error", "Email parameter required");
-            return ResponseEntity.badRequest().body(response);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getPrincipal())) {
+            response.put("error", "Unauthorized access. Valid token required.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
 
-        String normalizedEmail = email.trim().toLowerCase();
-        User user = fallbackUserStore.get(normalizedEmail);
-        if (user == null) {
-            try {
-                user = userRepository.findByEmail(normalizedEmail).orElse(null);
-            } catch (Exception ignored) {}
-        }
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email.toLowerCase()).orElse(null);
 
         if (user == null) {
-            response.put("error", "User not found");
+            response.put("error", "User account not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
 
-        Map<String, Object> userData = new HashMap<>();
-        userData.put("id", user.getId());
-        userData.put("name", user.getName());
-        userData.put("email", user.getEmail());
-        userData.put("university", user.getUniversity());
-        userData.put("branch", user.getBranch());
-        userData.put("year", user.getYear());
-        userData.put("role", user.getRole());
-
-        response.put("user", userData);
+        response.put("user", sanitizeUser(user));
         return ResponseEntity.ok(response);
+    }
+
+    private Map<String, Object> sanitizeUser(User user) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("id", user.getId());
+        data.put("name", user.getName());
+        data.put("email", user.getEmail());
+        data.put("university", user.getUniversity());
+        data.put("branch", user.getBranch());
+        data.put("year", user.getYear());
+        data.put("role", user.getRole());
+        data.put("createdAt", user.getCreatedAt());
+        return data;
     }
 }

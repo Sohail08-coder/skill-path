@@ -3,21 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Personalized Career Roadmap | SkillPath AI</title>
-  <meta name="description" content="AI-synthesized skill gap breakdown, animated readiness meter, and actionable learning milestones with interactive checklists.">
+  <title>Your Personalized AI Career Roadmap | SkillPath AI</title>
+  <meta name="description" content="Dynamic week-by-week roadmap, skill gap benchmarking, and interactive milestone checklist for students.">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/components.css">
-  <style>
-    @media print {
-      .navbar, .footer, .btn, .server-badge, #printRoadmapBtn { display: none !important; }
-      body { background: white !important; color: black !important; }
-      .glass-card, .readiness-meter-card { border: 1px solid #ccc !important; box-shadow: none !important; background: white !important; color: black !important; }
-      .score-circle-bg { stroke: #e2e8f0 !important; }
-      .text-gradient { -webkit-text-fill-color: initial !important; color: #4338ca !important; }
-    }
-  </style>
 </head>
 <body>
+
+  <div class="ambient-orb-3"></div>
 
   <!-- Top Navigation Bar -->
   <header class="navbar">
@@ -33,140 +26,186 @@
 
       <ul class="nav-links">
         <li><a href="index.html" class="nav-link">Home</a></li>
-        <li><a href="careers.html" class="nav-link">Career Tracks</a></li>
-        <li><a href="profile.html" class="nav-link">Assessment Wizard</a></li>
+        <li><a href="careers.html" class="nav-link">Tracks</a></li>
         <li><a href="roadmap.html" class="nav-link active">Roadmap</a></li>
-        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
       </ul>
 
-      <div class="nav-actions">
-        <button id="printRoadmapBtn" class="btn btn-outline btn-sm" title="Print or save as PDF">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="6 9 6 2 18 2 18 9"></polyline>
-            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-            <rect x="6" y="14" width="12" height="8"></rect>
-          </svg>
-          Export PDF
-        </button>
-        <div id="navAuthContainer"></div>
-      </div>
+      <div class="nav-actions" id="navAuthContainer"></div>
     </div>
   </header>
 
-  <!-- Main Roadmap Content -->
   <main class="container" style="padding-top: 40px; padding-bottom: 70px;">
     
-    <!-- Student Header Banner -->
+    <!-- Student Header & Action Bar -->
     <div class="glass-card" style="margin-bottom: 30px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
       <div>
-        <span class="section-tag">Synthesized AI Roadmap</span>
-        <h1 style="font-size: 2.3rem; margin-bottom: 6px;">
-          Roadmap for <span id="studentName" class="text-gradient">Alex Morgan</span>
-        </h1>
-        <p id="studentMetaDetails" style="color: var(--text-muted); font-size: 0.96rem;">
-          Computer Science & Engineering • 3rd Year • CGPA: 8.70
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+          <span class="section-tag" style="margin-bottom: 0;">Synthesized Roadmap</span>
+          <span id="studentCareerGoal" class="badge-stream" style="font-size: 0.82rem;">--</span>
+        </div>
+        <h1 id="studentName" style="font-size: 2.2rem; margin-bottom: 4px;">Student Roadmap</h1>
+        <p id="studentMetaDetails" style="color: var(--text-muted); font-size: 0.95rem; margin: 0;">
+          -- • -- • CGPA: --
         </p>
       </div>
 
-      <div style="text-align: right;">
-        <span style="font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; display: block;">Target Engineering Track</span>
-        <div id="studentCareerGoal" style="font-size: 1.45rem; font-weight: 800; color: #a5b4fc; font-family: 'Outfit', sans-serif;">
-          Software Developer
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;" class="no-print">
+        <button id="printRoadmapBtn" class="btn btn-outline btn-sm">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"></path></svg>
+          Export as PDF / Print
+        </button>
+        <button id="shareRoadmapBtn" class="btn btn-outline btn-sm">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+          Share Link
+        </button>
+        <a href="profile.html" class="btn btn-primary btn-sm">
+          Re-evaluate Skills ⚡
+        </a>
+      </div>
+    </div>
+
+    <!-- Readiness Score & Stream Guidance Grid -->
+    <div style="display: grid; grid-template-columns: 1.1fr 1.9fr; gap: 24px; margin-bottom: 30px;">
+      
+      <!-- Readiness Gauge Card -->
+      <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 28px; text-align: center;">
+        <div>
+          <span style="font-size: 0.82rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Quantitative Market Fit</span>
+          
+          <div style="position: relative; width: 140px; height: 140px; margin: 16px auto;">
+            <svg class="score-circle-svg" viewBox="0 0 120 120" style="width: 100%; height: 100%; transform: rotate(-90deg);">
+              <circle class="bg" cx="60" cy="60" r="50" stroke="rgba(7, 59, 76, 0.08)" stroke-width="10" fill="none"></circle>
+              <circle id="circleProgress" class="progress" cx="60" cy="60" r="50" stroke="#06D6A0" stroke-width="10" stroke-linecap="round" fill="none" style="stroke-dasharray: 314.159; stroke-dashoffset: 314.159; transition: stroke-dashoffset 1s ease;"></circle>
+            </svg>
+            <div id="scoreNumber" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; font-weight: 900; font-family: 'Outfit', sans-serif; color: var(--text-main);">
+              --%
+            </div>
+          </div>
+
+          <h3 id="meterHeading" style="font-size: 1.25rem; margin-bottom: 6px; color: var(--text-main);">Calculating Readiness...</h3>
+          <p id="meterSub" style="color: var(--text-muted); font-size: 0.88rem; margin: 0 0 16px 0;">
+            Interactive topics checked below will dynamically increase your live readiness score.
+          </p>
+        </div>
+
+        <!-- 3 Sub-scores Breakdown -->
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; border-top: 1px solid var(--border-subtle); padding-top: 14px;">
+          <div>
+            <span style="font-size: 0.75rem; color: var(--text-dim); display: block;">Core Stack</span>
+            <strong id="subScoreCore" style="font-size: 1.05rem; color: var(--autumn-burgundy);">--%</strong>
+          </div>
+          <div>
+            <span style="font-size: 0.75rem; color: var(--text-dim); display: block;">CS Theory</span>
+            <strong id="subScoreCs" style="font-size: 1.05rem; color: var(--autumn-sienna);">--%</strong>
+          </div>
+          <div>
+            <span style="font-size: 0.75rem; color: var(--text-dim); display: block;">Projects</span>
+            <strong id="subScoreProj" style="font-size: 1.05rem; color: #047857;">--%</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stream Transition Advice Card -->
+      <div id="streamAdviceBox" class="glass-card" style="padding: 28px; display: flex; flex-direction: column; justify-content: space-between; border-color: var(--border-bright);">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+            <span style="font-size: 1.4rem;">🎓</span>
+            <span id="streamAdviceBranchTag" class="section-tag" style="margin-bottom: 0; font-size: 0.8rem;">Stream Transition Advisory</span>
+          </div>
+          <h3 style="font-size: 1.35rem; margin-bottom: 10px;">Bridging Academia with Industry Expectations</h3>
+          <p id="streamAdviceText" style="color: var(--text-muted); font-size: 0.94rem; line-height: 1.6; margin-bottom: 16px;">
+            Loading personalized stream transition blueprint...
+          </p>
+        </div>
+
+        <div style="background: #f8fafc; padding: 16px 20px; border-radius: var(--radius-md); border: 1.5px solid var(--border-subtle);">
+          <div style="font-size: 0.82rem; color: var(--text-dim); margin-bottom: 4px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;">Executive Summary</div>
+          <div id="analysisSummaryText" style="font-size: 0.92rem; color: var(--text-main); line-height: 1.5;">
+            Roadmap generated with benchmarked milestones and project blueprints.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Priority Gap Benchmarking Section -->
+    <div class="grid-2" style="margin-bottom: 35px;">
+      <!-- Missing Skills -->
+      <div class="glass-card" style="padding: 24px; border: 1.5px solid rgba(111, 29, 27, 0.3);">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+          <h3 style="font-size: 1.15rem; color: var(--autumn-burgundy); display: flex; align-items: center; gap: 8px; margin: 0; font-weight: 800;">
+            <span>⚠️ Priority Gaps to Master</span>
+          </h3>
+          <span id="missingCountBadge" class="badge-tag badge-missing" style="font-size: 0.78rem; padding: 2px 8px;">0 Gaps</span>
+        </div>
+        <div id="missingSkillsContainer" style="display: flex; flex-wrap: wrap; gap: 6px;">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+
+      <!-- Acquired Strengths -->
+      <div class="glass-card" style="padding: 24px; border: 1.5px solid rgba(6, 214, 160, 0.35);">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+          <h3 style="font-size: 1.15rem; color: #059669; display: flex; align-items: center; gap: 8px; margin: 0; font-weight: 800;">
+            <span>✅ Verified Strengths</span>
+          </h3>
+          <span id="acquiredCountBadge" class="badge-tag badge-acquired" style="font-size: 0.78rem; padding: 2px 8px;">0 Acquired</span>
+        </div>
+        <div id="acquiredSkillsContainer" style="display: flex; flex-wrap: wrap; gap: 6px;">
+          <!-- Injected via JS -->
         </div>
       </div>
     </div>
 
-    <!-- Readiness Score & Qualitative Meter -->
-    <div class="readiness-meter-card">
-      <div class="score-circle-container">
-        <svg class="score-circle-svg" viewBox="0 0 130 130">
-          <defs>
-            <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#6366f1" />
-              <stop offset="50%" stop-color="#a855f7" />
-              <stop offset="100%" stop-color="#ec4899" />
-            </linearGradient>
-          </defs>
-          <circle class="score-circle-bg" cx="65" cy="65" r="50"></circle>
-          <circle id="circleProgress" class="score-circle-progress" cx="65" cy="65" r="50" stroke-dasharray="314.159" stroke-dashoffset="100"></circle>
-        </svg>
-        <div class="score-text-overlay">
-          <div id="scoreNumber" class="score-number">68%</div>
-          <div class="score-label">Readiness</div>
+    <!-- 4-Phase Milestone Learning Roadmap -->
+    <div style="margin-bottom: 40px;">
+      <div class="section-header" style="margin-bottom: 24px; text-align: left;">
+        <span class="section-tag">Week-by-Week Pathway</span>
+        <h2 class="section-title" style="font-size: 2rem;">Milestone Learning <span>Checklist</span></h2>
+        <p class="section-desc" style="font-size: 0.95rem;">
+          Check off topics as you study. Your score and progress synchronize automatically with your local storage.
+        </p>
+      </div>
+
+      <div class="timeline" id="roadmapTimeline">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+
+    <!-- Free Curated Learning Resources -->
+    <div class="glass-card" style="margin-bottom: 35px; padding: 28px;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+        <span style="font-size: 1.4rem;">📚</span>
+        <div>
+          <h3 style="font-size: 1.3rem; margin: 0;">Curated Free Learning Portals</h3>
+          <span style="font-size: 0.85rem; color: var(--text-dim);">Official documentations, freeCodeCamp, MIT OCW and community roadmaps</span>
         </div>
       </div>
-
-      <div class="meter-info">
-        <h3 id="meterHeading" style="font-size: 1.6rem; margin-bottom: 8px;">Intermediate Foundation</h3>
-        <p id="meterSub" style="color: var(--text-muted); font-size: 1rem; line-height: 1.6;">
-          You possess solid fundamental strengths. Completing the prioritized skill gaps below will elevate your resume to competitive tier-1 standards.
-        </p>
-        <p id="analysisSummaryText" style="margin-top: 10px; font-size: 0.92rem; color: #c7d2fe; font-style: italic;"></p>
+      <div id="learningResourcesContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
+        <!-- Injected via JS -->
       </div>
     </div>
 
-    <!-- Dual Skill Gap Breakdown (Priority Gaps vs Acquired Strengths) -->
-    <div class="skills-comparison-grid">
-      <!-- Missing Skills Card -->
-      <div class="skills-list-box" style="border-left: 4px solid var(--accent-pink);">
-        <h4>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="8" x2="12" y2="12"></line>
-            <line x1="12" y1="16" x2="12.01" y2="16"></line>
-          </svg>
-          Priority Skill Gaps (To Master)
-        </h4>
-        <div id="missingSkillsList" class="skills-wrap"></div>
-      </div>
-
-      <!-- Acquired Skills Card -->
-      <div class="skills-list-box" style="border-left: 4px solid var(--accent-emerald);">
-        <h4>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
-          Acquired Strengths (Verified)
-        </h4>
-        <div id="acquiredSkillsList" class="skills-wrap"></div>
-      </div>
-    </div>
-
-    <!-- Interactive Milestone Roadmap Timeline -->
-    <div class="glass-card" style="margin-bottom: 35px;">
-      <div class="section-header" style="text-align: left; margin-bottom: 24px; max-width: 100%;">
-        <span class="section-tag">Interactive Action Plan</span>
-        <h2 style="font-size: 1.9rem;">Milestone Learning Timeline</h2>
-        <p style="color: var(--text-muted); font-size: 0.95rem;">
-          Check off topics as you study. Your market readiness meter will dynamically update!
-        </p>
-      </div>
-
-      <div id="roadmapTimeline" class="timeline"></div>
-    </div>
-
-    <!-- Capstone Projects & Certifications Grid -->
+    <!-- Recommended Capstone Blueprints & Certs Grid -->
     <div class="grid-2">
-      <!-- Real-World Capstone Projects -->
-      <div class="glass-card">
-        <h3 style="font-size: 1.4rem; margin-bottom: 14px; display: flex; align-items: center; gap: 10px;">
-          <span>🚀</span> Recommended Capstone Blueprints
+      <!-- Capstones -->
+      <div class="glass-card" style="padding: 24px;">
+        <h3 style="font-size: 1.25rem; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+          <span>🚀 Tiered Capstone Projects</span>
         </h3>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
-          Build and deploy these projects to showcase production competence during technical interviews.
-        </p>
-        <div id="projectsList"></div>
+        <div id="recommendedProjectsList">
+          <!-- Injected via JS -->
+        </div>
       </div>
 
-      <!-- Recognized Industry Certifications -->
-      <div class="glass-card">
-        <h3 style="font-size: 1.4rem; margin-bottom: 14px; display: flex; align-items: center; gap: 10px;">
-          <span>🏆</span> Industry Recognized Certifications
+      <!-- Certifications -->
+      <div class="glass-card" style="padding: 24px;">
+        <h3 style="font-size: 1.25rem; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+          <span>🏅 Industry Credentials & Reading</span>
         </h3>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
-          Target these formal credentials to validate your competencies and bypass automated HR screening.
-        </p>
-        <div id="certsList"></div>
+        <div id="recommendedCertsList">
+          <!-- Injected via JS -->
+        </div>
       </div>
     </div>
 
@@ -176,15 +215,13 @@
   <footer class="footer">
     <div class="container footer-bottom">
       <div>© 2026 SkillPath AI • Full Stack Student Career Intelligence</div>
-      <div>
-        <a href="profile.html" style="color: var(--text-muted); text-decoration: none; margin-right: 20px;">Retake Assessment</a>
-        <a href="dashboard.html" style="color: var(--text-muted); text-decoration: none;">Dashboard</a>
-      </div>
+      <div><a href="index.html" style="color: var(--text-dim); text-decoration: none;">← Back to Home</a></div>
     </div>
   </footer>
 
   <script src="js/auth.js"></script>
   <script src="js/api.js"></script>
   <script src="js/roadmap.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>

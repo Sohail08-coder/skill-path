@@ -1,0 +1,10 @@
+# Netlify SPA clean URLs and fallback
+/profile        /profile.html        200
+/roadmap        /roadmap.html        200
+/careers        /careers.html        200
+/dashboard      /dashboard.html      200
+/resume-scanner /resume-scanner.html 200
+/quiz           /quiz.html           200
+/login          /login.html          200
+/register       /register.html       200
+/*              /index.html          200

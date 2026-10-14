@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Resume ATS Keyword Scanner | SkillPath AI</title>
+  <meta name="description" content="Paste your resume or project list to get an instant ATS keyword match score and gap optimization recommendations.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <div class="ambient-orb-3"></div>
+
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+          </svg>
+        </div>
+        <div class="logo-text">SkillPath <span>AI</span></div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="careers.html" class="nav-link">Tracks</a></li>
+        <li><a href="resume-scanner.html" class="nav-link active">ATS Scanner</a></li>
+      </ul>
+
+      <div class="nav-actions" id="navAuthContainer"></div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top: 45px; padding-bottom: 70px;">
+    
+    <div class="section-header">
+      <span class="section-tag">ATS Keyword Intelligence</span>
+      <h1 class="section-title">AI Resume & <span>Skill Gap Scanner</span></h1>
+      <p class="section-desc">
+        Recruiters and automated ATS systems screen for exact competency keywords. Paste your resume text below to evaluate your match rate against 16+ industry tracks.
+      </p>
+    </div>
+
+    <div style="max-width: 860px; margin: 0 auto;">
+      <div class="glass-card" style="padding: 32px;">
+        
+        <div class="form-group">
+          <label class="form-label" for="resumeRoleSelect">Target Job Track to Benchmark Against *</label>
+          <select id="resumeRoleSelect" class="form-control" style="background: var(--bg-input);">
+            <option value="software-developer">Software Developer (Java / Cloud / Spring Boot)</option>
+            <option value="fullstack-web">Modern Full Stack Engineer (React / Next.js / Node.js)</option>
+            <option value="ai-ml-engineer">AI / Machine Learning Engineer (PyTorch / MLOps)</option>
+            <option value="data-scientist">Data Scientist & Analytics Engineer</option>
+            <option value="cloud-devops">Cloud Solutions & DevOps Architect (AWS / K8s)</option>
+            <option value="cybersecurity">Cybersecurity Analyst & Ethical Hacker</option>
+            <option value="mobile-developer">Mobile App Developer (Flutter / React Native)</option>
+            <option value="embedded-iot">Embedded Systems & IoT Firmware Engineer</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="resumeTextInput">Paste Resume Plain Text, Summary or Project Descriptions *</label>
+          <textarea id="resumeTextInput" class="form-control" rows="8" placeholder="Paste your resume text here (e.g. Education, Tech Skills: Java, Spring Boot, MySQL, Git, Docker. Built an e-commerce platform with microservices...)" style="background: var(--bg-input);"></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 20px;">
+          <span style="font-size: 0.85rem; color: var(--text-dim);">🔒 Evaluated securely in your browser session.</span>
+          <button type="button" id="evaluateResumeBtn" class="btn btn-primary btn-lg">
+            ⚡ Evaluate ATS Keyword Match
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Output Container -->
+      <div id="resumeAtsOutput"></div>
+
+    </div>
+
+  </main>
+
+  <!-- Universal Footer -->
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <div>© 2026 SkillPath AI • Full Stack Student Career Intelligence</div>
+      <div><a href="index.html" style="color: var(--text-dim); text-decoration: none;">← Back to Home</a></div>
+    </div>
+  </footer>
+
+  <script src="js/auth.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -10,6 +10,8 @@
 </head>
 <body>
 
+  <div class="ambient-orb-3"></div>
+
   <!-- Top Navigation Bar -->
   <header class="navbar">
     <div class="container nav-container">
@@ -24,34 +26,28 @@
 
       <ul class="nav-links">
         <li><a href="index.html" class="nav-link">Home</a></li>
-        <li><a href="careers.html" class="nav-link">Career Tracks</a></li>
-        <li><a href="profile.html" class="nav-link">Assessment Wizard</a></li>
-        <li><a href="roadmap.html" class="nav-link">Roadmap</a></li>
+        <li><a href="careers.html" class="nav-link">Tracks</a></li>
         <li><a href="dashboard.html" class="nav-link active">Dashboard</a></li>
       </ul>
 
-      <div class="nav-actions">
-        <div id="backendStatusBadge" class="server-badge">
-          <span class="status-indicator"></span> Checking Server...
-        </div>
-        <div id="navAuthContainer"></div>
-      </div>
+      <div class="nav-actions" id="navAuthContainer"></div>
     </div>
   </header>
 
   <main class="container" style="padding-top: 40px; padding-bottom: 70px;">
     
     <!-- Student Header Banner -->
+    <!-- Student Header Banner -->
     <div class="glass-card" style="margin-bottom: 35px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px;">
       <div style="display: flex; align-items: center; gap: 20px;">
-        <div id="dashAvatar" class="user-avatar-circle" style="width: 64px; height: 64px; font-size: 1.6rem; border-radius: var(--radius-md);">
-          SM
+        <div id="dashAvatar" class="user-avatar-circle" style="width: 64px; height: 64px; font-size: 1.6rem; border-radius: var(--radius-md); background: var(--autumn-burgundy); display: flex; align-items: center; justify-content: center; font-weight: 800; color: white;">
+          SP
         </div>
         <div>
           <span class="section-tag" style="margin-bottom: 6px;">Active Student Profile</span>
-          <h1 id="dashStudentName" style="font-size: 2.1rem; margin-bottom: 4px;">Syed Sohail</h1>
+          <h1 id="dashStudentName" style="font-size: 2.1rem; margin-bottom: 4px;">Student Dashboard</h1>
           <p id="dashStudentMeta" style="color: var(--text-muted); font-size: 0.95rem; margin: 0;">
-            Tech University • Computer Science & Engineering • 3rd Year
+            -- • -- • CGPA: --
           </p>
         </div>
       </div>
@@ -67,41 +63,81 @@
       </div>
     </div>
 
-    <!-- Quick Stats Grid -->
+    <!-- Quick Stats Grid (Autumn Harvest Palette) -->
     <div class="grid-4" style="margin-bottom: 35px;">
-      <div class="glass-card" style="padding: 24px; text-align: center;">
-        <span style="font-size: 0.82rem; color: var(--text-dim); text-transform: uppercase;">Active Role</span>
-        <h3 id="dashTargetRole" style="font-size: 1.4rem; color: #a5b4fc; margin-top: 6px;">Software Developer</h3>
+      <div class="glass-card" style="padding: 24px; text-align: center; border: 1.5px solid var(--border-sienna); box-shadow: var(--shadow-sm);">
+        <span style="font-size: 0.82rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700;">Active Target Track</span>
+        <h3 id="dashTargetRole" style="font-size: 1.25rem; color: var(--autumn-sienna); margin-top: 6px; font-weight: 800;">--</h3>
       </div>
 
-      <div class="glass-card" style="padding: 24px; text-align: center;">
-        <span style="font-size: 0.82rem; color: var(--text-dim); text-transform: uppercase;">Readiness Score</span>
-        <h3 id="dashScore" style="font-size: 1.8rem; color: var(--accent-emerald); margin-top: 6px;">68%</h3>
+      <div class="glass-card" style="padding: 24px; text-align: center; border: 1.5px solid var(--border-ochre); box-shadow: var(--shadow-sm);">
+        <span style="font-size: 0.82rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700;">Market Readiness</span>
+        <h3 id="dashScore" style="font-size: 1.8rem; color: var(--autumn-ochre); margin-top: 6px; font-weight: 900;">--%</h3>
       </div>
 
-      <div class="glass-card" style="padding: 24px; text-align: center;">
-        <span style="font-size: 0.82rem; color: var(--text-dim); text-transform: uppercase;">Verified Strengths</span>
-        <h3 id="dashAcquiredCount" style="font-size: 1.8rem; color: #38bdf8; margin-top: 6px;">4 Skills</h3>
+      <div class="glass-card" style="padding: 24px; text-align: center; border: 1.5px solid var(--border-espresso); box-shadow: var(--shadow-sm);">
+        <span style="font-size: 0.82rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700;">Verified Strengths</span>
+        <h3 id="dashAcquiredCount" style="font-size: 1.8rem; color: var(--autumn-espresso); margin-top: 6px; font-weight: 900;">-- Skills</h3>
       </div>
 
-      <div class="glass-card" style="padding: 24px; text-align: center;">
-        <span style="font-size: 0.82rem; color: var(--text-dim); text-transform: uppercase;">Priority Gap Areas</span>
-        <h3 id="dashGapsCount" style="font-size: 1.8rem; color: var(--accent-pink); margin-top: 6px;">4 Gaps</h3>
+      <div class="glass-card" style="padding: 24px; text-align: center; border: 1.5px solid var(--border-burgundy); box-shadow: var(--shadow-sm);">
+        <span style="font-size: 0.82rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700;">Priority Gap Areas</span>
+        <h3 id="dashGapsCount" style="font-size: 1.8rem; color: var(--autumn-burgundy); margin-top: 6px; font-weight: 900;">-- Gaps</h3>
       </div>
     </div>
 
-    <!-- Saved Roadmaps History -->
-    <div class="glass-card">
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+    <!-- Interactive Tools Quick Bar -->
+    <div class="grid-3" style="margin-bottom: 35px;">
+      <a href="resume-scanner.html" class="glass-card card-hover-3d" style="padding: 20px; text-decoration: none; color: inherit; display: flex; align-items: center; gap: 16px; border: 1.5px solid var(--border-burgundy);">
+        <div style="font-size: 2rem; background: rgba(111, 29, 27, 0.12); width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-sm); border: 1px solid rgba(111, 29, 27, 0.25);">📄</div>
         <div>
-          <h3 style="font-size: 1.5rem; margin-bottom: 4px;">Saved Roadmaps & Evaluations</h3>
+          <h4 style="font-size: 1.1rem; margin-bottom: 2px; color: var(--text-main);">AI Resume ATS Scanner</h4>
+          <span style="font-size: 0.84rem; color: var(--text-muted);">Benchmark your CV keywords</span>
+        </div>
+      </a>
+
+      <a href="quiz.html" class="glass-card card-hover-3d" style="padding: 20px; text-decoration: none; color: inherit; display: flex; align-items: center; gap: 16px; border: 1.5px solid var(--border-ochre);">
+        <div style="font-size: 2rem; background: rgba(187, 148, 87, 0.15); width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-sm); border: 1px solid rgba(187, 148, 87, 0.3);">🏆</div>
+        <div>
+          <h4 style="font-size: 1.1rem; margin-bottom: 2px; color: var(--text-main);">Skill Calibration Quiz</h4>
+          <span style="font-size: 0.84rem; color: var(--text-muted);">Earn verified knowledge badges</span>
+        </div>
+      </a>
+
+      <a href="careers.html" class="glass-card card-hover-3d" style="padding: 20px; text-decoration: none; color: inherit; display: flex; align-items: center; gap: 16px; border: 1.5px solid var(--border-sienna);">
+        <div style="font-size: 2rem; background: rgba(153, 88, 42, 0.15); width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-sm); border: 1px solid rgba(153, 88, 42, 0.3);">🗺️</div>
+        <div>
+          <h4 style="font-size: 1.1rem; margin-bottom: 2px; color: var(--text-main);">16+ Career Pathways</h4>
+          <span style="font-size: 0.84rem; color: var(--text-muted);">Explore compensation & curriculum</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- Saved Roadmaps History -->
+    <div class="glass-card" style="padding: 28px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+        <div>
+          <h3 style="font-size: 1.4rem; margin-bottom: 4px;">Saved Roadmaps & Evaluations</h3>
           <p style="color: var(--text-muted); font-size: 0.92rem; margin: 0;">Access and resume any previously generated learning roadmap.</p>
         </div>
-        <a href="careers.html" class="btn btn-outline btn-sm">Explore Other Tracks</a>
+        <a href="profile.html" class="btn btn-outline btn-sm">+ New Assessment</a>
       </div>
 
-      <div id="savedRoadmapsContainer">
-        <!-- Injected via JavaScript -->
+      <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+          <thead>
+            <tr style="border-bottom: 1px solid var(--border-subtle); color: var(--text-dim); font-size: 0.82rem; text-transform: uppercase;">
+              <th style="padding: 12px 16px;">Target Career Track</th>
+              <th style="padding: 12px 16px;">Date</th>
+              <th style="padding: 12px 16px;">Readiness Score</th>
+              <th style="padding: 12px 16px;">Skills Overview</th>
+              <th style="padding: 12px 16px; text-align: right;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="savedRoadmapsTableBody">
+            <!-- Injected via JavaScript from setupDashboardPage -->
+          </tbody>
+        </table>
       </div>
     </div>
 
@@ -118,84 +154,5 @@
   <script src="js/auth.js"></script>
   <script src="js/api.js"></script>
   <script src="js/app.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const user = AuthService.getCurrentUser() || {
-        name: 'Syed Sohail',
-        email: 'student@skillpath.ai',
-        university: 'Tech University',
-        branch: 'Computer Science & Engineering',
-        year: '3rd Year'
-      };
-
-      // Populate user info
-      document.getElementById('dashStudentName').textContent = user.name || 'Student';
-      document.getElementById('dashStudentMeta').textContent = 
-        `${user.university || 'University'} • ${user.branch || 'Engineering'} • ${user.year || '3rd Year'}`;
-
-      const initials = (user.name || 'S')
-        .split(' ')
-        .map(n => n[0])
-        .join('')
-        .toUpperCase()
-        .slice(0, 2);
-      document.getElementById('dashAvatar').textContent = initials;
-
-      // Load active roadmap info
-      const stored = sessionStorage.getItem('currentAnalysis');
-      let analysis = null;
-      if (stored) {
-        try { analysis = JSON.parse(stored); } catch (e) {}
-      }
-
-      if (analysis) {
-        document.getElementById('dashTargetRole').textContent = analysis.careerGoal || 'Software Developer';
-        document.getElementById('dashScore').textContent = `${analysis.readinessScore || 65}%`;
-        document.getElementById('dashAcquiredCount').textContent = `${(analysis.acquiredSkills || []).length} Skills`;
-        document.getElementById('dashGapsCount').textContent = `${(analysis.missingSkills || []).length} Gaps`;
-      }
-
-      // Render Saved Roadmaps list
-      const container = document.getElementById('savedRoadmapsContainer');
-      const roadmaps = [];
-      if (analysis) roadmaps.push(analysis);
-
-      // Check stored roadmaps in localStorage
-      const userSaved = JSON.parse(localStorage.getItem(`roadmaps_${user.id || '1'}`) || '[]');
-      userSaved.forEach(r => {
-        if (!roadmaps.some(existing => existing.careerGoal === r.careerGoal)) {
-          roadmaps.push(r);
-        }
-      });
-
-      if (!roadmaps.length) {
-        container.innerHTML = `
-          <div style="text-align: center; padding: 40px 20px; color: var(--text-dim);">
-            <p style="font-size: 1.1rem; margin-bottom: 16px;">No saved roadmaps yet.</p>
-            <a href="profile.html" class="btn btn-primary">Take Your First Assessment</a>
-          </div>
-        `;
-      } else {
-        container.innerHTML = roadmaps.map((r, i) => `
-          <div class="item-box" style="justify-content: space-between; align-items: center;">
-            <div style="display: flex; align-items: center; gap: 16px;">
-              <div class="item-icon" style="background: rgba(99, 102, 241, 0.15);">
-                🗺️
-              </div>
-              <div>
-                <h5 style="margin: 0; font-size: 1.15rem;">${r.careerGoal || 'Software Developer'}</h5>
-                <p style="margin: 4px 0 0; color: var(--text-muted); font-size: 0.88rem;">
-                  Readiness: <strong style="color: var(--accent-emerald);">${r.readinessScore || 65}%</strong> • ${(r.missingSkills || []).length} Priority Gaps
-                </p>
-              </div>
-            </div>
-            <a href="roadmap.html" class="btn btn-outline btn-sm" onclick="sessionStorage.setItem('currentAnalysis', JSON.stringify(roadmaps[${i}]))">
-              Open Roadmap →
-            </a>
-          </div>
-        `).join('');
-      }
-    });
-  </script>
 </body>
 </html>

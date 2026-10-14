@@ -15,6 +15,7 @@ public class Student {
     private String name;
     private String email;
     private String branch;
+    @jakarta.persistence.Column(name = "study_year")
     private String year;
     private double cgpa;
     private String skills;

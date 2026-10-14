@@ -24,11 +24,11 @@
 
       <ul class="nav-links">
         <li><a href="index.html" class="nav-link">Home</a></li>
-        <li><a href="careers.html" class="nav-link">Career Tracks</a></li>
-        <li><a href="profile.html" class="nav-link">Assessment Wizard</a></li>
+        <li><a href="careers.html" class="nav-link">Tracks</a></li>
+        <li><a href="quiz.html" class="nav-link">Quiz</a></li>
       </ul>
 
-      <div class="nav-actions">
+      <div class="nav-actions" id="navAuthContainer">
         <a href="login.html" class="btn btn-outline btn-sm">Sign In</a>
       </div>
     </div>
@@ -133,7 +133,7 @@
 
         <p style="margin-top: 24px; text-align: center; color: var(--text-muted); font-size: 0.92rem;">
           Already registered? 
-          <a href="login.html" style="color: #a5b4fc; font-weight: 600; text-decoration: none;">Sign in here</a>
+          <a id="loginLink" href="login.html" style="color: var(--autumn-burgundy); font-weight: 700; text-decoration: none;">Sign in here</a>
         </p>
       </div>
 
@@ -152,6 +152,14 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const form = document.getElementById('registerForm');
+      const loginLink = document.getElementById('loginLink');
+      const params = new URLSearchParams(window.location.search);
+      const redirect = params.get('redirect');
+
+      if (redirect && loginLink) {
+        loginLink.href = `login.html?redirect=${encodeURIComponent(redirect)}`;
+      }
+
       if (form) {
         form.addEventListener('submit', async (e) => {
           e.preventDefault();
@@ -174,9 +182,10 @@
           try {
             await AuthService.register({ name, email, university, branch, year, password, role: 'Student' });
             showToast('Account registered successfully!', 'success');
+            const redirectUrl = redirect || 'profile.html';
             setTimeout(() => {
-              window.location.href = 'profile.html';
-            }, 600);
+              window.location.href = redirectUrl;
+            }, 500);
           } catch (err) {
             showToast(err.message || 'Registration failed', 'error');
             submitBtn.disabled = false;

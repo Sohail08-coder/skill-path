@@ -95,6 +95,16 @@ public class AnalysisResult {
         this.recommendedCertifications = recommendedCertifications;
     }
 
+    private Long recordId;
+
+    public Long getRecordId() {
+        return recordId;
+    }
+
+    public void setRecordId(Long recordId) {
+        this.recordId = recordId;
+    }
+
     public String getSummary() {
         return summary;
     }
