@@ -309,6 +309,90 @@ const CAREER_CATALOG = [
     streamBridgeAdvice: {
       'Mechanical': 'Your mastery of 3D vectors, kinematics, rigid-body physics, and CAD geometry makes robotics an ideal high-paying destination.'
     }
+  },
+  {
+    id: 'data-analyst',
+    title: 'Data Analyst & BI Specialist',
+    category: 'Business Intelligence',
+    streamAffinity: ['All Streams', 'BCA', 'BBA', 'CSE', 'Commerce & Tech'],
+    difficulty: 'Beginner',
+    demandLevel: 'High',
+    averageSalaryUSD: '$85,000',
+    averageSalaryINR: '₹8-16 LPA',
+    recommendedDuration: '10-12 Weeks',
+    icon: '📊',
+    accentColor: '#3b82f6',
+    shortDescription: 'Turn complex database metrics into interactive KPI dashboards, predictive cohort models, and strategic growth insights.',
+    coreSkills: ['SQL', 'Power BI / Tableau', 'Advanced Excel', 'Python', 'Data Storytelling', 'Statistics'],
+    topTools: ['Power BI', 'Excel', 'Tableau', 'PostgreSQL', 'Python Pandas'],
+    topCompanies: ['Deloitte', 'Accenture', 'Amazon', 'EY', 'Flipkart'],
+    learningResources: [
+      { name: 'Google Data Analytics Certificate', url: 'https://grow.google/certificates/data-analytics/' },
+      { name: 'Mode SQL Tutorial', url: 'https://mode.com/sql-tutorial/' }
+    ]
+  },
+  {
+    id: 'qa-automation',
+    title: 'QA Automation & SDET Engineer',
+    category: 'Software Engineering',
+    streamAffinity: ['CSE', 'IT', 'ECE', 'All Engineering'],
+    difficulty: 'Intermediate',
+    demandLevel: 'High',
+    averageSalaryUSD: '$96,000',
+    averageSalaryINR: '₹10-18 LPA',
+    recommendedDuration: '12-14 Weeks',
+    icon: '🧪',
+    accentColor: '#8b5cf6',
+    shortDescription: 'Architect robust end-to-end automated testing suites, performance stress tests, and automated CI/CD quality gates.',
+    coreSkills: ['Java / TypeScript', 'Selenium / Playwright', 'API Testing (REST Assured)', 'CI/CD Test Pipelines', 'Performance Testing (JMeter)', 'BDD (Cucumber)'],
+    topTools: ['Playwright', 'Selenium', 'Postman', 'JMeter', 'GitHub Actions'],
+    topCompanies: ['Microsoft', 'Salesforce', 'Cisco', 'Adobe', 'Target'],
+    learningResources: [
+      { name: 'Playwright Documentation', url: 'https://playwright.dev' },
+      { name: 'Ministry of Testing', url: 'https://www.ministryoftesting.com' }
+    ]
+  },
+  {
+    id: 'sre-observability',
+    title: 'Site Reliability Engineer (SRE)',
+    category: 'Cloud Infrastructure',
+    streamAffinity: ['CSE', 'IT', 'ECE', 'All Engineering'],
+    difficulty: 'Advanced',
+    demandLevel: 'Extremely High',
+    averageSalaryUSD: '$132,000',
+    averageSalaryINR: '₹18-34 LPA',
+    recommendedDuration: '18-22 Weeks',
+    icon: '📈',
+    accentColor: '#10b981',
+    shortDescription: 'Guarantee 99.99% uptime, manage distributed incident response, engineer chaos experiments, and optimize cloud latency.',
+    coreSkills: ['Linux Kernel & Networking', 'Kubernetes', 'Prometheus & Grafana', 'Distributed Tracing (OpenTelemetry)', 'SLO / SLI Modeling', 'Go / Python'],
+    topTools: ['Kubernetes', 'Prometheus', 'Grafana', 'Jaeger', 'PagerDuty'],
+    topCompanies: ['Google', 'Meta', 'Netflix', 'Datadog', 'Cloudflare'],
+    learningResources: [
+      { name: 'Google SRE Book', url: 'https://sre.google/sre-book/table-of-contents/' },
+      { name: 'OpenTelemetry Guides', url: 'https://opentelemetry.io/docs/' }
+    ]
+  },
+  {
+    id: 'game-developer',
+    title: 'Game Engine & 3D Interactive Engineer',
+    category: 'Gaming & Graphics',
+    streamAffinity: ['CSE', 'IT', 'ECE', 'Mechanical'],
+    difficulty: 'Intermediate',
+    demandLevel: 'High',
+    averageSalaryUSD: '$110,000',
+    averageSalaryINR: '₹12-22 LPA',
+    recommendedDuration: '16-20 Weeks',
+    icon: '🎮',
+    accentColor: '#8b5cf6',
+    shortDescription: 'Develop 3D graphics engines, physics simulation pipelines, shaders in HLSL/GLSL, and real-time multiplayer netcode.',
+    coreSkills: ['Modern C++ & C#', 'Unreal Engine 5 / Unity', '3D Linear Algebra & Physics', 'HLSL / GLSL Shaders', 'Multiplayer Netcode', 'Git LFS'],
+    topTools: ['Unreal Engine 5', 'Unity', 'Visual Studio', 'Blender', 'RenderDoc'],
+    topCompanies: ['Epic Games', 'Electronic Arts', 'Ubisoft', 'Rockstar Games', 'Sony PlayStation'],
+    learningResources: [
+      { name: 'Unreal Engine Learning Hub', url: 'https://dev.epicgames.com/community/learning' },
+      { name: 'LearnOpenGL', url: 'https://learnopengl.com' }
+    ]
   }
 ];
 

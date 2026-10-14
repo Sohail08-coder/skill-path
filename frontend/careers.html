@@ -56,14 +56,17 @@
     </div>
 
     <!-- Category Filter Bar -->
-    <div class="filter-bar" id="categoryFilterBar">
-      <button class="filter-btn active" data-category="ALL">All Disciplines</button>
+    <div class="filter-bar" id="categoryFilterBar" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 35px;">
+      <button class="filter-btn active" data-category="ALL">All Disciplines (16)</button>
       <button class="filter-btn" data-category="Software Engineering">Software Engineering</button>
       <button class="filter-btn" data-category="Artificial Intelligence">AI & Machine Learning</button>
       <button class="filter-btn" data-category="Data Science">Data & Analytics</button>
-      <button class="filter-btn" data-category="Cloud Infrastructure">Cloud & DevOps</button>
+      <button class="filter-btn" data-category="Cloud Infrastructure">Cloud & SRE</button>
       <button class="filter-btn" data-category="Information Security">Cybersecurity</button>
-      <button class="filter-btn" data-category="Web Development">Full Stack Web</button>
+      <button class="filter-btn" data-category="Web Development">Full Stack & Mobile</button>
+      <button class="filter-btn" data-category="Hardware & IoT">Hardware, IoT & Robotics</button>
+      <button class="filter-btn" data-category="Web3 & Gaming">Web3 & Gaming</button>
+      <button class="filter-btn" data-category="Design & Product">UI/UX Design</button>
     </div>
 
     <!-- Dynamic Cards Grid -->
@@ -91,111 +94,55 @@
       const searchInput = document.getElementById('careerSearchInput');
       let activeCategory = 'ALL';
       let searchQuery = '';
+      let careers = [];
 
       try {
-        const targetUrl = (typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://localhost:8080/api') + '/careers';
-        const res = await fetch(targetUrl);
-        if (res.ok) {
-          careers = await res.json();
+        if (typeof SkillPathAPI !== 'undefined' && SkillPathAPI.getCareers) {
+          careers = await SkillPathAPI.getCareers();
+        } else {
+          const res = await fetch('http://localhost:8080/api/careers');
+          if (res.ok) careers = await res.json();
         }
       } catch (e) {
-        console.warn('Backend careers fetch failed, using local catalog data');
+        console.warn('Backend careers fetch failed, relying on api.js catalog fallback', e);
       }
 
-      if (!careers.length) {
-        careers = [
-          {
-            id: 'software-developer',
-            title: 'Software Developer (Java / Cloud)',
-            category: 'Software Engineering',
-            shortDescription: 'Design and build high-concurrency microservices, robust REST APIs, and enterprise cloud systems with Java 21 and Spring Boot.',
-            demandLevel: 'Extremely High',
-            averageSalary: '$115,000 / ₹14-24 LPA',
-            recommendedDuration: '16-20 Weeks',
-            coreSkills: ['Java 21', 'Spring Boot 4', 'SQL & RDBMS', 'REST APIs', 'Docker', 'DSA', 'Git & GitHub'],
-            topTools: ['IntelliJ IDEA', 'Docker', 'Postman', 'MySQL / PostgreSQL'],
-            icon: '☕',
-            accentColor: '#6366f1'
-          },
-          {
-            id: 'ai-ml-engineer',
-            title: 'AI & Machine Learning Engineer',
-            category: 'Artificial Intelligence',
-            shortDescription: 'Architect deep neural models, NLP transformers, RAG architectures, and production-grade intelligent pipelines.',
-            demandLevel: 'Extremely High',
-            averageSalary: '$130,000 / ₹18-35 LPA',
-            recommendedDuration: '20-24 Weeks',
-            coreSkills: ['Python 3.12', 'Linear Algebra & Stats', 'PyTorch', 'Transformers', 'Vector DBs', 'RAG Pipelines', 'MLOps'],
-            topTools: ['Jupyter', 'PyTorch', 'Hugging Face', 'FastAPI'],
-            icon: '🤖',
-            accentColor: '#a855f7'
-          },
-          {
-            id: 'cloud-devops',
-            title: 'Cloud & DevOps SRE',
-            category: 'Cloud Infrastructure',
-            shortDescription: 'Automate deployment pipelines, orchestrate Kubernetes clusters, and manage AWS/GCP cloud native infrastructure.',
-            demandLevel: 'Very High',
-            averageSalary: '$125,000 / ₹15-30 LPA',
-            recommendedDuration: '18-20 Weeks',
-            coreSkills: ['Linux Shell', 'Git & GitHub', 'Docker', 'Kubernetes', 'CI/CD Pipelines', 'Terraform', 'AWS'],
-            topTools: ['Docker', 'Kubernetes', 'Terraform', 'GitHub Actions'],
-            icon: '☁️',
-            accentColor: '#10b981'
-          },
-          {
-            id: 'data-scientist',
-            title: 'Data Scientist & AI Analyst',
-            category: 'Data Science',
-            shortDescription: 'Extract mathematical insights, build predictive statistical models, and power business-critical data decisions.',
-            demandLevel: 'Very High',
-            averageSalary: '$115,000 / ₹14-26 LPA',
-            recommendedDuration: '16-18 Weeks',
-            coreSkills: ['Python', 'SQL & BigQuery', 'Inferential Statistics', 'Machine Learning', 'Pandas & NumPy', 'Tableau'],
-            topTools: ['Scikit-Learn', 'Seaborn', 'Streamlit', 'Tableau'],
-            icon: '🔬',
-            accentColor: '#06b6d4'
-          },
-          {
-            id: 'cybersecurity',
-            title: 'Cybersecurity Analyst',
-            category: 'Information Security',
-            shortDescription: 'Safeguard digital infrastructure, conduct penetration testing, analyze network traffic, and protect systems against exploits.',
-            demandLevel: 'Very High',
-            averageSalary: '$112,000 / ₹14-26 LPA',
-            recommendedDuration: '16-18 Weeks',
-            coreSkills: ['Computer Networking', 'Linux Hardening', 'Ethical Hacking', 'OWASP Top 10', 'SIEM Operations', 'Cryptography'],
-            topTools: ['Wireshark', 'Burp Suite', 'Nmap', 'Splunk'],
-            icon: '🛡️',
-            accentColor: '#f59e0b'
-          },
-          {
-            id: 'web-developer',
-            title: 'Full Stack Web Developer (Next.js)',
-            category: 'Web Development',
-            shortDescription: 'Craft modern user interfaces, reactive web applications, and resilient cloud backends using TypeScript and React 19.',
-            demandLevel: 'Very High',
-            averageSalary: '$110,000 / ₹12-22 LPA',
-            recommendedDuration: '14-16 Weeks',
-            coreSkills: ['HTML5 & Modern CSS', 'TypeScript', 'React 19 / Next.js', 'Node.js', 'REST & GraphQL', 'PostgreSQL / Prisma'],
-            topTools: ['VS Code', 'Next.js', 'Vercel', 'Postman'],
-            icon: '🌐',
-            accentColor: '#ec4899'
-          }
-        ];
+      if (!Array.isArray(careers) || careers.length === 0) {
+        if (typeof CAREER_CATALOG !== 'undefined') {
+          careers = CAREER_CATALOG;
+        }
       }
 
       function filterAndRender() {
         const query = searchQuery.toLowerCase().trim();
         const filtered = careers.filter(c => {
-          const matchCat = activeCategory === 'ALL' || c.category.toLowerCase().includes(activeCategory.toLowerCase());
+          const cat = (c.category || '').toLowerCase();
+          let matchCat = activeCategory === 'ALL';
+          if (!matchCat) {
+            const activeLower = activeCategory.toLowerCase();
+            if (activeCategory === 'Data Science') {
+              matchCat = cat.includes('data') || cat.includes('analytics') || cat.includes('intelligence');
+            } else if (activeCategory === 'Web Development') {
+              matchCat = cat.includes('web') || cat.includes('mobile');
+            } else if (activeCategory === 'Hardware & IoT') {
+              matchCat = cat.includes('hardware') || cat.includes('iot') || cat.includes('robotics');
+            } else if (activeCategory === 'Web3 & Gaming') {
+              matchCat = cat.includes('web3') || cat.includes('gaming') || cat.includes('graphics') || cat.includes('distributed');
+            } else if (activeCategory === 'Cloud Infrastructure') {
+              matchCat = cat.includes('cloud') || cat.includes('infrastructure') || cat.includes('sre');
+            } else {
+              matchCat = cat.includes(activeLower);
+            }
+          }
           if (!matchCat) return false;
           if (!query) return true;
 
-          const titleMatch = c.title.toLowerCase().includes(query);
+          const titleMatch = (c.title || '').toLowerCase().includes(query);
           const descMatch = (c.shortDescription || '').toLowerCase().includes(query);
+          const catMatch = cat.includes(query);
           const skillsMatch = (c.coreSkills || []).some(s => s.toLowerCase().includes(query));
-          return titleMatch || descMatch || skillsMatch;
+          const toolsMatch = (c.topTools || []).some(t => t.toLowerCase().includes(query));
+          return titleMatch || descMatch || catMatch || skillsMatch || toolsMatch;
         });
 
         if (!filtered.length) {
@@ -203,7 +150,7 @@
             <div class="glass-card" style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
               <div style="font-size: 3rem; margin-bottom: 14px;">🔍</div>
               <h3 style="font-size: 1.4rem; margin-bottom: 8px;">No Career Tracks Found</h3>
-              <p style="color: var(--text-muted); margin-bottom: 20px;">No roles matched your search for "${searchQuery}".</p>
+              <p style="color: var(--text-muted); margin-bottom: 20px;">No pathways matched your search for "${searchQuery || activeCategory}".</p>
               <button class="btn btn-outline" id="resetSearchBtn">Clear Search & Filters</button>
             </div>
           `;
@@ -223,44 +170,52 @@
           return;
         }
 
-        grid.innerHTML = filtered.map(c => `
-          <div class="glass-card card-hover-3d shimmer-hover career-card" style="display: flex; flex-direction: column; justify-content: space-between;">
-            <div>
-              <div class="career-card-top">
-                <div class="career-icon-wrapper">${c.icon || '🚀'}</div>
-                <span class="demand-badge ${c.demandLevel.toLowerCase().includes('extreme') ? 'extreme' : 'high'}">
-                  ${c.demandLevel}
-                </span>
-              </div>
-              <h3 style="font-size: 1.4rem; margin-bottom: 6px;">${c.title}</h3>
-              <p style="color: var(--text-dim); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px;">
-                ${c.category}
-              </p>
-              <p style="color: var(--text-muted); font-size: 0.93rem; margin-bottom: 16px; line-height: 1.6;">
-                ${c.shortDescription}
-              </p>
-              <div class="career-meta-row">
-                <div>
-                  <span>Avg. Salary</span>
-                  <strong style="color: #34d399;">${c.averageSalary}</strong>
+        grid.innerHTML = filtered.map(c => {
+          const salaryDisplay = c.averageSalary || 
+            (c.averageSalaryUSD && c.averageSalaryINR ? `${c.averageSalaryUSD} / ${c.averageSalaryINR}` : '$110,000 / ₹12-24 LPA');
+          const isExtreme = (c.demandLevel || '').toLowerCase().includes('extreme');
+          const duration = c.recommendedDuration || '16 Weeks';
+
+          return `
+            <div class="glass-card card-hover-3d shimmer-hover career-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div class="career-card-top" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px;">
+                  <div class="career-icon-wrapper" style="font-size: 2rem;">${c.icon || '🚀'}</div>
+                  <span class="demand-badge ${isExtreme ? 'extreme' : 'high'}">
+                    ${c.demandLevel || 'High Demand'}
+                  </span>
                 </div>
-                <div>
-                  <span>Duration</span>
-                  <strong>${c.recommendedDuration}</strong>
+                <h3 style="font-size: 1.35rem; margin-bottom: 6px; color: var(--text-main);">${c.title}</h3>
+                <p style="color: var(--color-amber); font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; font-weight: 700;">
+                  ${c.category}
+                </p>
+                <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 18px; line-height: 1.6;">
+                  ${c.shortDescription}
+                </p>
+                <div class="career-meta-row" style="display: flex; justify-content: space-between; background: rgba(0,0,0,0.25); padding: 12px 14px; border-radius: var(--radius-sm); margin-bottom: 16px;">
+                  <div>
+                    <span style="font-size: 0.75rem; color: var(--text-dim); display: block; text-transform: uppercase;">Benchmark Salary</span>
+                    <strong style="color: #34d399; font-size: 0.95rem;">${salaryDisplay}</strong>
+                  </div>
+                  <div>
+                    <span style="font-size: 0.75rem; color: var(--text-dim); display: block; text-transform: uppercase;">Prep Duration</span>
+                    <strong style="color: var(--text-main); font-size: 0.95rem;">${duration}</strong>
+                  </div>
+                </div>
+                <div style="margin-bottom: 22px;">
+                  <span style="font-size: 0.8rem; color: var(--text-dim); display: block; margin-bottom: 8px; font-weight: 700; text-transform: uppercase;">Core Required Skills:</span>
+                  <div class="skill-chips" style="display: flex; flex-wrap: wrap; gap: 6px;">
+                    ${(c.coreSkills || []).slice(0, 6).map(s => `<span class="skill-chip" style="font-size: 0.78rem;">${s}</span>`).join('')}
+                    ${(c.coreSkills || []).length > 6 ? `<span class="skill-chip" style="font-size: 0.78rem; opacity: 0.7;">+${c.coreSkills.length - 6} more</span>` : ''}
+                  </div>
                 </div>
               </div>
-              <div style="margin-bottom: 20px;">
-                <span style="font-size: 0.8rem; color: var(--text-dim); display: block; margin-bottom: 8px; font-weight: 700;">Core Required Skills:</span>
-                <div class="skill-chips">
-                  ${(c.coreSkills || []).map(s => `<span class="skill-chip">${s}</span>`).join('')}
-                </div>
-              </div>
+              <a href="profile.html?role=${encodeURIComponent(c.title)}" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                Launch Assessment for This Role →
+              </a>
             </div>
-            <a href="profile.html?role=${encodeURIComponent(c.title)}" class="btn btn-primary" style="width: 100%; justify-content: center;">
-              Launch Assessment for This Role →
-            </a>
-          </div>
-        `).join('');
+          `;
+        }).join('');
       }
 
       filterAndRender();
@@ -274,10 +229,11 @@
 
       if (filterBar) {
         filterBar.addEventListener('click', (e) => {
-          if (e.target.classList.contains('filter-btn')) {
+          const btn = e.target.closest('.filter-btn');
+          if (btn) {
             filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            e.target.classList.add('active');
-            activeCategory = e.target.getAttribute('data-category');
+            btn.classList.add('active');
+            activeCategory = btn.getAttribute('data-category');
             filterAndRender();
           }
         });

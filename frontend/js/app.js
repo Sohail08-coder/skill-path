@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
   setupQuickPreview();
   setupHeroSimulator();
   setupBranchCalculator();
+  setupDashboardPage();
+  setupSkillQuiz();
+  setupResumeScanner();
 });
 
 // Live Server Connectivity Indicator
@@ -444,4 +447,620 @@ function setupBranchCalculator() {
   });
 
   renderBranch('cse');
+}
+
+// ========================================================
+// Student Dashboard Controller (dashboard.html)
+// ========================================================
+async function setupDashboardPage() {
+  const dashNameEl = document.getElementById('dashStudentName');
+  if (!dashNameEl) return;
+
+  const user = typeof AuthService !== 'undefined' ? AuthService.getUser() : null;
+  const token = typeof AuthService !== 'undefined' ? AuthService.getToken() : null;
+
+  if (user) {
+    const avatarEl = document.getElementById('dashAvatar');
+    if (avatarEl) {
+      const initials = (user.name || 'Student')
+        .split(' ')
+        .map(n => n[0])
+        .slice(0, 2)
+        .join('')
+        .toUpperCase();
+      avatarEl.textContent = initials || 'SP';
+    }
+    dashNameEl.textContent = `${user.name || 'Student'}'s Dashboard`;
+
+    const metaEl = document.getElementById('dashStudentMeta');
+    if (metaEl) {
+      const univ = user.university || 'Tech University';
+      const branch = user.branch || 'Engineering';
+      const year = user.year || '3rd Year';
+      metaEl.textContent = `${univ} • ${branch} • ${year}`;
+    }
+  }
+
+  const tableBody = document.getElementById('savedRoadmapsTableBody');
+  const targetRoleEl = document.getElementById('dashTargetRole');
+  const scoreEl = document.getElementById('dashScore');
+  const acquiredEl = document.getElementById('dashAcquiredCount');
+  const gapsEl = document.getElementById('dashGapsCount');
+
+  // Try fetching backend assessment history
+  let history = [];
+  if (token) {
+    try {
+      const targetApi = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://localhost:8080/api';
+      const res = await fetch(`${targetApi}/students/my-history`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json'
+        }
+      });
+      if (res.ok) {
+        history = await res.json();
+      }
+    } catch (e) {
+      console.warn('Could not fetch assessment history from API:', e);
+    }
+  }
+
+  // Fallback to locally stored currentAnalysis if no backend history
+  if (!history || history.length === 0) {
+    const local = sessionStorage.getItem('currentAnalysis') || localStorage.getItem('lastAnalysis');
+    if (local) {
+      try {
+        const parsed = JSON.parse(local);
+        history = [{
+          id: parsed.recordId || parsed.student?.id || 1,
+          careerGoal: parsed.careerGoal || 'Software Developer',
+          createdAt: new Date().toISOString(),
+          readinessScore: parsed.readinessScore || 75,
+          acquiredSkills: (parsed.acquiredSkills || []).join(', '),
+          missingSkills: (parsed.missingSkills || []).join(', '),
+          summary: parsed.summary || 'Roadmap synthesized with milestone checkpoints.',
+          rawAnalysis: parsed
+        }];
+      } catch (e) {}
+    }
+  }
+
+  if (history && history.length > 0) {
+    const latest = history[0];
+    if (targetRoleEl) targetRoleEl.textContent = latest.careerGoal || 'Software Developer';
+    if (scoreEl) scoreEl.textContent = `${latest.readinessScore || 0}%`;
+
+    const acquiredCount = latest.acquiredSkills ? latest.acquiredSkills.split(',').filter(Boolean).length : 0;
+    const gapsCount = latest.missingSkills ? latest.missingSkills.split(',').filter(Boolean).length : 0;
+
+    if (acquiredEl) acquiredEl.textContent = `${acquiredCount} Skills`;
+    if (gapsEl) gapsEl.textContent = `${gapsCount} Gaps`;
+
+    if (tableBody) {
+      tableBody.innerHTML = history.map((item, idx) => {
+        const dateStr = item.createdAt ? new Date(item.createdAt).toLocaleDateString(undefined, {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        }) : 'Recently';
+
+        return `
+          <tr style="border-bottom: 1px solid var(--border-subtle); transition: var(--transition);">
+            <td style="padding: 16px;">
+              <strong style="color: var(--text-main); font-size: 0.98rem; display: block;">${item.careerGoal || 'Engineering Track'}</strong>
+              <span style="font-size: 0.8rem; color: var(--text-dim);">${item.branch || 'Engineering'} • ${item.year || 'Student'}</span>
+            </td>
+            <td style="padding: 16px; color: var(--text-muted); font-size: 0.88rem;">${dateStr}</td>
+            <td style="padding: 16px;">
+              <span style="padding: 4px 10px; border-radius: 9999px; background: rgba(238, 162, 67, 0.15); border: 1px solid rgba(238, 162, 67, 0.4); color: var(--color-amber-light); font-weight: 800; font-size: 0.82rem;">
+                ${item.readinessScore || 0}% Ready
+              </span>
+            </td>
+            <td style="padding: 16px; font-size: 0.86rem; color: var(--text-muted); max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+              ${item.summary || (item.acquiredSkills ? item.acquiredSkills.slice(0, 50) + '...' : 'Interactive Sprint Roadmap')}
+            </td>
+            <td style="padding: 16px; text-align: right; white-space: nowrap;">
+              <button class="btn btn-primary btn-sm resume-roadmap-btn" data-index="${idx}" style="padding: 6px 14px; font-size: 0.82rem;">
+                Open Roadmap ↗
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      tableBody.querySelectorAll('.resume-roadmap-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const idx = parseInt(btn.getAttribute('data-index'), 10);
+          const chosen = history[idx];
+          if (chosen) {
+            if (chosen.rawAnalysis) {
+              sessionStorage.setItem('currentAnalysis', JSON.stringify(chosen.rawAnalysis));
+            } else {
+              const reconstructed = {
+                recordId: chosen.id,
+                careerGoal: chosen.careerGoal,
+                readinessScore: chosen.readinessScore,
+                acquiredSkills: chosen.acquiredSkills ? chosen.acquiredSkills.split(',').map(s => s.trim()) : [],
+                missingSkills: chosen.missingSkills ? chosen.missingSkills.split(',').map(s => s.trim()) : [],
+                summary: chosen.summary,
+                student: {
+                  name: user ? user.name : 'Student',
+                  branch: chosen.branch || 'Engineering',
+                  year: chosen.year || '3rd Year',
+                  cgpa: chosen.cgpa || 8.5
+                }
+              };
+              sessionStorage.setItem('currentAnalysis', JSON.stringify(reconstructed));
+            }
+            window.location.href = 'roadmap.html';
+          }
+        });
+      });
+    }
+  } else {
+    if (tableBody) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="5" style="text-align: center; padding: 50px 20px; color: var(--text-muted);">
+            <div style="font-size: 2.2rem; margin-bottom: 10px;">📋</div>
+            <h4 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 6px;">No Saved Roadmaps Found</h4>
+            <p style="font-size: 0.9rem; margin-bottom: 18px;">You haven't run any career skill evaluations yet.</p>
+            <a href="profile.html" class="btn btn-primary btn-sm">Launch Your First Assessment →</a>
+          </td>
+        </tr>
+      `;
+    }
+  }
+}
+
+// ========================================================
+// Foundational Skill Calibration Quiz (quiz.html)
+// ========================================================
+const QUIZ_QUESTIONS = [
+  {
+    topic: 'Data Structures & Algorithms',
+    question: 'Which data structure offers average O(1) time complexity for lookup, insertion, and deletion operations?',
+    options: [
+      'Hash Table / HashMap',
+      'Binary Search Tree (BST)',
+      'Doubly Linked List',
+      'Min-Heap'
+    ],
+    answer: 0,
+    skill: 'Hash Tables & DSA',
+    explanation: 'A Hash Table uses a hash function to map keys to bucket indices, providing average O(1) constant-time operations for lookups, inserts, and deletes.'
+  },
+  {
+    topic: 'Databases & Transactions',
+    question: 'In relational database theory (ACID), what does the "I" guarantee?',
+    options: [
+      'Immediate persistence to physical disk',
+      'Isolation — Concurrent transactions execute without cross-interference',
+      'Immutability — Historical rows can never be altered',
+      'Indexing — Automatic B-Tree indexing on primary keys'
+    ],
+    answer: 1,
+    skill: 'ACID Relational Databases',
+    explanation: 'Isolation ensures that concurrently executing transactions cannot see or interfere with each other\'s uncommitted data, preventing race conditions.'
+  },
+  {
+    topic: 'Web Architecture & REST APIs',
+    question: 'According to RFC specifications, which HTTP response code correctly indicates that a new resource was successfully created on the server?',
+    options: [
+      '200 OK',
+      '201 Created',
+      '204 No Content',
+      '304 Not Modified'
+    ],
+    answer: 1,
+    skill: 'RESTful API Standards',
+    explanation: 'HTTP 201 Created explicitly indicates that the request succeeded and resulted in the server creating a new resource, commonly accompanied by a Location header.'
+  },
+  {
+    topic: 'Containerization & Cloud Native',
+    question: 'What is the primary architectural advantage of using multi-stage Docker builds?',
+    options: [
+      'Minimizes final production container size by discarding compilers and build-time tools',
+      'Permits running Windows and Linux containers simultaneously in one image',
+      'Eliminates the need for Kubernetes cluster pods',
+      'Enables automated DNS load balancing across containers'
+    ],
+    answer: 0,
+    skill: 'Docker & Container Optimization',
+    explanation: 'Multi-stage Docker builds allow you to use large SDKs and build tools in early stages, then copy only the finalized binary/jar into a slim runtime image (e.g. Alpine/Distroless), shrinking attack surface and image size.'
+  },
+  {
+    topic: 'System Design & Resilience',
+    question: 'Which design pattern prevents a microservice from endlessly calling a failing downstream dependency and exhausting system threads?',
+    options: [
+      'Circuit Breaker Pattern',
+      'Busy-Waiting Polling Pattern',
+      'Singleton Pattern',
+      'Database Sharding'
+    ],
+    answer: 0,
+    skill: 'Resilient Microservices Architecture',
+    explanation: 'The Circuit Breaker pattern (popularized by Netflix Hystrix / Resilience4j) trips open when failure thresholds are reached, failing fast and allowing the downstream service time to recover.'
+  }
+];
+
+function setupSkillQuiz() {
+  const container = document.getElementById('skillQuizContainer');
+  if (!container) return;
+
+  let currentQuestionIndex = 0;
+  const userAnswers = new Array(QUIZ_QUESTIONS.length).fill(null);
+  let isSubmitted = false;
+
+  function renderQuiz() {
+    if (isSubmitted) {
+      renderQuizResults();
+      return;
+    }
+
+    const q = QUIZ_QUESTIONS[currentQuestionIndex];
+    const total = QUIZ_QUESTIONS.length;
+    const progressPercent = Math.round(((currentQuestionIndex + 1) / total) * 100);
+
+    container.innerHTML = `
+      <div class="glass-card" style="padding: 36px; border: 1.5px solid var(--border-bright); box-shadow: var(--shadow-lg);">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 10px;">
+          <span style="font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-amber-light); background: rgba(238, 162, 67, 0.12); padding: 4px 12px; border-radius: 9999px; border: 1px solid var(--border-subtle);">
+            ${q.topic}
+          </span>
+          <span style="font-size: 0.88rem; color: var(--text-dim); font-weight: 700;">
+            Question ${currentQuestionIndex + 1} of ${total}
+          </span>
+        </div>
+
+        <!-- Progress Bar -->
+        <div style="height: 6px; background: rgba(255, 255, 255, 0.08); border-radius: 9999px; margin-bottom: 26px; overflow: hidden;">
+          <div style="height: 100%; width: ${progressPercent}%; background: var(--gradient-primary); transition: width 0.3s ease;"></div>
+        </div>
+
+        <h3 style="font-size: 1.35rem; line-height: 1.4; margin-bottom: 24px; color: var(--text-main);">
+          ${q.question}
+        </h3>
+
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px;">
+          ${q.options.map((opt, optIdx) => {
+            const isSelected = userAnswers[currentQuestionIndex] === optIdx;
+            return `
+              <button type="button" class="quiz-option-btn ${isSelected ? 'selected' : ''}" data-idx="${optIdx}" style="
+                text-align: left;
+                padding: 16px 20px;
+                border-radius: var(--radius-sm);
+                background: ${isSelected ? 'rgba(238, 162, 67, 0.16)' : 'rgba(255, 255, 255, 0.03)'};
+                border: 1.5px solid ${isSelected ? 'var(--color-amber)' : 'var(--border-subtle)'};
+                color: ${isSelected ? 'var(--color-cream)' : 'var(--text-muted)'};
+                font-size: 0.96rem;
+                cursor: pointer;
+                transition: var(--transition);
+                display: flex;
+                align-items: center;
+                gap: 14px;
+              ">
+                <span style="
+                  width: 26px;
+                  height: 26px;
+                  border-radius: 50%;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-weight: 800;
+                  font-size: 0.82rem;
+                  background: ${isSelected ? 'var(--color-amber)' : 'rgba(255, 255, 255, 0.08)'};
+                  color: ${isSelected ? '#19100B' : 'var(--text-dim)'};
+                  flex-shrink: 0;
+                ">
+                  ${String.fromCharCode(65 + optIdx)}
+                </span>
+                <span>${opt}</span>
+              </button>
+            `;
+          }).join('')}
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-subtle); padding-top: 22px;">
+          <button type="button" id="quizPrevBtn" class="btn btn-outline btn-sm" ${currentQuestionIndex === 0 ? 'disabled style="opacity: 0.4; cursor: not-allowed;"' : ''}>
+            ← Previous
+          </button>
+          
+          ${currentQuestionIndex === total - 1 ? `
+            <button type="button" id="quizSubmitBtn" class="btn btn-primary" style="padding: 10px 24px;">
+              Submit Calibration ⚡
+            </button>
+          ` : `
+            <button type="button" id="quizNextBtn" class="btn btn-primary btn-sm" style="padding: 8px 22px;">
+              Next Question →
+            </button>
+          `}
+        </div>
+      </div>
+    `;
+
+    container.querySelectorAll('.quiz-option-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.getAttribute('data-idx'), 10);
+        userAnswers[currentQuestionIndex] = idx;
+        renderQuiz();
+      });
+    });
+
+    const prevBtn = document.getElementById('quizPrevBtn');
+    if (prevBtn && currentQuestionIndex > 0) {
+      prevBtn.addEventListener('click', () => {
+        currentQuestionIndex--;
+        renderQuiz();
+      });
+    }
+
+    const nextBtn = document.getElementById('quizNextBtn');
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        if (userAnswers[currentQuestionIndex] === null) {
+          showToast('Please select an option before proceeding.', 'info');
+          return;
+        }
+        currentQuestionIndex++;
+        renderQuiz();
+      });
+    }
+
+    const submitBtn = document.getElementById('quizSubmitBtn');
+    if (submitBtn) {
+      submitBtn.addEventListener('click', () => {
+        if (userAnswers[currentQuestionIndex] === null) {
+          showToast('Please select an answer for the final question.', 'info');
+          return;
+        }
+        isSubmitted = true;
+        renderQuiz();
+      });
+    }
+  }
+
+  function renderQuizResults() {
+    let correctCount = 0;
+    const verifiedBadges = [];
+    const gapsFound = [];
+
+    QUIZ_QUESTIONS.forEach((q, i) => {
+      if (userAnswers[i] === q.answer) {
+        correctCount++;
+        verifiedBadges.push(q.skill);
+      } else {
+        gapsFound.push(q.skill);
+      }
+    });
+
+    const percentage = Math.round((correctCount / QUIZ_QUESTIONS.length) * 100);
+
+    // Save verified skills to session
+    sessionStorage.setItem('quizVerifiedSkills', JSON.stringify(verifiedBadges));
+
+    container.innerHTML = `
+      <div class="glass-card" style="padding: 40px; border: 1.5px solid var(--border-bright); box-shadow: var(--shadow-lg); text-align: center;">
+        
+        <div style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, rgba(212, 93, 28, 0.2) 0%, rgba(238, 162, 67, 0.2) 100%); border: 3px solid var(--color-amber); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+          <span style="font-size: 2.2rem; font-weight: 900; font-family: 'Outfit', sans-serif; color: var(--color-cream);">${percentage}%</span>
+        </div>
+
+        <h2 style="font-size: 1.9rem; margin-bottom: 8px; color: var(--text-main);">
+          ${percentage >= 80 ? 'Mastery Calibrated!' : percentage >= 60 ? 'Strong Foundational Knowledge' : 'Core Foundational Gaps Identified'}
+        </h2>
+        <p style="color: var(--text-muted); font-size: 1rem; max-width: 580px; margin: 0 auto 30px;">
+          You answered ${correctCount} of ${QUIZ_QUESTIONS.length} questions correctly. Your calibrated competencies are ready to merge into your personal roadmap.
+        </p>
+
+        <!-- Badges Breakdown -->
+        <div class="grid-2" style="text-align: left; margin-bottom: 35px; gap: 20px;">
+          <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: var(--radius-md); padding: 20px;">
+            <div style="font-size: 0.85rem; font-weight: 800; color: #34d399; margin-bottom: 12px; text-transform: uppercase;">
+              ✓ Verified Skills (${verifiedBadges.length})
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              ${verifiedBadges.length > 0 ? verifiedBadges.map(s => `
+                <div style="display: flex; align-items: center; gap: 8px; font-size: 0.92rem; color: var(--color-cream);">
+                  <span style="color: #34d399; font-weight: 800;">✓</span> ${s}
+                </div>
+              `).join('') : '<span style="font-size: 0.88rem; color: var(--text-dim);">No competencies calibrated above threshold yet.</span>'}
+            </div>
+          </div>
+
+          <div style="background: rgba(212, 93, 28, 0.08); border: 1px solid rgba(212, 93, 28, 0.3); border-radius: var(--radius-md); padding: 20px;">
+            <div style="font-size: 0.85rem; font-weight: 800; color: var(--color-amber-light); margin-bottom: 12px; text-transform: uppercase;">
+              ⚠️ Focus Gaps to Bridge (${gapsFound.length})
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              ${gapsFound.length > 0 ? gapsFound.map(s => `
+                <div style="display: flex; align-items: center; gap: 8px; font-size: 0.92rem; color: var(--text-muted);">
+                  <span style="color: var(--color-terracotta);">•</span> ${s}
+                </div>
+              `).join('') : '<span style="font-size: 0.88rem; color: #34d399;">Zero fundamental gaps detected! Outstanding work.</span>'}
+            </div>
+          </div>
+        </div>
+
+        <!-- Detailed Review -->
+        <div style="text-align: left; margin-bottom: 35px;">
+          <h4 style="font-size: 1.15rem; margin-bottom: 16px; color: var(--text-main);">Question Explanations</h4>
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            ${QUIZ_QUESTIONS.map((q, idx) => {
+              const userPick = userAnswers[idx];
+              const isCorrect = userPick === q.answer;
+              return `
+                <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 18px;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                    <span style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">${idx + 1}. ${q.question}</span>
+                    <span style="font-size: 0.82rem; font-weight: 800; padding: 2px 8px; border-radius: 4px; ${isCorrect ? 'background: rgba(16, 185, 129, 0.15); color: #34d399;' : 'background: rgba(212, 93, 28, 0.15); color: var(--color-amber-light);'}">
+                      ${isCorrect ? 'Correct ✓' : 'Review Needed'}
+                    </span>
+                  </div>
+                  <div style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 6px;">
+                    <strong>Correct Answer:</strong> ${q.options[q.answer]}
+                  </div>
+                  <p style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.5; margin: 0;">
+                    ${q.explanation}
+                  </p>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+          <button type="button" id="retakeQuizBtn" class="btn btn-outline">
+            🔄 Retake Calibration Quiz
+          </button>
+          <a href="profile.html" class="btn btn-primary">
+            Apply to Skill Assessment Wizard →
+          </a>
+        </div>
+
+      </div>
+    `;
+
+    document.getElementById('retakeQuizBtn')?.addEventListener('click', () => {
+      userAnswers.fill(null);
+      currentQuestionIndex = 0;
+      isSubmitted = false;
+      renderQuiz();
+    });
+  }
+
+  renderQuiz();
+}
+
+// ========================================================
+// AI Resume ATS Keyword Scanner Controller (resume-scanner.html)
+// ========================================================
+function setupResumeScanner() {
+  const scanBtn = document.getElementById('evaluateResumeBtn');
+  const textInput = document.getElementById('resumeTextInput');
+  const roleSelect = document.getElementById('resumeRoleSelect');
+  const outputContainer = document.getElementById('resumeAtsOutput');
+
+  if (!scanBtn || !textInput || !outputContainer) return;
+
+  scanBtn.addEventListener('click', async () => {
+    const rawText = textInput.value.trim();
+    const roleId = roleSelect ? roleSelect.value : 'software-developer';
+
+    if (rawText.length < 20) {
+      showToast('Please paste your resume text (minimum 20 characters) to evaluate.', 'error');
+      textInput.focus();
+      textInput.style.borderColor = 'var(--color-terracotta)';
+      setTimeout(() => { textInput.style.borderColor = ''; }, 2500);
+      return;
+    }
+
+    const originalBtnHtml = scanBtn.innerHTML;
+    scanBtn.disabled = true;
+    scanBtn.innerHTML = `
+      <svg class="spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1s linear infinite; margin-right: 8px;">
+        <circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle>
+        <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"></path>
+      </svg>
+      Scanning Keywords...
+    `;
+
+    await new Promise(r => setTimeout(r, 450));
+
+    try {
+      const evaluation = SkillPathAPI.evaluateResumeText(rawText, roleId);
+      renderScannerOutput(evaluation);
+      showToast(`ATS Evaluation Complete: ${evaluation.atsScore}% Keyword Match`, 'success');
+      outputContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } catch (err) {
+      console.error(err);
+      showToast('Could not analyze resume text. Please verify formatting.', 'error');
+    } finally {
+      scanBtn.disabled = false;
+      scanBtn.innerHTML = originalBtnHtml;
+    }
+  });
+
+  function renderScannerOutput(data) {
+    const scoreColor = data.atsScore >= 75 ? '#34d399' : data.atsScore >= 50 ? 'var(--color-amber)' : 'var(--color-terracotta)';
+    const ratingLabel = data.atsScore >= 75 ? 'High ATS Compatibility' : data.atsScore >= 50 ? 'Moderate Keyword Density' : 'Low ATS Pass Probability';
+
+    outputContainer.innerHTML = `
+      <div class="glass-card" style="margin-top: 30px; padding: 34px; border: 1.5px solid var(--border-bright); box-shadow: var(--shadow-lg); animation: fadeIn 0.4s ease-out;">
+        
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 20px;">
+          <div>
+            <span class="section-tag" style="margin-bottom: 6px;">Evaluation Report</span>
+            <h3 style="font-size: 1.5rem; margin-bottom: 4px;">Benchmark Target: ${data.targetRole}</h3>
+            <span style="font-size: 0.85rem; color: var(--text-dim);">Evaluated against live hiring requirements & keyword density rules</span>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 16px;">
+            <div style="text-align: right;">
+              <span style="display: block; font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700;">ATS Match Score</span>
+              <span style="font-size: 2rem; font-weight: 900; font-family: 'Outfit', sans-serif; color: ${scoreColor};">${data.atsScore}%</span>
+            </div>
+            <span style="padding: 6px 14px; border-radius: 9999px; font-size: 0.82rem; font-weight: 800; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-subtle); color: ${scoreColor};">
+              ${ratingLabel}
+            </span>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-bottom: 26px; gap: 20px;">
+          <!-- Detected Keywords -->
+          <div style="background: rgba(16, 185, 129, 0.06); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: var(--radius-md); padding: 20px;">
+            <div style="font-size: 0.85rem; font-weight: 800; color: #34d399; margin-bottom: 12px; text-transform: uppercase; display: flex; justify-content: space-between;">
+              <span>✓ Detected Keywords</span>
+              <span>${data.foundKeywords.length} Found</span>
+            </div>
+            <div class="tag-cloud">
+              ${data.foundKeywords.length > 0 ? data.foundKeywords.map(k => `
+                <span class="chip-mastered">✓ ${k}</span>
+              `).join('') : '<span style="font-size: 0.88rem; color: var(--text-dim);">No core track keywords found in submitted text.</span>'}
+            </div>
+          </div>
+
+          <!-- Missing Keywords -->
+          <div style="background: rgba(212, 93, 28, 0.06); border: 1px solid rgba(212, 93, 28, 0.25); border-radius: var(--radius-md); padding: 20px;">
+            <div style="font-size: 0.85rem; font-weight: 800; color: var(--color-amber-light); margin-bottom: 12px; text-transform: uppercase; display: flex; justify-content: space-between;">
+              <span>⚠️ High-Priority Missing Keywords</span>
+              <span>${data.missingKeywords.length} Gaps</span>
+            </div>
+            <div class="tag-cloud">
+              ${data.missingKeywords.length > 0 ? data.missingKeywords.map(k => `
+                <span class="chip-gap">⚠️ ${k}</span>
+              `).join('') : '<span style="font-size: 0.88rem; color: #34d399;">100% of benchmark competencies detected!</span>'}
+            </div>
+          </div>
+        </div>
+
+        <!-- Actionable Optimization Advice -->
+        <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 22px; margin-bottom: 24px;">
+          <h4 style="font-size: 1.05rem; margin-bottom: 12px; color: var(--color-cream); font-weight: 800;">Actionable Resume Enhancement Strategy</h4>
+          <ul style="padding-left: 20px; display: flex; flex-direction: column; gap: 8px;">
+            ${(data.actionableTips || []).map(tip => `
+              <li style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.5;">${tip}</li>
+            `).join('')}
+          </ul>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <button type="button" id="resetScannerBtn" class="btn btn-outline btn-sm">
+            ← Clear & Scan Another Text
+          </button>
+          <a href="profile.html?role=${encodeURIComponent(data.targetRole)}" class="btn btn-primary btn-sm">
+            Generate Roadmap to Bridge Gaps →
+          </a>
+        </div>
+
+      </div>
+    `;
+
+    document.getElementById('resetScannerBtn')?.addEventListener('click', () => {
+      textInput.value = '';
+      outputContainer.innerHTML = '';
+      textInput.focus();
+    });
+  }
 }

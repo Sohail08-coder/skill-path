@@ -130,6 +130,118 @@ public class CareerCatalogService {
             "📱",
             "#14b8a6"
         ));
+
+        careerCatalog.add(new CareerPath(
+            "embedded-iot",
+            "Embedded Systems & IoT Firmware Engineer",
+            "Hardware & IoT",
+            "Program microcontrollers, real-time operating systems (RTOS), and IoT edge communication protocols.",
+            "High",
+            "$118,000 / ₹12-25 LPA",
+            "18-22 Weeks",
+            Arrays.asList("Embedded C / C++", "ARM Cortex / ESP32", "FreeRTOS", "UART / SPI / I2C / CAN", "MQTT & IoT Protocols", "Circuit Debugging"),
+            Arrays.asList("STM32CubeIDE", "ESP-IDF", "PlatformIO", "Saleae Logic", "KiCad"),
+            "⚡",
+            "#10b981"
+        ));
+
+        careerCatalog.add(new CareerPath(
+            "uiux-designer",
+            "UI/UX Product Designer",
+            "Design & Product",
+            "Design intuitive digital experiences, design systems, micro-interactions, user journeys, and wireframes.",
+            "High",
+            "$102,000 / ₹10-20 LPA",
+            "12-16 Weeks",
+            Arrays.asList("Figma & Prototyping", "User Research", "Information Architecture", "Design Systems", "Usability Testing", "Accessibility (WCAG)"),
+            Arrays.asList("Figma", "FigJam", "Framer", "Notion", "Maze"),
+            "🎨",
+            "#f43f5e"
+        ));
+
+        careerCatalog.add(new CareerPath(
+            "blockchain-web3",
+            "Blockchain & Web3 Engineer",
+            "Web3 & Distributed",
+            "Develop secure smart contracts in Solidity, design decentralized protocols (DeFi/NFT), and perform bytecode audits.",
+            "High",
+            "$130,000 / ₹18-35 LPA",
+            "18-22 Weeks",
+            Arrays.asList("Solidity", "EVM Internals", "Hardhat / Foundry", "Ethers.js / Viem", "Smart Contract Security", "Web3 Frontend"),
+            Arrays.asList("Foundry", "Hardhat", "Remix IDE", "Metamask", "Slither"),
+            "🔗",
+            "#f59e0b"
+        ));
+
+        careerCatalog.add(new CareerPath(
+            "data-engineer",
+            "Big Data & ETL Pipeline Engineer",
+            "Data Science",
+            "Build high-throughput streaming architectures, ETL data pipelines, lakehouses, and real-time Kafka consumers.",
+            "Extremely High",
+            "$126,000 / ₹16-30 LPA",
+            "18-22 Weeks",
+            Arrays.asList("Python / Scala", "Advanced SQL", "Apache Spark", "Apache Kafka", "Airflow Orchestration", "Snowflake / Databricks"),
+            Arrays.asList("Apache Spark", "Kafka", "Apache Airflow", "dbt", "Databricks"),
+            "🚰",
+            "#06b6d4"
+        ));
+
+        careerCatalog.add(new CareerPath(
+            "robotics-vision",
+            "Robotics & Computer Vision Engineer",
+            "Hardware & IoT",
+            "Develop spatial perception algorithms, robot operating system (ROS2) nodes, kinematic path planning, and SLAM.",
+            "High",
+            "$125,000 / ₹15-32 LPA",
+            "20-24 Weeks",
+            Arrays.asList("Modern C++ & Python", "ROS2", "OpenCV & Vision", "Kinematics & Kalman Filters", "SLAM & Path Planning", "Sensor Fusion"),
+            Arrays.asList("ROS2 Humble", "Gazebo Simulator", "OpenCV", "RViz", "Ubuntu Linux"),
+            "🤖",
+            "#ec4899"
+        ));
+
+        careerCatalog.add(new CareerPath(
+            "qa-automation",
+            "QA Automation & SDET Engineer",
+            "Software Engineering",
+            "Architect robust end-to-end automated testing suites, performance stress tests, and CI/CD quality gates.",
+            "High",
+            "$96,000 / ₹10-18 LPA",
+            "12-14 Weeks",
+            Arrays.asList("Java / TypeScript", "Selenium / Playwright", "API Testing (REST Assured)", "CI/CD Test Pipelines", "Performance Testing (JMeter)", "BDD (Cucumber)"),
+            Arrays.asList("Playwright", "Selenium", "Postman", "JMeter", "GitHub Actions"),
+            "🧪",
+            "#8b5cf6"
+        ));
+
+        careerCatalog.add(new CareerPath(
+            "sre-observability",
+            "Site Reliability Engineer (SRE)",
+            "Cloud Infrastructure",
+            "Guarantee 99.99% uptime, manage distributed incident response, engineer chaos experiments, and optimize cloud latency.",
+            "Extremely High",
+            "$132,000 / ₹18-34 LPA",
+            "18-22 Weeks",
+            Arrays.asList("Linux Kernel & Networking", "Kubernetes", "Prometheus & Grafana", "Distributed Tracing (OpenTelemetry)", "SLO / SLI Modeling", "Go / Python"),
+            Arrays.asList("Kubernetes", "Prometheus", "Grafana", "Jaeger", "PagerDuty"),
+            "📈",
+            "#10b981"
+        ));
+
+        careerCatalog.add(new CareerPath(
+            "game-developer",
+            "Game Engine & 3D Interactive Engineer",
+            "Gaming & Graphics",
+            "Develop 3D graphics engines, physics simulation pipelines, shaders in HLSL/GLSL, and real-time multiplayer networking.",
+            "High",
+            "$110,000 / ₹12-22 LPA",
+            "16-20 Weeks",
+            Arrays.asList("Modern C++ & C#", "Unreal Engine 5 / Unity", "3D Linear Algebra & Physics", "HLSL / GLSL Shaders", "Multiplayer Netcode", "Git LFS"),
+            Arrays.asList("Unreal Engine 5", "Unity", "Visual Studio", "Blender", "RenderDoc"),
+            "🎮",
+            "#8b5cf6"
+        ));
     }
 
     public List<CareerPath> getAllCareers() {

@@ -54,22 +54,19 @@ public class AuthController {
 
     private void seedDefaultDemoUser() {
         try {
-            // Delete all previous data to ensure only ONE clean demo student account exists
-            assessmentRecordRepository.deleteAll();
-            studentRepository.deleteAll();
-            userRepository.deleteAll();
-
-            User demoUser = new User();
-            demoUser.setName("Syed Sohail");
-            demoUser.setEmail("student@skillpath.ai");
-            demoUser.setPassword(passwordEncoder.encode("password123"));
-            demoUser.setUniversity("Tech University");
-            demoUser.setBranch("Computer Science & Engineering");
-            demoUser.setYear("3rd Year");
-            demoUser.setRole("STUDENT");
-            demoUser.setCreatedAt(LocalDateTime.now());
-            userRepository.save(demoUser);
-            logger.info("Database reset: All stale data deleted, exactly one verified demo student active (student@skillpath.ai)");
+            if (!userRepository.existsByEmail("student@skillpath.ai")) {
+                User demoUser = new User();
+                demoUser.setName("Syed Sohail");
+                demoUser.setEmail("student@skillpath.ai");
+                demoUser.setPassword(passwordEncoder.encode("password123"));
+                demoUser.setUniversity("Tech University");
+                demoUser.setBranch("Computer Science & Engineering");
+                demoUser.setYear("3rd Year");
+                demoUser.setRole("STUDENT");
+                demoUser.setCreatedAt(LocalDateTime.now());
+                userRepository.save(demoUser);
+                logger.info("Verified demo student active: student@skillpath.ai");
+            }
         } catch (Exception e) {
             logger.warn("Could not seed demo student account: {}", e.getMessage());
         }
