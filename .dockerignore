@@ -1,0 +1,8 @@
+backend/target/
+*.class
+.git
+.gitignore
+.env
+*.log
+frontend/
+docs/

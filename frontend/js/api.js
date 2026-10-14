@@ -4,7 +4,7 @@
  * Provides high-fidelity offline simulation for 16+ tech tracks, stream transition algorithms, and ATS resume scoring
  */
 
-const API_BASE_URL = window.SKILLPATH_API_URL || 'http://localhost:8080/api';
+const API_BASE_URL = window.SKILLPATH_API_URL || localStorage.getItem('SKILLPATH_API_URL') || 'http://localhost:8080/api';
 
 const CAREER_CATALOG = [
   {
