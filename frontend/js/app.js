@@ -4,12 +4,35 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  updateBackendStatusBadge();
   setupSkillChips();
   setupProfileForm();
   setupQuickPreview();
   setupHeroSimulator();
   setupBranchCalculator();
 });
+
+// Live Server Connectivity Indicator
+async function updateBackendStatusBadge() {
+  const badge = document.getElementById('backendStatusBadge');
+  if (!badge) return;
+
+  try {
+    if (typeof SkillPathAPI !== 'undefined' && SkillPathAPI.checkHealth) {
+      const health = await SkillPathAPI.checkHealth();
+      if (health && health.status === 'UP') {
+        badge.innerHTML = `<span class="status-indicator online" style="background: #10B981; box-shadow: 0 0 10px #10B981; width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span> Spring Boot 4 Active`;
+        badge.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+        badge.style.color = '#34D399';
+        return;
+      }
+    }
+  } catch (e) {}
+
+  badge.innerHTML = `<span class="status-indicator simulated" style="background: var(--color-amber); box-shadow: 0 0 10px var(--color-amber); width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span> Offline Engine Ready`;
+  badge.style.borderColor = 'var(--border-subtle)';
+  badge.style.color = 'var(--color-amber-light)';
+}
 
 // Toast notification helper
 function showToast(message, type = 'info') {

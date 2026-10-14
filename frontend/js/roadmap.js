@@ -262,10 +262,10 @@ function renderTimeline(roadmapSteps) {
   }
 
   const autumnColors = [
-    { border: 'rgba(111, 29, 27, 0.45)', bg: '#6F1D1B', text: '#ffffff', tag: 'rgba(111, 29, 27, 0.1)', tagColor: '#6F1D1B' },
-    { border: 'rgba(153, 88, 42, 0.45)', bg: '#99582A', text: '#ffffff', tag: 'rgba(153, 88, 42, 0.12)', tagColor: '#99582A' },
-    { border: 'rgba(187, 148, 87, 0.5)', bg: '#BB9457', text: '#ffffff', tag: 'rgba(187, 148, 87, 0.15)', tagColor: '#8F6B2C' },
-    { border: 'rgba(67, 40, 24, 0.4)', bg: '#432818', text: '#FFE6A7', tag: 'rgba(255, 230, 167, 0.55)', tagColor: '#432818' }
+    { border: 'rgba(212, 93, 28, 0.45)', bg: '#D45D1C', text: '#FAF4EB', tag: 'rgba(212, 93, 28, 0.16)', tagColor: '#E27236' },
+    { border: 'rgba(238, 162, 67, 0.45)', bg: '#EEA243', text: '#19100B', tag: 'rgba(238, 162, 67, 0.16)', tagColor: '#F7BA65' },
+    { border: 'rgba(247, 186, 101, 0.45)', bg: '#D48C2B', text: '#FAF4EB', tag: 'rgba(247, 186, 101, 0.16)', tagColor: '#F7BA65' },
+    { border: 'rgba(238, 162, 67, 0.35)', bg: '#241711', text: '#FAF4EB', tag: 'rgba(238, 162, 67, 0.20)', tagColor: '#EEA243' }
   ];
 
   timelineContainer.innerHTML = roadmapSteps.map((step, stepIndex) => {
@@ -273,7 +273,7 @@ function renderTimeline(roadmapSteps) {
     const topics = step.topics || [];
     return `
       <div class="timeline-item">
-        <div class="timeline-dot" style="background: ${colorScheme.bg}; color: ${colorScheme.text}; border: 3px solid #ffffff; box-shadow: var(--shadow-sm);">${step.stepNumber || stepIndex + 1}</div>
+        <div class="timeline-dot" style="background: ${colorScheme.bg}; color: ${colorScheme.text}; border: 3px solid var(--bg-primary); box-shadow: var(--shadow-sm);">${step.stepNumber || stepIndex + 1}</div>
         <div class="glass-card" style="padding: 24px; border: 1.5px solid ${colorScheme.border}; box-shadow: var(--shadow-sm);">
           <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
             <span class="section-tag" style="margin-bottom: 0; font-size: 0.76rem; padding: 4px 12px; background: ${colorScheme.tag}; color: ${colorScheme.tagColor}; border-color: ${colorScheme.border};">
@@ -287,18 +287,18 @@ function renderTimeline(roadmapSteps) {
           <h3 style="font-size: 1.28rem; margin-bottom: 6px; color: var(--text-main); font-weight: 800;">${step.title}</h3>
           <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 18px; line-height: 1.5;">${step.description}</p>
 
-          <div style="background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 16px;">
-            <div style="font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; font-weight: 800; letter-spacing: 0.03em; margin-bottom: 12px; display: flex; justify-content: space-between;">
+          <div style="background: rgba(25, 16, 11, 0.7); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 16px;">
+            <div style="font-size: 0.8rem; color: var(--color-amber-light); text-transform: uppercase; font-weight: 800; letter-spacing: 0.03em; margin-bottom: 12px; display: flex; justify-content: space-between;">
               <span>Actionable Milestone Checklist</span>
-              <span style="color: #047857; font-weight: 800;">+3% Score per topic</span>
+              <span style="color: #34D399; font-weight: 800;">+3% Score per topic</span>
             </div>
             
             <div style="display: flex; flex-direction: column; gap: 9px;">
               ${topics.map(topic => {
                 const isChecked = completedTopicsSet.has(topic);
                 return `
-                  <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 0.92rem; color: ${isChecked ? '#047857' : 'var(--text-main)'}; font-weight: ${isChecked ? '700' : '500'};">
-                    <input type="checkbox" class="topic-checkbox" data-topic="${topic}" ${isChecked ? 'checked' : ''} style="accent-color: var(--autumn-burgundy); width: 18px; height: 18px; cursor: pointer;">
+                  <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 0.92rem; color: ${isChecked ? '#34D399' : 'var(--text-main)'}; font-weight: ${isChecked ? '700' : '500'};">
+                    <input type="checkbox" class="topic-checkbox" data-topic="${topic}" ${isChecked ? 'checked' : ''} style="accent-color: var(--color-terracotta); width: 18px; height: 18px; cursor: pointer;">
                     <span style="text-decoration: ${isChecked ? 'line-through' : 'none'};">${topic}</span>
                   </label>
                 `;
@@ -370,9 +370,9 @@ function renderLearningResources(resources) {
   }
 
   container.innerHTML = resources.map(res => `
-    <a href="${res.url}" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: #ffffff; border: 1.5px solid var(--border-sienna); border-radius: var(--radius-sm); color: var(--autumn-sienna); text-decoration: none; box-shadow: var(--shadow-xs); transition: var(--spring-smooth);" class="card-hover-3d">
+    <a href="${res.url}" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: rgba(36, 23, 17, 0.7); border: 1.5px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--color-amber-light); text-decoration: none; box-shadow: var(--shadow-sm); transition: var(--transition);" class="card-hover-3d">
       <span style="font-weight: 700; font-size: 0.92rem;">${res.name}</span>
-      <span style="font-size: 1.15rem; font-weight: 800;">↗</span>
+      <span style="font-size: 1.15rem; font-weight: 800; color: var(--color-amber);">↗</span>
     </a>
   `).join('');
 }
@@ -383,9 +383,9 @@ function renderRecommendations(projects, certs) {
 
   if (projectsContainer) {
     projectsContainer.innerHTML = projects.map((p, i) => `
-      <div style="padding: 14px 18px; background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); margin-bottom: 10px;">
+      <div style="padding: 14px 18px; background: rgba(25, 16, 11, 0.65); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); margin-bottom: 10px;">
         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-          <span style="color: var(--autumn-sienna); font-weight: 800; font-size: 0.82rem;">TIER ${i + 1} CAPSTONE</span>
+          <span style="color: var(--color-amber-light); font-weight: 800; font-size: 0.82rem;">TIER ${i + 1} CAPSTONE</span>
         </div>
         <div style="font-size: 0.93rem; color: var(--text-main); font-weight: 600;">${p}</div>
       </div>
@@ -394,7 +394,7 @@ function renderRecommendations(projects, certs) {
 
   if (certsContainer) {
     certsContainer.innerHTML = certs.map(c => `
-      <div style="padding: 12px 16px; background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
+      <div style="padding: 12px 16px; background: rgba(25, 16, 11, 0.65); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
         <span style="font-size: 1.2rem;">🏅</span>
         <span style="font-size: 0.92rem; color: var(--text-main);">${c}</span>
       </div>

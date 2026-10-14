@@ -312,8 +312,8 @@ const AuthService = {
           <ul id="footerToolLinks">
             <li><a href="quiz.html">Skill Calibration Quiz</a></li>
             <li><a href="careers.html">Role Comparison Mode</a></li>
-            <li><a href="login.html?redirect=profile.html">Assessment Wizard <span class="badge-lock" style="font-size: 0.72rem; padding: 2px 6px; background: rgba(111,29,27,0.12); color: var(--autumn-burgundy); border-radius: 4px; font-weight: 700; margin-left: 4px;">🔒 Sign In</span></a></li>
-            <li><a href="login.html?redirect=resume-scanner.html">ATS Resume Scanner <span class="badge-lock" style="font-size: 0.72rem; padding: 2px 6px; background: rgba(111,29,27,0.12); color: var(--autumn-burgundy); border-radius: 4px; font-weight: 700; margin-left: 4px;">🔒 Sign In</span></a></li>
+            <li><a href="login.html?redirect=profile.html">Assessment Wizard <span class="badge-lock" style="font-size: 0.72rem; padding: 2px 6px; background: rgba(212,93,28,0.18); color: var(--color-amber-light); border: 1px solid rgba(212,93,28,0.3); border-radius: 4px; font-weight: 700; margin-left: 4px;">🔒 Sign In</span></a></li>
+            <li><a href="login.html?redirect=resume-scanner.html">ATS Resume Scanner <span class="badge-lock" style="font-size: 0.72rem; padding: 2px 6px; background: rgba(212,93,28,0.18); color: var(--color-amber-light); border: 1px solid rgba(212,93,28,0.3); border-radius: 4px; font-weight: 700; margin-left: 4px;">🔒 Sign In</span></a></li>
           </ul>
         `;
       }
@@ -362,14 +362,14 @@ const AuthService = {
     if (mainEl) {
       mainEl.innerHTML = `
         <div style="min-height: 72vh; display: flex; align-items: center; justify-content: center; padding: 40px 16px;">
-          <div class="glass-card" style="max-width: 490px; width: 100%; border: 2px solid var(--autumn-burgundy); border-radius: 26px; padding: 42px 32px; text-align: center; box-shadow: var(--shadow-lg); background: #ffffff;">
-            <div style="width: 68px; height: 68px; border-radius: 50%; background: rgba(255, 230, 167, 0.45); display: inline-flex; align-items: center; justify-content: center; font-size: 2.2rem; margin-bottom: 16px; border: 1.5px solid var(--autumn-ochre);">
+          <div class="glass-card" style="max-width: 490px; width: 100%; border: 1.5px solid var(--border-bright); border-radius: 26px; padding: 42px 32px; text-align: center; box-shadow: var(--shadow-lg); background: var(--bg-card); backdrop-filter: blur(20px);">
+            <div style="width: 68px; height: 68px; border-radius: 50%; background: rgba(238, 162, 67, 0.15); display: inline-flex; align-items: center; justify-content: center; font-size: 2.2rem; margin-bottom: 16px; border: 1.5px solid var(--border-bright);">
               🔒
             </div>
-            <div style="display: inline-block; padding: 5px 16px; background: rgba(255, 230, 167, 0.55); border: 1px solid var(--autumn-ochre); border-radius: 9999px; color: var(--autumn-espresso); font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.04em;">
+            <div style="display: inline-block; padding: 5px 16px; background: rgba(238, 162, 67, 0.14); border: 1px solid var(--border-subtle); border-radius: 9999px; color: var(--color-amber-light); font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.04em;">
               Student Access Only
             </div>
-            <h2 style="font-size: 1.65rem; font-weight: 800; margin-bottom: 10px; color: var(--autumn-espresso); line-height: 1.25;">
+            <h2 style="font-size: 1.65rem; font-weight: 800; margin-bottom: 10px; color: var(--color-cream); line-height: 1.25;">
               Sign In to Access ${pageTitle}
             </h2>
             <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 26px;">
@@ -380,10 +380,10 @@ const AuthService = {
               <button type="button" onclick="AuthService.loginWithDemo('${encodeURIComponent(targetPage)}')" class="btn btn-primary btn-lg" style="width: 100%;">
                 ⚡ 1-Click Verified Student Login
               </button>
-              <a href="login.html?redirect=${encodeURIComponent(targetPage)}" class="btn btn-sienna btn-lg" style="width: 100%;">
+              <a href="login.html?redirect=${encodeURIComponent(targetPage)}" class="btn btn-outline btn-lg" style="width: 100%; border-color: var(--border-bright); color: var(--color-cream);">
                 Sign In with Student Email
               </a>
-              <a href="register.html?redirect=${encodeURIComponent(targetPage)}" class="btn btn-outline" style="width: 100%; border: none; color: var(--autumn-burgundy); font-weight: 700;">
+              <a href="register.html?redirect=${encodeURIComponent(targetPage)}" class="btn btn-outline" style="width: 100%; border: none; color: var(--color-amber-light); font-weight: 700;">
                 Create Free Student Account →
               </a>
             </div>
