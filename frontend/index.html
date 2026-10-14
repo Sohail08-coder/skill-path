@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SkillPath AI | Enterprise Student Career & Skill Navigation Platform</title>
-  <meta name="description" content="AI-driven career benchmarks, stream matching, skill gap discovery, and week-by-week learning roadmaps for aspiring engineers.">
+  <meta name="description" content="AI-driven career benchmarks, skill gap discovery, and week-by-week learning roadmaps for aspiring engineers.">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/components.css">
 </head>
@@ -26,13 +26,20 @@
 
       <ul class="nav-links">
         <li><a href="index.html" class="nav-link active">Home</a></li>
-        <li><a href="careers.html" class="nav-link">Tracks</a></li>
-        <li><a href="quiz.html" class="nav-link">Quiz</a></li>
+        <li><a href="careers.html" class="nav-link">Career Tracks</a></li>
+        <li><a href="profile.html" class="nav-link">Assessment Wizard</a></li>
+        <li><a href="roadmap.html" class="nav-link">Roadmap</a></li>
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
       </ul>
 
-      <div class="nav-actions" id="navAuthContainer">
-        <a href="login.html" class="btn btn-outline btn-sm">Sign In</a>
-        <button onclick="AuthService.loginWithDemo()" class="btn btn-primary btn-sm">⚡ Demo Login</button>
+      <div class="nav-actions">
+        <div id="backendStatusBadge" class="server-badge">
+          <span class="status-indicator"></span> Checking Server...
+        </div>
+        <div id="navAuthContainer">
+          <a href="login.html" class="btn btn-outline btn-sm">Sign In</a>
+          <a href="register.html" class="btn btn-primary btn-sm">Get Started</a>
+        </div>
       </div>
     </div>
   </header>
@@ -42,8 +49,8 @@
     <section class="hero-section">
       <div class="container">
         <div class="hero-pill">
-          <span class="hero-pill-badge">v2.5 INTELLIGENT</span>
-          <span>Stream-Aware Career & Skill Navigation for Students</span>
+          <span class="hero-pill-badge">v2.0 ENTERPRISE</span>
+          <span>Empowering Students to Bridge Tech Gaps</span>
         </div>
 
         <h1 class="hero-title">
@@ -52,136 +59,183 @@
         </h1>
 
         <p class="hero-desc">
-          Stop guessing what tech recruiters want. SkillPath AI benchmarks your university stream (CSE, ECE, AI, ME, BCA), uncovers high-priority skill gaps, and synthesizes a step-by-step milestone learning roadmap.
+          Stop guessing what recruiters want. SkillPath AI benchmarks your current university coursework, pinpoints high-priority skill gaps, and synthesizes an actionable week-by-week roadmap.
         </p>
 
         <div class="hero-cta-group">
           <a href="profile.html" class="btn btn-primary btn-lg" id="heroStartAssessmentBtn">
-            Start 4-Stage Assessment
+            Start Skill Assessment
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
               <line x1="5" y1="12" x2="19" y2="12"></line>
               <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
           </a>
           <a href="careers.html" class="btn btn-outline btn-lg" id="heroExploreCareersBtn">
-            Explore 16+ Career Tracks
+            Explore 10+ Career Tracks
           </a>
+        </div>
+
+        <!-- Interactive Live AI Skill Simulator Showcase -->
+        <div class="hero-simulator-wrapper">
+          <div class="hero-simulator-glow"></div>
+          <div class="hero-simulator-card">
+            <div class="simulator-header">
+              <div class="simulator-title-group">
+                <span class="simulator-badge">
+                  <span class="status-indicator"></span> Live AI Simulator
+                </span>
+                <span style="color: var(--text-muted); font-size: 0.9rem;">Interactive Skill Gap Benchmark</span>
+              </div>
+              <div class="simulator-tabs" id="simulatorTabs">
+                <button class="sim-tab-btn active" data-role="java">☕ Java Cloud Architect</button>
+                <button class="sim-tab-btn" data-role="aiml">🤖 AI / ML Engineer</button>
+                <button class="sim-tab-btn" data-role="devops">☁️ Cloud & DevOps</button>
+                <button class="sim-tab-btn" data-role="fullstack">⚛️ Full Stack Dev</button>
+                <button class="sim-tab-btn" data-role="cyber">🛡️ Cybersecurity</button>
+              </div>
+            </div>
+
+            <div class="simulator-grid" id="simulatorContent">
+              <div class="simulator-left-panel">
+                <div>
+                  <div class="role-info-header">
+                    <div class="role-icon-box" id="simRoleIcon">☕</div>
+                    <div>
+                      <h3 id="simRoleTitle" style="font-size: 1.35rem; margin-bottom: 2px;">Java Cloud Architect</h3>
+                      <span id="simRoleCategory" style="color: var(--accent-cyan); font-size: 0.84rem; font-weight: 600;">Enterprise Microservices & Cloud Systems</span>
+                    </div>
+                  </div>
+                  <p id="simRoleDesc" style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 14px;">
+                    Architect high-concurrency Spring Boot microservices, resilient distributed databases, and Dockerized cloud clusters.
+                  </p>
+                </div>
+
+                <div class="gauge-row">
+                  <div class="gauge-svg-container">
+                    <svg class="gauge-svg" viewBox="0 0 80 80">
+                      <defs>
+                        <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stop-color="#6366f1" />
+                          <stop offset="100%" stop-color="#06b6d4" />
+                        </linearGradient>
+                      </defs>
+                      <circle class="gauge-bg" cx="40" cy="40" r="35" />
+                      <circle class="gauge-progress" id="simGaugeCircle" cx="40" cy="40" r="35" />
+                    </svg>
+                    <div class="gauge-text" id="simGaugeText">88%</div>
+                  </div>
+                  <div>
+                    <div style="font-weight: 700; font-size: 0.95rem; color: #f8fafc;">Benchmark Match</div>
+                    <div style="color: #34d399; font-size: 0.82rem; font-weight: 600;">High Employability Rating</div>
+                    <div style="color: var(--text-dim); font-size: 0.8rem; margin-top: 2px;" id="simSalaryTag">Avg: $115K / ₹14-24 LPA</div>
+                  </div>
+                </div>
+
+                <a href="profile.html?role=Software%20Developer" class="btn btn-primary" id="simCtaBtn" style="width: 100%;">
+                  Run Full Assessment for this Role →
+                </a>
+              </div>
+
+              <div class="simulator-right-panel">
+                <div class="skill-status-box">
+                  <div class="status-box-header">
+                    <span style="color: #34d399;">✓ Typical Coursework Covered</span>
+                    <span style="color: var(--text-dim); font-size: 0.78rem;">Verified College Syllabus</span>
+                  </div>
+                  <div class="tag-cloud" id="simMasteredSkills">
+                    <span class="chip-mastered">Core Java 21</span>
+                    <span class="chip-mastered">Object Oriented Programming</span>
+                    <span class="chip-mastered">Basic SQL Queries</span>
+                    <span class="chip-mastered">Data Structures</span>
+                  </div>
+                </div>
+
+                <div class="skill-status-box" style="border-color: rgba(245, 158, 11, 0.2);">
+                  <div class="status-box-header">
+                    <span style="color: #fbbf24;">⚠️ Critical Industry Gaps to Bridge</span>
+                    <span style="color: #fbbf24; font-size: 0.78rem;">High Priority</span>
+                  </div>
+                  <div class="tag-cloud" id="simGapSkills">
+                    <span class="chip-gap">Spring Boot 4 REST API</span>
+                    <span class="chip-gap">Spring Security & JWT</span>
+                    <span class="chip-gap">Docker Containerization</span>
+                    <span class="chip-gap">Microservice Architecture</span>
+                  </div>
+                </div>
+
+                <div class="skill-status-box">
+                  <div class="status-box-header">
+                    <span style="color: var(--accent-cyan);">🗺️ Synthesized 16-Week Sprint Preview</span>
+                    <span style="color: var(--text-dim); font-size: 0.78rem;">AI Generated</span>
+                  </div>
+                  <div class="mini-roadmap-timeline" id="simTimeline">
+                    <div class="mini-step-item">
+                      <span class="mini-step-badge">Weeks 1-4</span>
+                      <span>Advanced Java Concurrency, JPA/Hibernate & Spring Boot Fundamentals</span>
+                    </div>
+                    <div class="mini-step-item">
+                      <span class="mini-step-badge">Weeks 5-8</span>
+                      <span>JWT Security Filters, Stateless Sessions & REST API Architecture</span>
+                    </div>
+                    <div class="mini-step-item">
+                      <span class="mini-step-badge">Weeks 9-16</span>
+                      <span>Docker Multi-Stage Deployments, PostgreSQL Cloud Scaling & Capstone</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Live Stats Banner (Autumn Harvest Palette) -->
+    <!-- Live Stats Banner -->
     <section class="container">
       <div class="stats-banner">
         <div class="stat-item">
-          <div class="stat-number" style="color: var(--autumn-burgundy);">16+</div>
-          <div class="stat-label">Benchmarked Engineering Tracks</div>
+          <div class="stat-number">25+</div>
+          <div class="stat-label">Industry Career Tracks</div>
         </div>
         <div class="stat-item">
-          <div class="stat-number" style="color: var(--autumn-sienna);">180+</div>
-          <div class="stat-label">Core Industry Skills</div>
+          <div class="stat-number">150+</div>
+          <div class="stat-label">Benchmarked Tech Skills</div>
         </div>
         <div class="stat-item">
-          <div class="stat-number" style="color: var(--autumn-ochre);">95%</div>
-          <div class="stat-label">Interview Placement Fit</div>
+          <div class="stat-number">94%</div>
+          <div class="stat-label">Interview Readiness Rate</div>
         </div>
         <div class="stat-item">
-          <div class="stat-number" style="color: var(--autumn-espresso);">100%</div>
-          <div class="stat-label">Free & Open Roadmap Synthesis</div>
+          <div class="stat-number">10K+</div>
+          <div class="stat-label">Roadmaps Generated</div>
         </div>
       </div>
     </section>
 
-    <!-- NEW: Stream & Passion Matcher Interactive Module -->
-    <section class="container">
-      <div class="stream-finder-card">
-        <div style="text-align: center; max-width: 650px; margin: 0 auto 30px;">
-          <span class="section-tag">✨ Instant Stream Matcher</span>
-          <h2 style="font-size: 2rem; margin-bottom: 8px;">What Should You Learn According to Your Stream?</h2>
-          <p style="color: var(--text-muted); font-size: 0.95rem;">
-            Select your academic branch and core interest to get an instant AI career recommendation and transition blueprint.
-          </p>
-        </div>
-
-        <div class="stream-selector-grid">
-          <div class="form-group">
-            <label class="form-label" style="font-size: 0.85rem;">🎓 Your College Stream / Major</label>
-            <select id="finderStreamSelect" class="form-control" style="background: var(--bg-input);">
-              <option value="">Select Stream...</option>
-              <option value="Computer Science & Engineering">Computer Science & Engineering (CSE)</option>
-              <option value="AI & Machine Learning">AI & Machine Learning (AI/ML)</option>
-              <option value="Information Technology">Information Technology (IT)</option>
-              <option value="Electronics & Communication">Electronics & Communication (ECE)</option>
-              <option value="Electrical Engineering">Electrical Engineering (EEE)</option>
-              <option value="Mechanical Engineering">Mechanical Engineering (ME)</option>
-              <option value="BCA / MCA">BCA / MCA (Computer Applications)</option>
-              <option value="Non-Tech / Switcher">Non-Tech / Career Switcher</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" style="font-size: 0.85rem;">🔥 Primary Passion / Interest</label>
-            <select id="finderInterestSelect" class="form-control" style="background: var(--bg-input);">
-              <option value="">Select Interest...</option>
-              <option value="web">Full Stack Web Development & SaaS</option>
-              <option value="ai">Artificial Intelligence & Deep Learning</option>
-              <option value="cloud">Cloud Computing & DevOps Architecture</option>
-              <option value="cyber">Cybersecurity & Ethical Hacking</option>
-              <option value="data">Data Science, Analytics & Big Data</option>
-              <option value="embedded">Embedded Systems, Firmware & Robotics IoT</option>
-              <option value="mobile">Mobile App Development (iOS/Android)</option>
-              <option value="design">UI/UX Product Design & Design Systems</option>
-              <option value="blockchain">Blockchain & Web3 Smart Contracts</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" style="font-size: 0.85rem;">📅 Current College Year</label>
-            <select id="finderYearSelect" class="form-control" style="background: var(--bg-input);">
-              <option value="1st Year">1st Year (Freshman)</option>
-              <option value="2nd Year">2nd Year (Sophomore)</option>
-              <option value="3rd Year" selected>3rd Year (Junior)</option>
-              <option value="4th Year">4th Year (Senior / Final)</option>
-              <option value="Graduate">Recent Graduate</option>
-            </select>
-          </div>
-
-          <div class="form-group" style="display: flex; align-items: flex-end;">
-            <button id="finderSubmitBtn" class="btn btn-primary" style="width: 100%; height: 48px;">
-              Find My Ideal Path ⚡
-            </button>
-          </div>
-        </div>
-
-        <!-- Dynamic Match Output Container -->
-        <div id="streamResultBox" class="stream-result-box"></div>
-      </div>
-    </section>
-
-    <!-- Top Engineering Roles Preview Grid -->
+    <!-- Interactive Career Explorer Showcase -->
     <section class="container" style="margin-bottom: 90px;">
       <div class="section-header">
         <span class="section-tag">High-Demand Pathways</span>
-        <h2 class="section-title">Explore Top <span>Engineering Tracks</span></h2>
-        <p class="section-desc">Click any career track to inspect prerequisites, compensation benchmarks, and full curriculum.</p>
+        <h2 class="section-title">Explore Top <span>Engineering Roles</span></h2>
+        <p class="section-desc">Click any career track to inspect required competencies, salary projections, and direct roadmaps.</p>
       </div>
 
       <div class="grid-3">
-        <!-- Card 1 -->
+        <!-- Role 1 -->
         <div class="glass-card card-hover-3d shimmer-hover career-card">
           <div>
             <div class="career-card-top">
               <div class="career-icon-wrapper">☕</div>
               <span class="demand-badge extreme">Extremely High Demand</span>
             </div>
-            <h3 style="font-size: 1.45rem; margin-bottom: 8px;">Software Developer (Java/Cloud)</h3>
+            <h3 style="font-size: 1.45rem; margin-bottom: 8px;">Software Developer</h3>
             <p style="color: var(--text-muted); font-size: 0.94rem;">
-              Build high-concurrency microservices, robust REST APIs, and enterprise cloud systems with Java, Spring Boot, and Docker.
+              Build enterprise services, microservices, and robust REST APIs with Java and Spring Boot.
             </p>
             <div class="career-meta-row">
               <div>
                 <span>Avg. Salary</span>
-                <strong>₹14-24 LPA / $115K</strong>
+                <strong>$110K / ₹14-22 LPA</strong>
               </div>
               <div>
                 <span>Duration</span>
@@ -189,33 +243,33 @@
               </div>
             </div>
             <div class="skill-chips" style="margin-bottom: 20px;">
-              <span class="skill-chip">Java 21</span>
+              <span class="skill-chip">Java</span>
               <span class="skill-chip">Spring Boot</span>
               <span class="skill-chip">DSA</span>
               <span class="skill-chip">SQL</span>
               <span class="skill-chip">Docker</span>
             </div>
           </div>
-          <a href="profile.html?role=Software%20Developer%20(Java%20/%20Cloud)" class="btn btn-outline" style="width: 100%;">
+          <a href="profile.html?role=Software%20Developer" class="btn btn-outline" style="width: 100%;">
             Start Software Track →
           </a>
         </div>
 
-        <!-- Card 2 -->
+        <!-- Role 2 -->
         <div class="glass-card card-hover-3d shimmer-hover career-card">
           <div>
             <div class="career-card-top">
-              <div class="career-icon-wrapper" style="color: #8b5cf6;">🧠</div>
+              <div class="career-icon-wrapper" style="color: #a855f7;">🤖</div>
               <span class="demand-badge extreme">Extremely High Demand</span>
             </div>
-            <h3 style="font-size: 1.45rem; margin-bottom: 8px;">AI / Machine Learning Engineer</h3>
+            <h3 style="font-size: 1.45rem; margin-bottom: 8px;">AI / ML Engineer</h3>
             <p style="color: var(--text-muted); font-size: 0.94rem;">
-              Train deep neural networks, fine-tune LLMs, engineer RAG pipelines, and deploy production MLOps models.
+              Architect deep neural networks, transformer models, and scalable machine learning inference pipelines.
             </p>
             <div class="career-meta-row">
               <div>
                 <span>Avg. Salary</span>
-                <strong>₹18-36 LPA / $135K</strong>
+                <strong>$130K / ₹18-35 LPA</strong>
               </div>
               <div>
                 <span>Duration</span>
@@ -225,111 +279,179 @@
             <div class="skill-chips" style="margin-bottom: 20px;">
               <span class="skill-chip">Python</span>
               <span class="skill-chip">PyTorch</span>
-              <span class="skill-chip">Deep Learning</span>
-              <span class="skill-chip">LangChain</span>
-              <span class="skill-chip">FastAPI</span>
+              <span class="skill-chip">Math & Stats</span>
+              <span class="skill-chip">Transformers</span>
             </div>
           </div>
-          <a href="profile.html?role=AI%20/%20Machine%20Learning%20Engineer" class="btn btn-outline" style="width: 100%;">
-            Start AI Track →
+          <a href="profile.html?role=AI%20/%20ML%20Engineer" class="btn btn-outline" style="width: 100%;">
+            Start AI / ML Track →
           </a>
         </div>
 
-        <!-- Card 3 -->
+        <!-- Role 3 -->
         <div class="glass-card card-hover-3d shimmer-hover career-card">
           <div>
             <div class="career-card-top">
-              <div class="career-icon-wrapper" style="color: #06b6d4;">⚛️</div>
-              <span class="demand-badge extreme">High Market Demand</span>
+              <div class="career-icon-wrapper" style="color: #10b981;">☁️</div>
+              <span class="demand-badge high">High Demand</span>
             </div>
-            <h3 style="font-size: 1.45rem; margin-bottom: 8px;">Full Stack Engineer (MERN/Next.js)</h3>
+            <h3 style="font-size: 1.45rem; margin-bottom: 8px;">Cloud & DevOps Engineer</h3>
             <p style="color: var(--text-muted); font-size: 0.94rem;">
-              Architect modern reactive frontends and scalable Node.js/Next.js backends with database integration.
+              Manage multi-cloud infrastructure, configure automated CI/CD pipelines, and orchestrate containers.
             </p>
             <div class="career-meta-row">
               <div>
                 <span>Avg. Salary</span>
-                <strong>₹12-22 LPA / $110K</strong>
+                <strong>$125K / ₹15-30 LPA</strong>
               </div>
               <div>
                 <span>Duration</span>
-                <strong>16-18 Weeks</strong>
+                <strong>18-20 Weeks</strong>
               </div>
             </div>
             <div class="skill-chips" style="margin-bottom: 20px;">
-              <span class="skill-chip">React</span>
-              <span class="skill-chip">Next.js</span>
-              <span class="skill-chip">TypeScript</span>
-              <span class="skill-chip">Node.js</span>
-              <span class="skill-chip">PostgreSQL</span>
+              <span class="skill-chip">AWS</span>
+              <span class="skill-chip">Kubernetes</span>
+              <span class="skill-chip">Terraform</span>
+              <span class="skill-chip">CI/CD</span>
             </div>
           </div>
-          <a href="profile.html?role=Modern%20Full%20Stack%20Engineer%20(MERN%20/%20Next.js)" class="btn btn-outline" style="width: 100%;">
-            Start Full Stack Track →
+          <a href="profile.html?role=Cloud%20Engineer" class="btn btn-outline" style="width: 100%;">
+            Start Cloud Track →
           </a>
         </div>
       </div>
 
-      <div style="text-align: center; margin-top: 40px;">
-        <a href="careers.html" class="btn btn-primary btn-lg">
-          View All 16+ Engineering Tracks & Comparisons →
+      <div style="text-align: center; margin-top: 36px;">
+        <a href="careers.html" class="btn btn-secondary">
+          View All 10+ Engineering Career Tracks →
         </a>
       </div>
     </section>
 
-    <!-- 4-Step Intelligence Pipeline Section -->
+    <!-- 4-Stage Visual Pipeline -->
+    <section class="container" style="margin-bottom: 90px;">
+      <div class="glass-card" style="padding: 55px 40px;">
+        <div class="section-header" style="margin-bottom: 45px;">
+          <span class="section-tag">How SkillPath Works</span>
+          <h2 class="section-title">Your 4-Step <span>Career Transformation</span></h2>
+          <p class="section-desc">A structured engineering process designed to take you from initial assessment to job offer.</p>
+        </div>
+
+        <div class="grid-4">
+          <div class="stat-item" style="text-align: left; padding: 15px;">
+            <div style="font-size: 1.8rem; margin-bottom: 12px;">📝</div>
+            <h4 style="font-size: 1.15rem; margin-bottom: 6px;">1. Profile Intake</h4>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Input your college coursework, CGPA, existing technical skills, and target ambition.</p>
+          </div>
+
+          <div class="stat-item" style="text-align: left; padding: 15px;">
+            <div style="font-size: 1.8rem; margin-bottom: 12px;">🎯</div>
+            <h4 style="font-size: 1.15rem; margin-bottom: 6px;">2. AI Gap Discovery</h4>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Our engine benchmarks your profile against current job descriptions to isolate missing skills.</p>
+          </div>
+
+          <div class="stat-item" style="text-align: left; padding: 15px;">
+            <div style="font-size: 1.8rem; margin-bottom: 12px;">🗺️</div>
+            <h4 style="font-size: 1.15rem; margin-bottom: 6px;">3. Milestone Roadmap</h4>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Receive a week-by-week learning plan with interactive checklists and curated topic priorities.</p>
+          </div>
+
+          <div class="stat-item" style="text-align: left; padding: 15px;">
+            <div style="font-size: 1.8rem; margin-bottom: 12px;">🏆</div>
+            <h4 style="font-size: 1.15rem; margin-bottom: 6px;">4. Capstone Portfolio</h4>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Build production-grade projects and target industry certifications that pass recruiter screens.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive University Branch Gap Calculator -->
+    <section class="container" style="margin-bottom: 90px;">
+      <div class="glass-card" style="padding: 45px 36px;">
+        <div class="section-header" style="margin-bottom: 30px;">
+          <span class="section-tag">Cross-Discipline Acceleration</span>
+          <h2 class="section-title">Select Your <span>Engineering Branch</span></h2>
+          <p class="section-desc">See how SkillPath AI transforms your specific academic background into top-tier tech roles.</p>
+        </div>
+
+        <div class="branch-selector-group" id="branchSelectorGroup">
+          <button class="branch-btn active" data-branch="cse">💻 CSE / IT</button>
+          <button class="branch-btn" data-branch="ece">⚡ ECE / EE</button>
+          <button class="branch-btn" data-branch="mech">⚙️ Mechanical / Civil</button>
+          <button class="branch-btn" data-branch="bca">🎓 BCA / MCA</button>
+          <button class="branch-btn" data-branch="other">🌐 Non-Tech / Other</button>
+        </div>
+
+        <div class="branch-insight-box" id="branchInsightBox">
+          <!-- Dynamically populated by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Student Testimonials Section -->
     <section class="container" style="margin-bottom: 90px;">
       <div class="section-header">
-        <span class="section-tag">System Architecture</span>
-        <h2 class="section-title">How SkillPath AI <span>Powers Your Journey</span></h2>
-        <p class="section-desc">Our multi-stage evaluation pipeline bridges university academia with real-world industry requirements.</p>
+        <span class="section-tag">Student Success Stories</span>
+        <h2 class="section-title">Trusted by <span>Aspiring Engineers</span></h2>
+        <p class="section-desc">See how university students used SkillPath AI to land interviews and accelerate their careers.</p>
       </div>
 
-      <div class="grid-4">
-        <div class="glass-card" style="padding: 28px; border: 1.5px solid var(--border-burgundy); box-shadow: var(--shadow-sm);">
-          <div style="font-size: 2rem; margin-bottom: 12px; color: var(--autumn-burgundy); font-family: 'Outfit', sans-serif; font-weight: 800;">01</div>
-          <h3 style="font-size: 1.2rem; margin-bottom: 8px;">Academic Intake</h3>
-          <p style="color: var(--text-muted); font-size: 0.9rem;">
-            We evaluate your degree, major (CSE/ECE/ME), current academic year, and university coursework.
+      <div class="grid-3">
+        <div class="glass-card card-hover-3d">
+          <div style="color: #f59e0b; margin-bottom: 12px;">★★★★★</div>
+          <p style="font-size: 0.96rem; color: #cbd5e1; margin-bottom: 20px; font-style: italic;">
+            "As a 3rd year CSE student, I didn't know whether to focus on DSA or Spring Boot. SkillPath AI gave me a clear 16-week timeline that landed me my first backend internship!"
           </p>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="user-avatar-circle" style="background: var(--gradient-primary);">RK</div>
+            <div>
+              <strong style="font-size: 0.95rem; display: block;">Rahul Kumar</strong>
+              <span style="font-size: 0.8rem; color: var(--text-dim);">Placed as Junior Backend Engineer</span>
+            </div>
+          </div>
         </div>
 
-        <div class="glass-card" style="padding: 28px; border: 1.5px solid var(--border-sienna); box-shadow: var(--shadow-sm);">
-          <div style="font-size: 2rem; margin-bottom: 12px; color: var(--autumn-sienna); font-family: 'Outfit', sans-serif; font-weight: 800;">02</div>
-          <h3 style="font-size: 1.2rem; margin-bottom: 8px;">Skill Gap Discovery</h3>
-          <p style="color: var(--text-muted); font-size: 0.9rem;">
-            The engine compares your verified competencies against industry hiring benchmarks to pinpoint exact gaps.
+        <div class="glass-card card-hover-3d">
+          <div style="color: #f59e0b; margin-bottom: 12px;">★★★★★</div>
+          <p style="font-size: 0.96rem; color: #cbd5e1; margin-bottom: 20px; font-style: italic;">
+            "The market readiness gauge was eye-opening. I discovered I was missing crucial MLOps and transformer fundamentals for AI engineering. The roadmap was straightforward and practical."
           </p>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="user-avatar-circle" style="background: var(--gradient-secondary);">AP</div>
+            <div>
+              <strong style="font-size: 0.95rem; display: block;">Ananya Patel</strong>
+              <span style="font-size: 0.8rem; color: var(--text-dim);">AI/ML Master's Candidate</span>
+            </div>
+          </div>
         </div>
 
-        <div class="glass-card" style="padding: 28px; border: 1.5px solid var(--border-ochre); box-shadow: var(--shadow-sm);">
-          <div style="font-size: 2rem; margin-bottom: 12px; color: var(--autumn-ochre); font-family: 'Outfit', sans-serif; font-weight: 800;">03</div>
-          <h3 style="font-size: 1.2rem; margin-bottom: 8px;">Milestone Synthesis</h3>
-          <p style="color: var(--text-muted); font-size: 0.9rem;">
-            Generates a structured 4-phase learning roadmap with interactive topic checklists and curated free resources.
+        <div class="glass-card card-hover-3d">
+          <div style="color: #f59e0b; margin-bottom: 12px;">★★★★★</div>
+          <p style="font-size: 0.96rem; color: #cbd5e1; margin-bottom: 20px; font-style: italic;">
+            "The capstone project blueprints are leagues better than generic clone tutorials. The architecture recommendations gave me talking points for every technical interview."
           </p>
-        </div>
-
-        <div class="glass-card" style="padding: 28px; border: 1.5px solid var(--border-espresso); box-shadow: var(--shadow-sm);">
-          <div style="font-size: 2rem; margin-bottom: 12px; color: var(--autumn-espresso); font-family: 'Outfit', sans-serif; font-weight: 800;">04</div>
-          <h3 style="font-size: 1.2rem; margin-bottom: 8px;">ATS & Interview Ready</h3>
-          <p style="color: var(--text-muted); font-size: 0.9rem;">
-            Evaluate your resume keywords, verify skills via interactive quizzes, and build tiered capstone projects.
-          </p>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="user-avatar-circle" style="background: var(--gradient-emerald);">SS</div>
+            <div>
+              <strong style="font-size: 0.95rem; display: block;">Syed Sohail</strong>
+              <span style="font-size: 0.8rem; color: var(--text-dim);">Full Stack Developer</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Call to Action Banner -->
-    <section class="container" style="margin-bottom: 80px;">
-      <div class="glass-card" style="padding: 50px 30px; text-align: center; background: #ffffff; border: 2px solid var(--autumn-burgundy); box-shadow: var(--shadow-md);">
-        <h2 style="font-size: 2.4rem; margin-bottom: 12px;">Ready to Benchmark Your Engineering Readiness?</h2>
-        <p style="color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto 30px;">
-          Join thousands of students turning academic knowledge into high-paying engineering offers.
+    <section class="container" style="margin-bottom: 70px;">
+      <div class="glass-card" style="text-align: center; padding: 60px 30px; background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.1) 100%), var(--bg-card); border-color: var(--border-bright);">
+        <h2 style="font-size: 2.5rem; margin-bottom: 14px;">Ready to Accelerate Your Career?</h2>
+        <p style="color: var(--text-muted); font-size: 1.15rem; max-width: 600px; margin: 0 auto 30px;">
+          Create your student profile today, discover your skill gaps, and unlock a tailored roadmap in under two minutes.
         </p>
-        <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
-          <a href="profile.html" class="btn btn-primary btn-lg">Launch Assessment Wizard →</a>
-          <a href="resume-scanner.html" class="btn btn-outline btn-lg">Run ATS Resume Scanner 📄</a>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap;">
+          <a href="register.html" class="btn btn-primary btn-lg">Create Free Student Account</a>
+          <a href="profile.html" class="btn btn-outline btn-lg">Start Quick Assessment</a>
         </div>
       </div>
     </section>
@@ -337,47 +459,60 @@
 
   <!-- Universal Footer -->
   <footer class="footer">
-    <div class="container footer-content">
-      <div class="footer-col" style="max-width: 380px;">
-        <div class="brand-logo" style="margin-bottom: 16px;">
-          <div class="logo-icon">
-            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+    <div class="container">
+      <div class="footer-content">
+        <div style="max-width: 380px;">
+          <div class="brand-logo" style="margin-bottom: 16px;">
+            <div class="logo-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+              </svg>
+            </div>
+            <div class="logo-text">SkillPath <span>AI</span></div>
           </div>
-          <div class="logo-text">SkillPath <span>AI</span></div>
+          <p style="color: var(--text-dim); font-size: 0.92rem; line-height: 1.6;">
+            The enterprise-grade student career navigation and skill gap visualizer. Powered by Java Spring Boot 4 REST services, MySQL persistence, and high-performance modern web architecture.
+          </p>
         </div>
-        <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6;">
-          Intelligent career navigation, stream gap benchmarking, and milestone learning roadmaps for aspiring engineering students worldwide.
-        </p>
+
+        <div class="footer-col">
+          <h5>Platform</h5>
+          <ul>
+            <li><a href="careers.html">Career Tracks</a></li>
+            <li><a href="profile.html">Skill Assessment</a></li>
+            <li><a href="roadmap.html">Roadmap Visualizer</a></li>
+            <li><a href="dashboard.html">Student Dashboard</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Account</h5>
+          <ul>
+            <li><a href="login.html">Sign In</a></li>
+            <li><a href="register.html">Student Registration</a></li>
+            <li><a href="dashboard.html">Saved Roadmaps</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Developer & API</h5>
+          <ul>
+            <li><a href="http://localhost:8080/api/health" target="_blank">API Health Status ↗</a></li>
+            <li><a href="http://localhost:8080/api/careers" target="_blank">Careers JSON ↗</a></li>
+            <li><a href="http://localhost:8080/api/students" target="_blank">Students Endpoint ↗</a></li>
+          </ul>
+        </div>
       </div>
 
-      <div class="footer-col" id="footerNavCol">
-        <h5>Platform Navigation</h5>
-        <ul id="footerNavLinks">
-          <li><a href="index.html">Home Overview</a></li>
-          <li><a href="careers.html">Career Tracks Catalog</a></li>
-          <li><a href="quiz.html">Skill Calibration Quiz</a></li>
-          <li><a href="login.html">Sign In (Student Portal)</a></li>
-          <li><a href="register.html">Create Student Account</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col" id="footerToolsCol">
-        <h5>Interactive Tools</h5>
-        <ul id="footerToolLinks">
-          <li><a href="quiz.html">Skill Calibration Quiz</a></li>
-          <li><a href="careers.html">Role Comparison Mode</a></li>
-          <li><a href="login.html?redirect=profile.html">Assessment Wizard <span class="badge-lock" style="font-size: 0.72rem; padding: 2px 6px; background: rgba(111,29,27,0.12); color: var(--autumn-burgundy); border-radius: 4px; font-weight: 700; margin-left: 4px;">🔒 Sign In</span></a></li>
-          <li><a href="login.html?redirect=resume-scanner.html">ATS Resume Scanner <span class="badge-lock" style="font-size: 0.72rem; padding: 2px 6px; background: rgba(111,29,27,0.12); color: var(--autumn-burgundy); border-radius: 4px; font-weight: 700; margin-left: 4px;">🔒 Sign In</span></a></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="container footer-bottom">
-      <div>© 2026 SkillPath AI • Full Stack Student Career Intelligence Platform</div>
-      <div style="display: flex; gap: 20px;">
-        <a href="index.html" style="color: var(--text-dim); text-decoration: none;">Privacy</a>
-        <a href="index.html" style="color: var(--text-dim); text-decoration: none;">Terms</a>
-        <a href="index.html" style="color: var(--text-dim); text-decoration: none;">Netlify Ready</a>
+      <div class="footer-bottom">
+        <div>© 2026 SkillPath AI. Engineered for Student Career Excellence.</div>
+        <div style="display: flex; gap: 20px;">
+          <span>Java Spring Boot 4.1</span>
+          <span>•</span>
+          <span>REST API</span>
+          <span>•</span>
+          <span>MySQL JPA</span>
+        </div>
       </div>
     </div>
   </footer>

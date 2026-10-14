@@ -10,8 +10,6 @@
 </head>
 <body>
 
-  <div class="ambient-orb-3"></div>
-
   <!-- Top Navigation Bar -->
   <header class="navbar">
     <div class="container nav-container">
@@ -26,11 +24,18 @@
 
       <ul class="nav-links">
         <li><a href="index.html" class="nav-link">Home</a></li>
-        <li><a href="careers.html" class="nav-link active">Tracks</a></li>
-        <li><a href="quiz.html" class="nav-link">Quiz</a></li>
+        <li><a href="careers.html" class="nav-link active">Career Tracks</a></li>
+        <li><a href="profile.html" class="nav-link">Assessment Wizard</a></li>
+        <li><a href="roadmap.html" class="nav-link">Roadmap</a></li>
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
       </ul>
 
-      <div class="nav-actions" id="navAuthContainer"></div>
+      <div class="nav-actions">
+        <div id="backendStatusBadge" class="server-badge">
+          <span class="status-indicator"></span> Checking Server...
+        </div>
+        <div id="navAuthContainer"></div>
+      </div>
     </div>
   </header>
 
@@ -41,44 +46,29 @@
       <span class="section-tag">Industry Benchmark Catalog</span>
       <h1 class="section-title">Explore Tech <span>Career Pathways</span></h1>
       <p class="section-desc">
-        Benchmark yourself against real hiring expectations. Search across 16+ high-demand tech domains, inspect required skills, compensation bands, and launch your tailored AI roadmap.
+        Benchmark yourself against real hiring expectations. Select any track to inspect core competencies, average compensation, and launch a tailored roadmap.
       </p>
     </div>
 
-    <!-- Search & Stream Filter Controls -->
-    <div class="glass-card" style="margin-bottom: 30px; padding: 20px;">
-      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 16px; align-items: center;">
-        <div class="form-group" style="margin-bottom: 0;">
-          <input type="text" id="careerSearchInput" class="form-control" placeholder="🔍 Search roles, skills (e.g. Java, Python, Docker, React, C++, AWS)..." style="background: var(--bg-input);">
-        </div>
-        <div class="form-group" style="margin-bottom: 0;">
-          <select id="careerStreamFilter" class="form-control" style="background: var(--bg-input);">
-            <option value="all">🎓 All Academic Streams</option>
-            <option value="cse">Computer Science & IT (CSE/IT)</option>
-            <option value="ece">Electronics & Communication (ECE)</option>
-            <option value="me">Mechanical & Mechatronics (ME)</option>
-            <option value="bca">BCA / MCA</option>
-          </select>
-        </div>
-      </div>
+    <!-- Search & Filter Controls -->
+    <div style="max-width: 650px; margin: 0 auto 30px; position: relative;">
+      <input type="text" id="careerSearchInput" class="form-control" placeholder="🔍 Search roles, core skills (e.g. Java, Python, Docker, React, AWS)..." style="padding: 14px 22px; font-size: 1rem; border-radius: 9999px; background: rgba(13, 20, 39, 0.75); border: 1px solid var(--border-bright); box-shadow: 0 0 25px rgba(99, 102, 241, 0.15);">
     </div>
 
     <!-- Category Filter Bar -->
     <div class="filter-bar" id="categoryFilterBar">
-      <button class="filter-btn active" data-category="ALL">All Disciplines (16+)</button>
+      <button class="filter-btn active" data-category="ALL">All Disciplines</button>
       <button class="filter-btn" data-category="Software Engineering">Software Engineering</button>
-      <button class="filter-btn" data-category="Web Development">Full Stack Web</button>
-      <button class="filter-btn" data-category="Artificial Intelligence">AI & Deep Learning</button>
+      <button class="filter-btn" data-category="Artificial Intelligence">AI & Machine Learning</button>
       <button class="filter-btn" data-category="Data Science">Data & Analytics</button>
       <button class="filter-btn" data-category="Cloud Infrastructure">Cloud & DevOps</button>
-      <button class="filter-btn" data-category="Hardware & IoT">Embedded, IoT & Robotics</button>
       <button class="filter-btn" data-category="Information Security">Cybersecurity</button>
-      <button class="filter-btn" data-category="Design & Product">UI/UX Design</button>
+      <button class="filter-btn" data-category="Web Development">Full Stack Web</button>
     </div>
 
     <!-- Dynamic Cards Grid -->
     <div class="grid-3" id="careerCardsGrid">
-      <!-- Injected via JavaScript from CAREER_CATALOG -->
+      <!-- Injected via JavaScript -->
     </div>
 
   </main>
@@ -94,5 +84,205 @@
   <script src="js/auth.js"></script>
   <script src="js/api.js"></script>
   <script src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const grid = document.getElementById('careerCardsGrid');
+      const filterBar = document.getElementById('categoryFilterBar');
+      const searchInput = document.getElementById('careerSearchInput');
+      let activeCategory = 'ALL';
+      let searchQuery = '';
+
+      try {
+        const targetUrl = (typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://localhost:8080/api') + '/careers';
+        const res = await fetch(targetUrl);
+        if (res.ok) {
+          careers = await res.json();
+        }
+      } catch (e) {
+        console.warn('Backend careers fetch failed, using local catalog data');
+      }
+
+      if (!careers.length) {
+        careers = [
+          {
+            id: 'software-developer',
+            title: 'Software Developer (Java / Cloud)',
+            category: 'Software Engineering',
+            shortDescription: 'Design and build high-concurrency microservices, robust REST APIs, and enterprise cloud systems with Java 21 and Spring Boot.',
+            demandLevel: 'Extremely High',
+            averageSalary: '$115,000 / ₹14-24 LPA',
+            recommendedDuration: '16-20 Weeks',
+            coreSkills: ['Java 21', 'Spring Boot 4', 'SQL & RDBMS', 'REST APIs', 'Docker', 'DSA', 'Git & GitHub'],
+            topTools: ['IntelliJ IDEA', 'Docker', 'Postman', 'MySQL / PostgreSQL'],
+            icon: '☕',
+            accentColor: '#6366f1'
+          },
+          {
+            id: 'ai-ml-engineer',
+            title: 'AI & Machine Learning Engineer',
+            category: 'Artificial Intelligence',
+            shortDescription: 'Architect deep neural models, NLP transformers, RAG architectures, and production-grade intelligent pipelines.',
+            demandLevel: 'Extremely High',
+            averageSalary: '$130,000 / ₹18-35 LPA',
+            recommendedDuration: '20-24 Weeks',
+            coreSkills: ['Python 3.12', 'Linear Algebra & Stats', 'PyTorch', 'Transformers', 'Vector DBs', 'RAG Pipelines', 'MLOps'],
+            topTools: ['Jupyter', 'PyTorch', 'Hugging Face', 'FastAPI'],
+            icon: '🤖',
+            accentColor: '#a855f7'
+          },
+          {
+            id: 'cloud-devops',
+            title: 'Cloud & DevOps SRE',
+            category: 'Cloud Infrastructure',
+            shortDescription: 'Automate deployment pipelines, orchestrate Kubernetes clusters, and manage AWS/GCP cloud native infrastructure.',
+            demandLevel: 'Very High',
+            averageSalary: '$125,000 / ₹15-30 LPA',
+            recommendedDuration: '18-20 Weeks',
+            coreSkills: ['Linux Shell', 'Git & GitHub', 'Docker', 'Kubernetes', 'CI/CD Pipelines', 'Terraform', 'AWS'],
+            topTools: ['Docker', 'Kubernetes', 'Terraform', 'GitHub Actions'],
+            icon: '☁️',
+            accentColor: '#10b981'
+          },
+          {
+            id: 'data-scientist',
+            title: 'Data Scientist & AI Analyst',
+            category: 'Data Science',
+            shortDescription: 'Extract mathematical insights, build predictive statistical models, and power business-critical data decisions.',
+            demandLevel: 'Very High',
+            averageSalary: '$115,000 / ₹14-26 LPA',
+            recommendedDuration: '16-18 Weeks',
+            coreSkills: ['Python', 'SQL & BigQuery', 'Inferential Statistics', 'Machine Learning', 'Pandas & NumPy', 'Tableau'],
+            topTools: ['Scikit-Learn', 'Seaborn', 'Streamlit', 'Tableau'],
+            icon: '🔬',
+            accentColor: '#06b6d4'
+          },
+          {
+            id: 'cybersecurity',
+            title: 'Cybersecurity Analyst',
+            category: 'Information Security',
+            shortDescription: 'Safeguard digital infrastructure, conduct penetration testing, analyze network traffic, and protect systems against exploits.',
+            demandLevel: 'Very High',
+            averageSalary: '$112,000 / ₹14-26 LPA',
+            recommendedDuration: '16-18 Weeks',
+            coreSkills: ['Computer Networking', 'Linux Hardening', 'Ethical Hacking', 'OWASP Top 10', 'SIEM Operations', 'Cryptography'],
+            topTools: ['Wireshark', 'Burp Suite', 'Nmap', 'Splunk'],
+            icon: '🛡️',
+            accentColor: '#f59e0b'
+          },
+          {
+            id: 'web-developer',
+            title: 'Full Stack Web Developer (Next.js)',
+            category: 'Web Development',
+            shortDescription: 'Craft modern user interfaces, reactive web applications, and resilient cloud backends using TypeScript and React 19.',
+            demandLevel: 'Very High',
+            averageSalary: '$110,000 / ₹12-22 LPA',
+            recommendedDuration: '14-16 Weeks',
+            coreSkills: ['HTML5 & Modern CSS', 'TypeScript', 'React 19 / Next.js', 'Node.js', 'REST & GraphQL', 'PostgreSQL / Prisma'],
+            topTools: ['VS Code', 'Next.js', 'Vercel', 'Postman'],
+            icon: '🌐',
+            accentColor: '#ec4899'
+          }
+        ];
+      }
+
+      function filterAndRender() {
+        const query = searchQuery.toLowerCase().trim();
+        const filtered = careers.filter(c => {
+          const matchCat = activeCategory === 'ALL' || c.category.toLowerCase().includes(activeCategory.toLowerCase());
+          if (!matchCat) return false;
+          if (!query) return true;
+
+          const titleMatch = c.title.toLowerCase().includes(query);
+          const descMatch = (c.shortDescription || '').toLowerCase().includes(query);
+          const skillsMatch = (c.coreSkills || []).some(s => s.toLowerCase().includes(query));
+          return titleMatch || descMatch || skillsMatch;
+        });
+
+        if (!filtered.length) {
+          grid.innerHTML = `
+            <div class="glass-card" style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+              <div style="font-size: 3rem; margin-bottom: 14px;">🔍</div>
+              <h3 style="font-size: 1.4rem; margin-bottom: 8px;">No Career Tracks Found</h3>
+              <p style="color: var(--text-muted); margin-bottom: 20px;">No roles matched your search for "${searchQuery}".</p>
+              <button class="btn btn-outline" id="resetSearchBtn">Clear Search & Filters</button>
+            </div>
+          `;
+          const resetBtn = document.getElementById('resetSearchBtn');
+          if (resetBtn) {
+            resetBtn.addEventListener('click', () => {
+              searchQuery = '';
+              activeCategory = 'ALL';
+              if (searchInput) searchInput.value = '';
+              if (filterBar) {
+                filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                filterBar.querySelector('[data-category="ALL"]').classList.add('active');
+              }
+              filterAndRender();
+            });
+          }
+          return;
+        }
+
+        grid.innerHTML = filtered.map(c => `
+          <div class="glass-card card-hover-3d shimmer-hover career-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div class="career-card-top">
+                <div class="career-icon-wrapper">${c.icon || '🚀'}</div>
+                <span class="demand-badge ${c.demandLevel.toLowerCase().includes('extreme') ? 'extreme' : 'high'}">
+                  ${c.demandLevel}
+                </span>
+              </div>
+              <h3 style="font-size: 1.4rem; margin-bottom: 6px;">${c.title}</h3>
+              <p style="color: var(--text-dim); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px;">
+                ${c.category}
+              </p>
+              <p style="color: var(--text-muted); font-size: 0.93rem; margin-bottom: 16px; line-height: 1.6;">
+                ${c.shortDescription}
+              </p>
+              <div class="career-meta-row">
+                <div>
+                  <span>Avg. Salary</span>
+                  <strong style="color: #34d399;">${c.averageSalary}</strong>
+                </div>
+                <div>
+                  <span>Duration</span>
+                  <strong>${c.recommendedDuration}</strong>
+                </div>
+              </div>
+              <div style="margin-bottom: 20px;">
+                <span style="font-size: 0.8rem; color: var(--text-dim); display: block; margin-bottom: 8px; font-weight: 700;">Core Required Skills:</span>
+                <div class="skill-chips">
+                  ${(c.coreSkills || []).map(s => `<span class="skill-chip">${s}</span>`).join('')}
+                </div>
+              </div>
+            </div>
+            <a href="profile.html?role=${encodeURIComponent(c.title)}" class="btn btn-primary" style="width: 100%; justify-content: center;">
+              Launch Assessment for This Role →
+            </a>
+          </div>
+        `).join('');
+      }
+
+      filterAndRender();
+
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          searchQuery = e.target.value;
+          filterAndRender();
+        });
+      }
+
+      if (filterBar) {
+        filterBar.addEventListener('click', (e) => {
+          if (e.target.classList.contains('filter-btn')) {
+            filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            activeCategory = e.target.getAttribute('data-category');
+            filterAndRender();
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>
