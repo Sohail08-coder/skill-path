@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Personalized Career Roadmap | SkillPath AI</title>
+  <meta name="description" content="AI-synthesized skill gap breakdown, animated readiness meter, and actionable learning milestones with interactive checklists.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    @media print {
+      .navbar, .footer, .btn, .server-badge, #printRoadmapBtn { display: none !important; }
+      body { background: white !important; color: black !important; }
+      .glass-card, .readiness-meter-card { border: 1px solid #ccc !important; box-shadow: none !important; background: white !important; color: black !important; }
+      .score-circle-bg { stroke: #e2e8f0 !important; }
+      .text-gradient { -webkit-text-fill-color: initial !important; color: #4338ca !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+          </svg>
+        </div>
+        <div class="logo-text">SkillPath <span>AI</span></div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="careers.html" class="nav-link">Career Tracks</a></li>
+        <li><a href="profile.html" class="nav-link">Assessment Wizard</a></li>
+        <li><a href="roadmap.html" class="nav-link active">Roadmap</a></li>
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button id="printRoadmapBtn" class="btn btn-outline btn-sm" title="Print or save as PDF">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+          Export PDF
+        </button>
+        <div id="navAuthContainer"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Roadmap Content -->
+  <main class="container" style="padding-top: 40px; padding-bottom: 70px;">
+    
+    <!-- Student Header Banner -->
+    <div class="glass-card" style="margin-bottom: 30px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
+      <div>
+        <span class="section-tag">Synthesized AI Roadmap</span>
+        <h1 style="font-size: 2.3rem; margin-bottom: 6px;">
+          Roadmap for <span id="studentName" class="text-gradient">Alex Morgan</span>
+        </h1>
+        <p id="studentMetaDetails" style="color: var(--text-muted); font-size: 0.96rem;">
+          Computer Science & Engineering • 3rd Year • CGPA: 8.70
+        </p>
+      </div>
+
+      <div style="text-align: right;">
+        <span style="font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; display: block;">Target Engineering Track</span>
+        <div id="studentCareerGoal" style="font-size: 1.45rem; font-weight: 800; color: #a5b4fc; font-family: 'Outfit', sans-serif;">
+          Software Developer
+        </div>
+      </div>
+    </div>
+
+    <!-- Readiness Score & Qualitative Meter -->
+    <div class="readiness-meter-card">
+      <div class="score-circle-container">
+        <svg class="score-circle-svg" viewBox="0 0 130 130">
+          <defs>
+            <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#6366f1" />
+              <stop offset="50%" stop-color="#a855f7" />
+              <stop offset="100%" stop-color="#ec4899" />
+            </linearGradient>
+          </defs>
+          <circle class="score-circle-bg" cx="65" cy="65" r="50"></circle>
+          <circle id="circleProgress" class="score-circle-progress" cx="65" cy="65" r="50" stroke-dasharray="314.159" stroke-dashoffset="100"></circle>
+        </svg>
+        <div class="score-text-overlay">
+          <div id="scoreNumber" class="score-number">68%</div>
+          <div class="score-label">Readiness</div>
+        </div>
+      </div>
+
+      <div class="meter-info">
+        <h3 id="meterHeading" style="font-size: 1.6rem; margin-bottom: 8px;">Intermediate Foundation</h3>
+        <p id="meterSub" style="color: var(--text-muted); font-size: 1rem; line-height: 1.6;">
+          You possess solid fundamental strengths. Completing the prioritized skill gaps below will elevate your resume to competitive tier-1 standards.
+        </p>
+        <p id="analysisSummaryText" style="margin-top: 10px; font-size: 0.92rem; color: #c7d2fe; font-style: italic;"></p>
+      </div>
+    </div>
+
+    <!-- Dual Skill Gap Breakdown (Priority Gaps vs Acquired Strengths) -->
+    <div class="skills-comparison-grid">
+      <!-- Missing Skills Card -->
+      <div class="skills-list-box" style="border-left: 4px solid var(--accent-pink);">
+        <h4>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          Priority Skill Gaps (To Master)
+        </h4>
+        <div id="missingSkillsList" class="skills-wrap"></div>
+      </div>
+
+      <!-- Acquired Skills Card -->
+      <div class="skills-list-box" style="border-left: 4px solid var(--accent-emerald);">
+        <h4>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          Acquired Strengths (Verified)
+        </h4>
+        <div id="acquiredSkillsList" class="skills-wrap"></div>
+      </div>
+    </div>
+
+    <!-- Interactive Milestone Roadmap Timeline -->
+    <div class="glass-card" style="margin-bottom: 35px;">
+      <div class="section-header" style="text-align: left; margin-bottom: 24px; max-width: 100%;">
+        <span class="section-tag">Interactive Action Plan</span>
+        <h2 style="font-size: 1.9rem;">Milestone Learning Timeline</h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">
+          Check off topics as you study. Your market readiness meter will dynamically update!
+        </p>
+      </div>
+
+      <div id="roadmapTimeline" class="timeline"></div>
+    </div>
+
+    <!-- Capstone Projects & Certifications Grid -->
+    <div class="grid-2">
+      <!-- Real-World Capstone Projects -->
+      <div class="glass-card">
+        <h3 style="font-size: 1.4rem; margin-bottom: 14px; display: flex; align-items: center; gap: 10px;">
+          <span>🚀</span> Recommended Capstone Blueprints
+        </h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
+          Build and deploy these projects to showcase production competence during technical interviews.
+        </p>
+        <div id="projectsList"></div>
+      </div>
+
+      <!-- Recognized Industry Certifications -->
+      <div class="glass-card">
+        <h3 style="font-size: 1.4rem; margin-bottom: 14px; display: flex; align-items: center; gap: 10px;">
+          <span>🏆</span> Industry Recognized Certifications
+        </h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
+          Target these formal credentials to validate your competencies and bypass automated HR screening.
+        </p>
+        <div id="certsList"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Universal Footer -->
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <div>© 2026 SkillPath AI • Full Stack Student Career Intelligence</div>
+      <div>
+        <a href="profile.html" style="color: var(--text-muted); text-decoration: none; margin-right: 20px;">Retake Assessment</a>
+        <a href="dashboard.html" style="color: var(--text-muted); text-decoration: none;">Dashboard</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/auth.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/roadmap.js"></script>
+</body>
+</html>

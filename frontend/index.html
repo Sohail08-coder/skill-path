@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillPath AI | Enterprise Student Career & Skill Navigation Platform</title>
+  <meta name="description" content="AI-driven career benchmarks, skill gap discovery, and week-by-week learning roadmaps for aspiring engineers.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <div class="ambient-orb-3"></div>
+
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" id="brandLogoLink">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+          </svg>
+        </div>
+        <div class="logo-text">SkillPath <span>AI</span></div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link active">Home</a></li>
+        <li><a href="careers.html" class="nav-link">Career Tracks</a></li>
+        <li><a href="profile.html" class="nav-link">Assessment Wizard</a></li>
+        <li><a href="roadmap.html" class="nav-link">Roadmap</a></li>
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <div id="backendStatusBadge" class="server-badge">
+          <span class="status-indicator"></span> Checking Server...
+        </div>
+        <div id="navAuthContainer">
+          <a href="login.html" class="btn btn-outline btn-sm">Sign In</a>
+          <a href="register.html" class="btn btn-primary btn-sm">Get Started</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-pill">
+          <span class="hero-pill-badge">v2.0 ENTERPRISE</span>
+          <span>Empowering Students to Bridge Tech Gaps</span>
+        </div>
+
+        <h1 class="hero-title">
+          From Classroom to Codebase.<br>
+          Navigate Your <span class="text-gradient">Dream Tech Career.</span>
+        </h1>
+
+        <p class="hero-desc">
+          Stop guessing what recruiters want. SkillPath AI benchmarks your current university coursework, pinpoints high-priority skill gaps, and synthesizes an actionable week-by-week roadmap.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="profile.html" class="btn btn-primary btn-lg" id="heroStartAssessmentBtn">
+            Start Skill Assessment
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+          <a href="careers.html" class="btn btn-outline btn-lg" id="heroExploreCareersBtn">
+            Explore 10+ Career Tracks
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Live Stats Banner -->
+    <section class="container">
+      <div class="stats-banner">
+        <div class="stat-item">
+          <div class="stat-number">25+</div>
+          <div class="stat-label">Industry Career Tracks</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">150+</div>
+          <div class="stat-label">Benchmarked Tech Skills</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">94%</div>
+          <div class="stat-label">Interview Readiness Rate</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">10K+</div>
+          <div class="stat-label">Roadmaps Generated</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Career Explorer Showcase -->
+    <section class="container" style="margin-bottom: 90px;">
+      <div class="section-header">
+        <span class="section-tag">High-Demand Pathways</span>
+        <h2 class="section-title">Explore Top <span>Engineering Roles</span></h2>
+        <p class="section-desc">Click any career track to inspect required competencies, salary projections, and direct roadmaps.</p>
+      </div>
+
+      <div class="grid-3">
+        <!-- Role 1 -->
+        <div class="glass-card card-hover-3d shimmer-hover career-card">
+          <div>
+            <div class="career-card-top">
+              <div class="career-icon-wrapper">☕</div>
+              <span class="demand-badge extreme">Extremely High Demand</span>
+            </div>
+            <h3 style="font-size: 1.45rem; margin-bottom: 8px;">Software Developer</h3>
+            <p style="color: var(--text-muted); font-size: 0.94rem;">
+              Build enterprise services, microservices, and robust REST APIs with Java and Spring Boot.
+            </p>
+            <div class="career-meta-row">
+              <div>
+                <span>Avg. Salary</span>
+                <strong>$110K / ₹14-22 LPA</strong>
+              </div>
+              <div>
+                <span>Duration</span>
+                <strong>16-20 Weeks</strong>
+              </div>
+            </div>
+            <div class="skill-chips" style="margin-bottom: 20px;">
+              <span class="skill-chip">Java</span>
+              <span class="skill-chip">Spring Boot</span>
+              <span class="skill-chip">DSA</span>
+              <span class="skill-chip">SQL</span>
+              <span class="skill-chip">Docker</span>
+            </div>
+          </div>
+          <a href="profile.html?role=Software%20Developer" class="btn btn-outline" style="width: 100%;">
+            Start Software Track →
+          </a>
+        </div>
+
+        <!-- Role 2 -->
+        <div class="glass-card card-hover-3d shimmer-hover career-card">
+          <div>
+            <div class="career-card-top">
+              <div class="career-icon-wrapper" style="color: #a855f7;">🤖</div>
+              <span class="demand-badge extreme">Extremely High Demand</span>
+            </div>
+            <h3 style="font-size: 1.45rem; margin-bottom: 8px;">AI / ML Engineer</h3>
+            <p style="color: var(--text-muted); font-size: 0.94rem;">
+              Architect deep neural networks, transformer models, and scalable machine learning inference pipelines.
+            </p>
+            <div class="career-meta-row">
+              <div>
+                <span>Avg. Salary</span>
+                <strong>$130K / ₹18-35 LPA</strong>
+              </div>
+              <div>
+                <span>Duration</span>
+                <strong>20-24 Weeks</strong>
+              </div>
+            </div>
+            <div class="skill-chips" style="margin-bottom: 20px;">
+              <span class="skill-chip">Python</span>
+              <span class="skill-chip">PyTorch</span>
+              <span class="skill-chip">Math & Stats</span>
+              <span class="skill-chip">Transformers</span>
+            </div>
+          </div>
+          <a href="profile.html?role=AI%20/%20ML%20Engineer" class="btn btn-outline" style="width: 100%;">
+            Start AI / ML Track →
+          </a>
+        </div>
+
+        <!-- Role 3 -->
+        <div class="glass-card card-hover-3d shimmer-hover career-card">
+          <div>
+            <div class="career-card-top">
+              <div class="career-icon-wrapper" style="color: #10b981;">☁️</div>
+              <span class="demand-badge high">High Demand</span>
+            </div>
+            <h3 style="font-size: 1.45rem; margin-bottom: 8px;">Cloud & DevOps Engineer</h3>
+            <p style="color: var(--text-muted); font-size: 0.94rem;">
+              Manage multi-cloud infrastructure, configure automated CI/CD pipelines, and orchestrate containers.
+            </p>
+            <div class="career-meta-row">
+              <div>
+                <span>Avg. Salary</span>
+                <strong>$125K / ₹15-30 LPA</strong>
+              </div>
+              <div>
+                <span>Duration</span>
+                <strong>18-20 Weeks</strong>
+              </div>
+            </div>
+            <div class="skill-chips" style="margin-bottom: 20px;">
+              <span class="skill-chip">AWS</span>
+              <span class="skill-chip">Kubernetes</span>
+              <span class="skill-chip">Terraform</span>
+              <span class="skill-chip">CI/CD</span>
+            </div>
+          </div>
+          <a href="profile.html?role=Cloud%20Engineer" class="btn btn-outline" style="width: 100%;">
+            Start Cloud Track →
+          </a>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 36px;">
+        <a href="careers.html" class="btn btn-secondary">
+          View All 10+ Engineering Career Tracks →
+        </a>
+      </div>
+    </section>
+
+    <!-- 4-Stage Visual Pipeline -->
+    <section class="container" style="margin-bottom: 90px;">
+      <div class="glass-card" style="padding: 55px 40px;">
+        <div class="section-header" style="margin-bottom: 45px;">
+          <span class="section-tag">How SkillPath Works</span>
+          <h2 class="section-title">Your 4-Step <span>Career Transformation</span></h2>
+          <p class="section-desc">A structured engineering process designed to take you from initial assessment to job offer.</p>
+        </div>
+
+        <div class="grid-4">
+          <div class="stat-item" style="text-align: left; padding: 15px;">
+            <div style="font-size: 1.8rem; margin-bottom: 12px;">📝</div>
+            <h4 style="font-size: 1.15rem; margin-bottom: 6px;">1. Profile Intake</h4>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Input your college coursework, CGPA, existing technical skills, and target ambition.</p>
+          </div>
+
+          <div class="stat-item" style="text-align: left; padding: 15px;">
+            <div style="font-size: 1.8rem; margin-bottom: 12px;">🎯</div>
+            <h4 style="font-size: 1.15rem; margin-bottom: 6px;">2. AI Gap Discovery</h4>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Our engine benchmarks your profile against current job descriptions to isolate missing skills.</p>
+          </div>
+
+          <div class="stat-item" style="text-align: left; padding: 15px;">
+            <div style="font-size: 1.8rem; margin-bottom: 12px;">🗺️</div>
+            <h4 style="font-size: 1.15rem; margin-bottom: 6px;">3. Milestone Roadmap</h4>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Receive a week-by-week learning plan with interactive checklists and curated topic priorities.</p>
+          </div>
+
+          <div class="stat-item" style="text-align: left; padding: 15px;">
+            <div style="font-size: 1.8rem; margin-bottom: 12px;">🏆</div>
+            <h4 style="font-size: 1.15rem; margin-bottom: 6px;">4. Capstone Portfolio</h4>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Build production-grade projects and target industry certifications that pass recruiter screens.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Student Testimonials Section -->
+    <section class="container" style="margin-bottom: 90px;">
+      <div class="section-header">
+        <span class="section-tag">Student Success Stories</span>
+        <h2 class="section-title">Trusted by <span>Aspiring Engineers</span></h2>
+        <p class="section-desc">See how university students used SkillPath AI to land interviews and accelerate their careers.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="glass-card card-hover-3d">
+          <div style="color: #f59e0b; margin-bottom: 12px;">★★★★★</div>
+          <p style="font-size: 0.96rem; color: #cbd5e1; margin-bottom: 20px; font-style: italic;">
+            "As a 3rd year CSE student, I didn't know whether to focus on DSA or Spring Boot. SkillPath AI gave me a clear 16-week timeline that landed me my first backend internship!"
+          </p>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="user-avatar-circle" style="background: var(--gradient-primary);">RK</div>
+            <div>
+              <strong style="font-size: 0.95rem; display: block;">Rahul Kumar</strong>
+              <span style="font-size: 0.8rem; color: var(--text-dim);">Placed as Junior Backend Engineer</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card card-hover-3d">
+          <div style="color: #f59e0b; margin-bottom: 12px;">★★★★★</div>
+          <p style="font-size: 0.96rem; color: #cbd5e1; margin-bottom: 20px; font-style: italic;">
+            "The market readiness gauge was eye-opening. I discovered I was missing crucial MLOps and transformer fundamentals for AI engineering. The roadmap was straightforward and practical."
+          </p>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="user-avatar-circle" style="background: var(--gradient-secondary);">AP</div>
+            <div>
+              <strong style="font-size: 0.95rem; display: block;">Ananya Patel</strong>
+              <span style="font-size: 0.8rem; color: var(--text-dim);">AI/ML Master's Candidate</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card card-hover-3d">
+          <div style="color: #f59e0b; margin-bottom: 12px;">★★★★★</div>
+          <p style="font-size: 0.96rem; color: #cbd5e1; margin-bottom: 20px; font-style: italic;">
+            "The capstone project blueprints are leagues better than generic clone tutorials. The architecture recommendations gave me talking points for every technical interview."
+          </p>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="user-avatar-circle" style="background: var(--gradient-emerald);">SS</div>
+            <div>
+              <strong style="font-size: 0.95rem; display: block;">Syed Sohail</strong>
+              <span style="font-size: 0.8rem; color: var(--text-dim);">Full Stack Developer</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action Banner -->
+    <section class="container" style="margin-bottom: 70px;">
+      <div class="glass-card" style="text-align: center; padding: 60px 30px; background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.1) 100%), var(--bg-card); border-color: var(--border-bright);">
+        <h2 style="font-size: 2.5rem; margin-bottom: 14px;">Ready to Accelerate Your Career?</h2>
+        <p style="color: var(--text-muted); font-size: 1.15rem; max-width: 600px; margin: 0 auto 30px;">
+          Create your student profile today, discover your skill gaps, and unlock a tailored roadmap in under two minutes.
+        </p>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap;">
+          <a href="register.html" class="btn btn-primary btn-lg">Create Free Student Account</a>
+          <a href="profile.html" class="btn btn-outline btn-lg">Start Quick Assessment</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Universal Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div style="max-width: 380px;">
+          <div class="brand-logo" style="margin-bottom: 16px;">
+            <div class="logo-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+              </svg>
+            </div>
+            <div class="logo-text">SkillPath <span>AI</span></div>
+          </div>
+          <p style="color: var(--text-dim); font-size: 0.92rem; line-height: 1.6;">
+            The enterprise-grade student career navigation and skill gap visualizer. Powered by Java Spring Boot 4 REST services, MySQL persistence, and high-performance modern web architecture.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h5>Platform</h5>
+          <ul>
+            <li><a href="careers.html">Career Tracks</a></li>
+            <li><a href="profile.html">Skill Assessment</a></li>
+            <li><a href="roadmap.html">Roadmap Visualizer</a></li>
+            <li><a href="dashboard.html">Student Dashboard</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Account</h5>
+          <ul>
+            <li><a href="login.html">Sign In</a></li>
+            <li><a href="register.html">Student Registration</a></li>
+            <li><a href="dashboard.html">Saved Roadmaps</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Developer & API</h5>
+          <ul>
+            <li><a href="http://localhost:8080/api/health" target="_blank">API Health Status ↗</a></li>
+            <li><a href="http://localhost:8080/api/careers" target="_blank">Careers JSON ↗</a></li>
+            <li><a href="http://localhost:8080/api/students" target="_blank">Students Endpoint ↗</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 SkillPath AI. Engineered for Student Career Excellence.</div>
+        <div style="display: flex; gap: 20px;">
+          <span>Java Spring Boot 4.1</span>
+          <span>•</span>
+          <span>REST API</span>
+          <span>•</span>
+          <span>MySQL JPA</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/auth.js"></script>
+  <script src="js/api.js"></script>
+</body>
+</html>

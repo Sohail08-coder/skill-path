@@ -1,0 +1,13 @@
+{
+  "name": "skillpath-ai-frontend",
+  "version": "1.0.0",
+  "description": "SkillPath AI - Modern Frontend Client",
+  "scripts": {
+    "dev": "npx -y serve -l 5500 .",
+    "start": "npx -y serve -l 5500 .",
+    "preview": "npx -y serve -l 5500 ."
+  },
+  "keywords": ["skillpath", "career", "education", "roadmap"],
+  "author": "",
+  "license": "MIT"
+}

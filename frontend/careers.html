@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Engineering Career Tracks Catalog | SkillPath AI</title>
+  <meta name="description" content="Explore high-demand tech roles, prerequisite tech stacks, salary benchmarks, and actionable learning timelines.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+          </svg>
+        </div>
+        <div class="logo-text">SkillPath <span>AI</span></div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="careers.html" class="nav-link active">Career Tracks</a></li>
+        <li><a href="profile.html" class="nav-link">Assessment Wizard</a></li>
+        <li><a href="roadmap.html" class="nav-link">Roadmap</a></li>
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <div id="backendStatusBadge" class="server-badge">
+          <span class="status-indicator"></span> Checking Server...
+        </div>
+        <div id="navAuthContainer"></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top: 45px; padding-bottom: 70px;">
+    
+    <!-- Catalog Header -->
+    <div class="section-header">
+      <span class="section-tag">Industry Benchmark Catalog</span>
+      <h1 class="section-title">Explore Tech <span>Career Pathways</span></h1>
+      <p class="section-desc">
+        Benchmark yourself against real hiring expectations. Select any track to inspect core competencies, average compensation, and launch a tailored roadmap.
+      </p>
+    </div>
+
+    <!-- Category Filter Bar -->
+    <div class="filter-bar" id="categoryFilterBar">
+      <button class="filter-btn active" data-category="ALL">All Disciplines</button>
+      <button class="filter-btn" data-category="Software Engineering">Software Engineering</button>
+      <button class="filter-btn" data-category="Artificial Intelligence">AI & Machine Learning</button>
+      <button class="filter-btn" data-category="Data Science">Data & Analytics</button>
+      <button class="filter-btn" data-category="Cloud Infrastructure">Cloud & DevOps</button>
+      <button class="filter-btn" data-category="Information Security">Cybersecurity</button>
+      <button class="filter-btn" data-category="Web Development">Full Stack Web</button>
+    </div>
+
+    <!-- Dynamic Cards Grid -->
+    <div class="grid-3" id="careerCardsGrid">
+      <!-- Injected via JavaScript -->
+    </div>
+
+  </main>
+
+  <!-- Universal Footer -->
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <div>© 2026 SkillPath AI • Full Stack Student Career Intelligence</div>
+      <div><a href="index.html" style="color: var(--text-dim); text-decoration: none;">← Back to Home</a></div>
+    </div>
+  </footer>
+
+  <script src="js/auth.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const grid = document.getElementById('careerCardsGrid');
+      const filterBar = document.getElementById('categoryFilterBar');
+      let careers = [];
+
+      try {
+        const res = await fetch('http://localhost:8080/api/careers');
+        if (res.ok) {
+          careers = await res.json();
+        }
+      } catch (e) {
+        console.warn('Backend careers fetch failed, using local catalog data');
+      }
+
+      if (!careers.length) {
+        careers = [
+          {
+            id: 'software-developer',
+            title: 'Software Developer',
+            category: 'Software Engineering',
+            shortDescription: 'Design and build scalable server architectures, robust APIs, and enterprise services.',
+            demandLevel: 'Extremely High',
+            averageSalary: '$110,000 / ₹14-24 LPA',
+            recommendedDuration: '16-20 Weeks',
+            coreSkills: ['Java', 'Data Structures & Algorithms', 'SQL', 'Spring Boot', 'REST APIs', 'Git'],
+            topTools: ['IntelliJ', 'Docker', 'Postman', 'MySQL'],
+            icon: '☕',
+            accentColor: '#6366f1'
+          },
+          {
+            id: 'ai-ml-engineer',
+            title: 'AI / ML Engineer',
+            category: 'Artificial Intelligence',
+            shortDescription: 'Architect deep neural models, NLP transformers, and production-grade intelligent pipelines.',
+            demandLevel: 'Extremely High',
+            averageSalary: '$130,000 / ₹18-35 LPA',
+            recommendedDuration: '20-24 Weeks',
+            coreSkills: ['Python', 'Math & Statistics', 'Machine Learning', 'Deep Learning', 'PyTorch', 'Transformers'],
+            topTools: ['Jupyter', 'PyTorch', 'Hugging Face', 'MLflow'],
+            icon: '🤖',
+            accentColor: '#a855f7'
+          },
+          {
+            id: 'cloud-devops',
+            title: 'Cloud & DevOps Engineer',
+            category: 'Cloud Infrastructure',
+            shortDescription: 'Automate deployment pipelines, orchestrate Kubernetes clusters, and manage cloud infrastructure.',
+            demandLevel: 'Very High',
+            averageSalary: '$125,000 / ₹15-30 LPA',
+            recommendedDuration: '18-20 Weeks',
+            coreSkills: ['Linux', 'Git & GitHub', 'Docker', 'Kubernetes', 'CI/CD Pipelines', 'Terraform', 'AWS'],
+            topTools: ['Docker', 'Kubernetes', 'Terraform', 'GitHub Actions'],
+            icon: '☁️',
+            accentColor: '#10b981'
+          },
+          {
+            id: 'data-scientist',
+            title: 'Data Scientist',
+            category: 'Data Science',
+            shortDescription: 'Extract mathematical insights, build predictive models, and power business-critical decisions.',
+            demandLevel: 'Very High',
+            averageSalary: '$115,000 / ₹14-26 LPA',
+            recommendedDuration: '16-18 Weeks',
+            coreSkills: ['Python', 'SQL', 'Statistics', 'Machine Learning', 'Pandas', 'Data Visualization'],
+            topTools: ['Scikit-Learn', 'Seaborn', 'Streamlit', 'Tableau'],
+            icon: '🔬',
+            accentColor: '#06b6d4'
+          },
+          {
+            id: 'cybersecurity',
+            title: 'Cybersecurity Analyst',
+            category: 'Information Security',
+            shortDescription: 'Safeguard digital infrastructure, conduct vulnerability testing, and protect systems against exploits.',
+            demandLevel: 'Very High',
+            averageSalary: '$112,000 / ₹12-24 LPA',
+            recommendedDuration: '16-18 Weeks',
+            coreSkills: ['Computer Networking', 'Linux', 'Ethical Hacking', 'OWASP Top 10', 'SIEM', 'Cryptography'],
+            topTools: ['Wireshark', 'Burp Suite', 'Nmap', 'Splunk'],
+            icon: '🛡️',
+            accentColor: '#f59e0b'
+          },
+          {
+            id: 'web-developer',
+            title: 'Full Stack Web Developer',
+            category: 'Web Development',
+            shortDescription: 'Craft modern user interfaces, reactive client web applications, and resilient cloud backends.',
+            demandLevel: 'Very High',
+            averageSalary: '$100,000 / ₹10-20 LPA',
+            recommendedDuration: '14-16 Weeks',
+            coreSkills: ['HTML5 & CSS3', 'JavaScript', 'React / Next.js', 'Node.js', 'REST APIs', 'PostgreSQL'],
+            topTools: ['VS Code', 'TailwindCSS', 'Vercel', 'Postman'],
+            icon: '🌐',
+            accentColor: '#ec4899'
+          }
+        ];
+      }
+
+      function renderCareers(filterCategory = 'ALL') {
+        const filtered = filterCategory === 'ALL' 
+          ? careers 
+          : careers.filter(c => c.category.toLowerCase().includes(filterCategory.toLowerCase()));
+
+        grid.innerHTML = filtered.map(c => `
+          <div class="glass-card card-hover-3d shimmer-hover career-card">
+            <div>
+              <div class="career-card-top">
+                <div class="career-icon-wrapper">${c.icon || '🚀'}</div>
+                <span class="demand-badge ${c.demandLevel.toLowerCase().includes('extreme') ? 'extreme' : 'high'}">
+                  ${c.demandLevel}
+                </span>
+              </div>
+              <h3 style="font-size: 1.4rem; margin-bottom: 6px;">${c.title}</h3>
+              <p style="color: var(--text-dim); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px;">
+                ${c.category}
+              </p>
+              <p style="color: var(--text-muted); font-size: 0.93rem; margin-bottom: 16px;">
+                ${c.shortDescription}
+              </p>
+              <div class="career-meta-row">
+                <div>
+                  <span>Avg. Salary</span>
+                  <strong>${c.averageSalary}</strong>
+                </div>
+                <div>
+                  <span>Duration</span>
+                  <strong>${c.recommendedDuration}</strong>
+                </div>
+              </div>
+              <div style="margin-bottom: 18px;">
+                <span style="font-size: 0.8rem; color: var(--text-dim); display: block; margin-bottom: 8px;">Core Skills:</span>
+                <div class="skill-chips">
+                  ${(c.coreSkills || []).map(s => `<span class="skill-chip">${s}</span>`).join('')}
+                </div>
+              </div>
+            </div>
+            <a href="profile.html?role=${encodeURIComponent(c.title)}" class="btn btn-primary" style="width: 100%;">
+              Launch Assessment for This Role →
+            </a>
+          </div>
+        `).join('');
+      }
+
+      renderCareers();
+
+      if (filterBar) {
+        filterBar.addEventListener('click', (e) => {
+          if (e.target.classList.contains('filter-btn')) {
+            filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            renderCareers(e.target.getAttribute('data-category'));
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

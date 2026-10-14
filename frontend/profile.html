@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Skill Assessment Wizard | SkillPath AI</title>
+  <meta name="description" content="Step-by-step interactive skill gap benchmark and career pathfinder wizard.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+          </svg>
+        </div>
+        <div class="logo-text">SkillPath <span>AI</span></div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="careers.html" class="nav-link">Career Tracks</a></li>
+        <li><a href="profile.html" class="nav-link active">Assessment Wizard</a></li>
+        <li><a href="roadmap.html" class="nav-link">Roadmap</a></li>
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <div id="backendStatusBadge" class="server-badge">
+          <span class="status-indicator"></span> Checking Server...
+        </div>
+        <div id="navAuthContainer"></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top: 40px; padding-bottom: 70px;">
+    <div class="form-container">
+      
+      <div class="section-header" style="margin-bottom: 30px;">
+        <span class="section-tag">Interactive Benchmarking</span>
+        <h1 class="section-title">Student Skill <span>Assessment Wizard</span></h1>
+        <p class="section-desc">Complete the 4 quick stages below to generate your personalized AI career roadmap.</p>
+      </div>
+
+      <!-- 4-Stage Stepper Navigation -->
+      <div class="wizard-stepper">
+        <div class="step-indicator active" data-stage="1">
+          <div class="step-bubble">1</div>
+          <span class="step-title-text">Academic Info</span>
+        </div>
+        <div class="step-indicator" data-stage="2">
+          <div class="step-bubble">2</div>
+          <span class="step-title-text">Skill Matrix</span>
+        </div>
+        <div class="step-indicator" data-stage="3">
+          <div class="step-bubble">3</div>
+          <span class="step-title-text">Projects & Certs</span>
+        </div>
+        <div class="step-indicator" data-stage="4">
+          <div class="step-bubble">4</div>
+          <span class="step-title-text">Career Goal</span>
+        </div>
+      </div>
+
+      <!-- Main Glassmorphic Form Card -->
+      <div class="glass-card">
+        <form id="assessmentWizardForm" novalidate>
+
+          <!-- STAGE 1: Academic Background -->
+          <div class="wizard-stage active" id="stage1">
+            <h3 style="font-size: 1.35rem; margin-bottom: 6px;">Stage 1: Academic Details</h3>
+            <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 24px;">Provide your educational foundation and current college standing.</p>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="wizardName">Full Name *</label>
+                <input type="text" id="wizardName" name="name" class="form-control" placeholder="e.g. Syed Sohail" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="wizardEmail">Email Address *</label>
+                <input type="email" id="wizardEmail" name="email" class="form-control" placeholder="name@university.edu" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="wizardBranch">Branch / Major *</label>
+                <select id="wizardBranch" name="branch" class="form-control" required>
+                  <option value="">Select Department</option>
+                  <option value="Computer Science & Engineering">Computer Science & Engineering (CSE)</option>
+                  <option value="AI & Machine Learning">AI & Machine Learning (AI/ML)</option>
+                  <option value="Information Technology">Information Technology (IT)</option>
+                  <option value="Electronics & Communication">Electronics & Communication (ECE)</option>
+                  <option value="Electrical Engineering">Electrical Engineering (EEE)</option>
+                  <option value="Mechanical Engineering">Mechanical Engineering</option>
+                  <option value="Other Engineering">Other Engineering Discipline</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="wizardYear">Current Academic Year *</label>
+                <select id="wizardYear" name="year" class="form-control" required>
+                  <option value="">Select Year</option>
+                  <option value="1st Year">1st Year (Freshman)</option>
+                  <option value="2nd Year">2nd Year (Sophomore)</option>
+                  <option value="3rd Year" selected>3rd Year (Junior)</option>
+                  <option value="4th Year">4th Year (Senior / Final)</option>
+                  <option value="Graduate">Recent Graduate</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="wizardCgpa">
+                Current CGPA / GPA (out of 10) *
+                <span style="font-size: 0.8rem; color: var(--text-dim); font-weight: normal;">e.g. 8.50</span>
+              </label>
+              <input type="number" id="wizardCgpa" name="cgpa" step="0.01" min="0" max="10" class="form-control" placeholder="8.50" value="8.50" required>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; margin-top: 25px;">
+              <button type="button" class="btn btn-primary next-stage-btn" data-next="2">
+                Continue to Skill Matrix →
+              </button>
+            </div>
+          </div>
+
+          <!-- STAGE 2: Interactive Categorized Skill Matrix -->
+          <div class="wizard-stage" id="stage2">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+              <h3 style="font-size: 1.35rem;">Stage 2: Technical Skill Matrix</h3>
+              <span id="selectedSkillsCountBadge" style="font-size: 0.82rem; color: var(--accent-cyan); font-weight: 700;">0 Skills Selected</span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 20px;">
+              Click pills to toggle what you know. Selected skills will feed into the gap engine.
+            </p>
+
+            <!-- Category Filter Tabs -->
+            <div class="matrix-categories" id="matrixTabContainer">
+              <button type="button" class="matrix-cat-btn active" data-tab="languages">Languages</button>
+              <button type="button" class="matrix-cat-btn" data-tab="frameworks">Frameworks & Backend</button>
+              <button type="button" class="matrix-cat-btn" data-tab="databases">Databases & Cloud</button>
+              <button type="button" class="matrix-cat-btn" data-tab="aiml">AI, ML & Data</button>
+            </div>
+
+            <!-- Panel 1: Languages -->
+            <div class="matrix-panel active" id="tab-languages">
+              <span class="skill-chip" data-skill="Java">☕ Java</span>
+              <span class="skill-chip" data-skill="Python">🐍 Python</span>
+              <span class="skill-chip" data-skill="C++">⚡ C++</span>
+              <span class="skill-chip" data-skill="JavaScript">📜 JavaScript</span>
+              <span class="skill-chip" data-skill="TypeScript">🔷 TypeScript</span>
+              <span class="skill-chip" data-skill="SQL">🗄️ SQL</span>
+              <span class="skill-chip" data-skill="HTML5 & CSS3">🎨 HTML5 / CSS3</span>
+              <span class="skill-chip" data-skill="Data Structures & Algorithms">🌳 DSA</span>
+            </div>
+
+            <!-- Panel 2: Frameworks -->
+            <div class="matrix-panel" id="tab-frameworks">
+              <span class="skill-chip" data-skill="Spring Boot">🍃 Spring Boot</span>
+              <span class="skill-chip" data-skill="React / Next.js">⚛️ React</span>
+              <span class="skill-chip" data-skill="Node.js & Express">🟢 Node.js</span>
+              <span class="skill-chip" data-skill="REST APIs">🔌 REST APIs</span>
+              <span class="skill-chip" data-skill="Microservices">🧱 Microservices</span>
+              <span class="skill-chip" data-skill="FastAPI">⚡ FastAPI</span>
+              <span class="skill-chip" data-skill="TailwindCSS">💨 TailwindCSS</span>
+            </div>
+
+            <!-- Panel 3: Databases & Cloud -->
+            <div class="matrix-panel" id="tab-databases">
+              <span class="skill-chip" data-skill="MySQL">🐬 MySQL</span>
+              <span class="skill-chip" data-skill="PostgreSQL">🐘 PostgreSQL</span>
+              <span class="skill-chip" data-skill="MongoDB">🍃 MongoDB</span>
+              <span class="skill-chip" data-skill="Docker">🐳 Docker</span>
+              <span class="skill-chip" data-skill="Kubernetes">☸️ Kubernetes</span>
+              <span class="skill-chip" data-skill="AWS">☁️ AWS</span>
+              <span class="skill-chip" data-skill="Linux">🐧 Linux</span>
+              <span class="skill-chip" data-skill="Git & GitHub">🐙 Git & GitHub</span>
+            </div>
+
+            <!-- Panel 4: AI/ML & Data -->
+            <div class="matrix-panel" id="tab-aiml">
+              <span class="skill-chip" data-skill="Machine Learning">🧠 Machine Learning</span>
+              <span class="skill-chip" data-skill="Deep Learning">🔬 Deep Learning</span>
+              <span class="skill-chip" data-skill="TensorFlow / PyTorch">🔥 PyTorch</span>
+              <span class="skill-chip" data-skill="Pandas">🐼 Pandas</span>
+              <span class="skill-chip" data-skill="Statistics">📐 Statistics</span>
+              <span class="skill-chip" data-skill="Power BI / Tableau">📊 Power BI</span>
+              <span class="skill-chip" data-skill="Transformers & LLMs">🤖 LLMs</span>
+            </div>
+
+            <!-- Hidden Raw Skills Textarea synced with chips -->
+            <div class="form-group" style="margin-top: 24px;">
+              <label class="form-label" for="wizardSkillsInput">
+                Custom / Additional Skills
+                <span style="font-size: 0.8rem; color: var(--text-dim); font-weight: normal;">Type any specialized tools separated by commas</span>
+              </label>
+              <textarea id="wizardSkillsInput" name="skills" class="form-control" placeholder="Java, SQL, Git & GitHub..."></textarea>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; margin-top: 25px;">
+              <button type="button" class="btn btn-outline prev-stage-btn" data-prev="1">← Back</button>
+              <button type="button" class="btn btn-primary next-stage-btn" data-next="3">Projects & Portfolio →</button>
+            </div>
+          </div>
+
+          <!-- STAGE 3: Projects & Portfolio -->
+          <div class="wizard-stage" id="stage3">
+            <h3 style="font-size: 1.35rem; margin-bottom: 6px;">Stage 3: Projects & Certifications</h3>
+            <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 24px;">Highlight past academic projects, hackathons, and certifications.</p>
+
+            <div class="form-group">
+              <label class="form-label" for="wizardProjects">Notable Projects</label>
+              <textarea id="wizardProjects" name="projects" class="form-control" placeholder="e.g. Student Management System with Spring Boot & MySQL, Real-time Chat App with WebSockets"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="wizardInterests">Key Areas of Interest</label>
+              <textarea id="wizardInterests" name="interests" class="form-control" placeholder="e.g. Distributed Systems, High-Concurrency APIs, Generative AI"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="wizardCertifications">Completed Certifications</label>
+              <input type="text" id="wizardCertifications" name="certifications" class="form-control" placeholder="e.g. NPTEL Java 2025, AWS Cloud Practitioner, Coursera Machine Learning">
+            </div>
+
+            <div style="display: flex; justify-content: space-between; margin-top: 25px;">
+              <button type="button" class="btn btn-outline prev-stage-btn" data-prev="2">← Back</button>
+              <button type="button" class="btn btn-primary next-stage-btn" data-next="4">Career Ambition →</button>
+            </div>
+          </div>
+
+          <!-- STAGE 4: Career Goal & Submission -->
+          <div class="wizard-stage" id="stage4">
+            <h3 style="font-size: 1.35rem; margin-bottom: 6px;">Stage 4: Target Ambition & Timeline</h3>
+            <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 24px;">Select the tech role you wish to target for placements and internships.</p>
+
+            <div class="form-group">
+              <label class="form-label" for="wizardCareerGoal">Target Career Role *</label>
+              <select id="wizardCareerGoal" name="careerGoal" class="form-control" required style="font-size: 1.05rem; padding: 14px 18px;">
+                <option value="Software Developer">Software Developer (Java, Spring Boot, DSA, Backend)</option>
+                <option value="AI / ML Engineer">AI / Machine Learning Engineer (Python, PyTorch, Deep Learning)</option>
+                <option value="Cloud & DevOps Engineer">Cloud & DevOps Engineer (AWS, Docker, Kubernetes, CI/CD)</option>
+                <option value="Data Scientist">Data Scientist (Python, Statistics, Machine Learning, Pandas)</option>
+                <option value="Data Analyst">Data Analyst (SQL, Power BI, Advanced Excel, Statistics)</option>
+                <option value="Full Stack Web Developer">Full Stack Web Developer (React, Next.js, Node.js, APIs)</option>
+                <option value="Cybersecurity Analyst">Cybersecurity Analyst (Network Security, Linux, OWASP)</option>
+                <option value="Mobile App Developer">Mobile App Developer (Flutter / Kotlin / Swift)</option>
+              </select>
+            </div>
+
+            <!-- Live Match Estimation Preview Card -->
+            <div id="quickMatchPreviewCard" style="background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: var(--radius-md); padding: 20px; margin-bottom: 24px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                <span style="font-size: 0.85rem; font-weight: 700; color: #a5b4fc; text-transform: uppercase;">Benchmark Ready</span>
+                <span id="previewSkillCount" style="font-size: 0.85rem; color: var(--accent-emerald);">Analysis Ready</span>
+              </div>
+              <p style="font-size: 0.92rem; color: var(--text-muted); margin: 0;">
+                Clicking the button below will run the skill gap algorithm, calculate your market readiness percentage, and synthesize a milestone learning roadmap.
+              </p>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; margin-top: 25px;">
+              <button type="button" class="btn btn-outline prev-stage-btn" data-prev="3">← Back</button>
+              <button type="submit" id="generateRoadmapSubmitBtn" class="btn btn-primary btn-lg" style="min-width: 280px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                Generate AI Career Roadmap
+              </button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <div>© 2026 SkillPath AI • Full Stack Student Career Intelligence</div>
+      <div><a href="index.html" style="color: var(--text-dim); text-decoration: none;">← Back to Home</a></div>
+    </div>
+  </footer>
+
+  <script src="js/auth.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Pre-fill user data if authenticated
+      const user = AuthService.getCurrentUser();
+      if (user) {
+        if (user.name) document.getElementById('wizardName').value = user.name;
+        if (user.email) document.getElementById('wizardEmail').value = user.email;
+        if (user.branch) document.getElementById('wizardBranch').value = user.branch;
+        if (user.year) document.getElementById('wizardYear').value = user.year;
+      }
+
+      // Check URL params for pre-selected role
+      const params = new URLSearchParams(window.location.search);
+      const preRole = params.get('role');
+      if (preRole) {
+        const select = document.getElementById('wizardCareerGoal');
+        for (let i = 0; i < select.options.length; i++) {
+          if (select.options[i].value.toLowerCase().includes(preRole.toLowerCase())) {
+            select.selectedIndex = i;
+            break;
+          }
+        }
+      }
+
+      // Stepper Navigation Logic
+      const steps = document.querySelectorAll('.step-indicator');
+      const stages = document.querySelectorAll('.wizard-stage');
+
+      function goToStage(num) {
+        stages.forEach(s => s.classList.remove('active'));
+        steps.forEach((st, idx) => {
+          st.classList.remove('active');
+          if (idx + 1 < num) st.classList.add('completed');
+          else st.classList.remove('completed');
+          if (idx + 1 === num) st.classList.add('active');
+        });
+        const target = document.getElementById(`stage${num}`);
+        if (target) target.classList.add('active');
+      }
+
+      document.querySelectorAll('.next-stage-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const next = parseInt(btn.getAttribute('data-next'));
+          // Simple validation on stage 1
+          if (next === 2) {
+            const name = document.getElementById('wizardName').value.trim();
+            const email = document.getElementById('wizardEmail').value.trim();
+            if (!name || !email) {
+              showToast('Please provide your name and email', 'error');
+              return;
+            }
+          }
+          goToStage(next);
+        });
+      });
+
+      document.querySelectorAll('.prev-stage-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const prev = parseInt(btn.getAttribute('data-prev'));
+          goToStage(prev);
+        });
+      });
+
+      steps.forEach(st => {
+        st.addEventListener('click', () => {
+          const stageNum = parseInt(st.getAttribute('data-stage'));
+          goToStage(stageNum);
+        });
+      });
+
+      // Skill Matrix Category Tabs
+      const tabs = document.querySelectorAll('.matrix-cat-btn');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.matrix-panel').forEach(p => p.classList.remove('active'));
+          tab.classList.add('active');
+          const panel = document.getElementById(`tab-${tab.getAttribute('data-tab')}`);
+          if (panel) panel.classList.add('active');
+        });
+      });
+
+      // Synchronize Skill Chips with textarea
+      const chips = document.querySelectorAll('.skill-chip');
+      const skillsInput = document.getElementById('wizardSkillsInput');
+      const countBadge = document.getElementById('selectedSkillsCountBadge');
+
+      function updateChipCount() {
+        const selected = document.querySelectorAll('.skill-chip.selected');
+        countBadge.textContent = `${selected.length} Skills Selected`;
+      }
+
+      chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          const skill = chip.getAttribute('data-skill') || chip.textContent.trim();
+          let current = skillsInput.value.split(',').map(s => s.trim()).filter(Boolean);
+          const idx = current.findIndex(s => s.toLowerCase() === skill.toLowerCase());
+
+          if (idx >= 0) {
+            current.splice(idx, 1);
+            chip.classList.remove('selected');
+          } else {
+            current.push(skill);
+            chip.classList.add('selected');
+          }
+          skillsInput.value = current.join(', ');
+          updateChipCount();
+        });
+      });
+
+      // Form Submission
+      const form = document.getElementById('assessmentWizardForm');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitBtn = document.getElementById('generateRoadmapSubmitBtn');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `Analyzing with SkillPath AI...`;
+
+        const studentData = {
+          name: document.getElementById('wizardName').value.trim() || 'Student',
+          email: document.getElementById('wizardEmail').value.trim(),
+          branch: document.getElementById('wizardBranch').value,
+          year: document.getElementById('wizardYear').value,
+          cgpa: parseFloat(document.getElementById('wizardCgpa').value) || 8.0,
+          skills: skillsInput.value.trim(),
+          interests: document.getElementById('wizardInterests').value.trim(),
+          projects: document.getElementById('wizardProjects').value.trim(),
+          certifications: document.getElementById('wizardCertifications').value.trim(),
+          careerGoal: document.getElementById('wizardCareerGoal').value
+        };
+
+        try {
+          showToast('Synthesizing your personalized roadmap...', 'info');
+          const result = await SkillPathAPI.registerStudent(studentData);
+          sessionStorage.setItem('currentAnalysis', JSON.stringify(result));
+          
+          // Also save in user session if logged in
+          const currentUser = AuthService.getCurrentUser();
+          if (currentUser) {
+            const savedRoadmaps = JSON.parse(localStorage.getItem(`roadmaps_${currentUser.id}`) || '[]');
+            savedRoadmaps.unshift(result);
+            localStorage.setItem(`roadmaps_${currentUser.id}`, JSON.stringify(savedRoadmaps.slice(0, 10)));
+          }
+
+          showToast('Roadmap generated successfully!', 'success');
+          setTimeout(() => {
+            window.location.href = 'roadmap.html';
+          }, 600);
+        } catch (err) {
+          console.error(err);
+          showToast('Error synthesizing roadmap. Please retry.', 'error');
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `Generate AI Career Roadmap`;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
