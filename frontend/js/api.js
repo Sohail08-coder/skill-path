@@ -8,6 +8,9 @@ function getApiBaseUrl() {
   if (window.SKILLPATH_API_URL) return window.SKILLPATH_API_URL;
   const stored = localStorage.getItem('SKILLPATH_API_URL');
   if (stored) return stored;
+  if (typeof window !== 'undefined' && window.location && window.location.hostname && !window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1')) {
+    return 'https://skill-path-nn4q.onrender.com/api';
+  }
   return 'http://localhost:8080/api';
 }
 

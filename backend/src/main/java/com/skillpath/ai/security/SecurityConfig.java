@@ -33,7 +33,7 @@ public class SecurityConfig {
     private final CustomAccessDeniedHandler accessDeniedHandler;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    @Value("${app.cors.allowed-origins:http://localhost:5500,http://127.0.0.1:5500,http://localhost:3000,http://localhost:8080}")
+    @Value("${app.cors.allowed-origins:http://localhost:5500,http://127.0.0.1:5500,http://localhost:3000,http://localhost:8080,https://*.vercel.app,https://*.onrender.com,https://*.netlify.app}")
     private String allowedOrigins;
 
     public SecurityConfig(JwtAuthenticationEntryPoint entryPoint,
@@ -91,11 +91,9 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/register", "/api/auth/login", "/api/auth/seed-demo").permitAll()
                 // Public Career Tracks & Health Check Endpoints
                 .requestMatchers(HttpMethod.GET, "/api/careers/**").permitAll()
-                .requestMatchers("/api/health").permitAll()
+                .requestMatchers("/", "/api", "/api/health").permitAll()
                 // Public H2 console (Development)
                 .requestMatchers("/h2-console/**").permitAll()
-                // Static templates and web pages
-                .requestMatchers("/", "/profile", "/css/**", "/js/**", "/assets/**", "/images/**").permitAll()
                 // Protected Current User & Profile endpoints
                 .requestMatchers("/api/auth/me").authenticated()
                 .requestMatchers("/api/students/me/**").authenticated()

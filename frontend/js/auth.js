@@ -9,6 +9,9 @@ function getAuthApiUrl() {
   const stored = localStorage.getItem('SKILLPATH_API_URL');
   if (stored) return `${stored}/auth`;
   if (window.SKILLPATH_API_URL) return `${window.SKILLPATH_API_URL}/auth`;
+  if (typeof window !== 'undefined' && window.location && window.location.hostname && !window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1')) {
+    return 'https://skill-path-nn4q.onrender.com/api/auth';
+  }
   return 'http://localhost:8080/api/auth';
 }
 

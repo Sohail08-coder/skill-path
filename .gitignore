@@ -2,6 +2,9 @@
 # SkillPath-AI Root .gitignore
 # ==========================================
 
+# Junction / nested workspace
+SkillPath-AI/
+
 # Compiled Java / Maven target directories
 target/
 backend/target/
